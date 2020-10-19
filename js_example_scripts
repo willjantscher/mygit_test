@@ -1,0 +1,81 @@
+You are given an array (which will have a length of at least 3, but could be very large) containing integers. The array is either entirely comprised of odd integers or entirely comprised of even integers except for a single integer N. Write a method that takes the array as an argument and returns this "outlier" N.
+
+Examples
+[2, 4, 0, 100, 4, 11, 2602, 36]
+Should return: 11 (the only odd number)
+
+[160, 3, 1719, 19, 11, 13, -21]
+Should return: 160 (the only even number)
+
+
+function findOutlier(integers){
+  var even = 0;
+  var odd = 0
+  var evennum;
+  var oddnum;
+  for (var int of integers)
+    {
+      if (int%2 === 0)
+        {
+         even++;
+          evennum = int;
+        }
+      else if (int%2 !== 0)
+       {
+          odd++;
+         oddnum = int;
+       }
+    }
+  if (even > 1)
+    {
+      return oddnum;
+    }
+  else if (odd > 1)
+    {
+      return evennum;
+    }
+}
+
+___________________________________________________________________________________________________________________________________________________
+
+Check to see if a string has the same amount of 'x's and 'o's. The method must return a boolean and be case insensitive. The string can contain any char.
+
+Examples input/output:
+
+XO("ooxx") => true
+XO("xooxx") => false
+XO("ooxXm") => true
+XO("zpzpzpp") => true // when no 'x' and 'o' is present should return true
+XO("zzoo") => false
+
+
+
+function XO(str) {
+    arr = str.split('');
+    numX = 0;
+    numO = 0;
+    for (var i = 0; i < arr.length; i++)
+      {
+        if (arr[i] === 'x' || arr[i] === 'X')
+          {
+            numX++;
+          }
+        else if (arr[i] === 'o' || arr[i] === 'O')
+          {
+            numO++;
+          }
+      }
+  if (numX === numO)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
+___________________________________________________________________________________________________________________________________________________
+
+
+

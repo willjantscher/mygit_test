@@ -35,5 +35,49 @@ git pull - pulls from github
 
 ______________________________________________________________________________________________________________________________________________________________
 
+Pair Programming
+
+pair programming - An Extreme Programming practice in which two engineers participate in one development effort at one workstation. Each member performs the action the other is not currently doing: While one types in Unit Tests the other thinks about the class that will satisfy the test, for example.
+the programmer at the keyboard - the driver
+the other focused on overall direction is the navigator
+swap roles every few minutes or so 
+
+why write in pairs?
+code quality
+Bus effect - if someone leaves from the project, the other can continue the project
+transfer of knowledge - senior and junior (experience)
+fewer bugs 
+culture change
+
+navigator
+keeps big picute in mind
+knows where you are going
+gives high or mid-level instructions
+not describing syntax
+
+driver
+writes the code
+proving/disproving theories by testing 
+asking questions
+
+pairing technique is influenced by skill levels
+narrow - ping pong/ take turns often
+both: values of respect and communication
+wide - more experienced dev should spend more time navigating
+
+establish a good flow
+when do we switch? set a timer, natural breaks (commit/push, lunch), one pair is getting frustrated/disengaged
+ask to vocalize thoughts, increase wait time, be patient, don't type until you vocalize
+use feedback - kind, actionable, specific, consensual
+key - engagement - do what works for your pair
+
+45 minutes in code wars
+until 11:30 
+Peter Vayda at LA AFB pairing partner - experience in js and coding
+
+As a Senior Developer working with a Junior Developer, your job is to teach and mentor. In this scenario, the goal is not to get things done as quickly as possible, but instead to make sure the Junior developer is aware of what is happening.
+As a Junior Developer working with someone more experienced, your top priority is to learn. The best method of learning is by doing, so try to do most of the typing.
+
+pair feedback - Through constant feedback about their previous efforts, teams can identify areas for improvement and revise their practices. Feedback also supports simple design. Your team builds something, gathers feedback on your design and implementation, and then adjust your product going forward.
 
 

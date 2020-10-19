@@ -1,0 +1,320 @@
+<html>
+<head>
+	<title>My First JavaScript code!!!</title>
+	<script type="text/javascript">
+		alert("Hello World!");
+	</script>
+</head>
+<body>
+</body>
+</html>
+
+
+
+Var name;
+\\var declares the variable name
+
+<script type="text/javascript">
+\\tells the browser that javascript is the language
+
+<script>
+</script>
+\\distinguishes the JavaScript code from the rest of the code (HTML)
+
+
+alert();
+//creates a pop-up with whatever is inside the brackets
+
+document.write();
+//writes to the page
+
+document.write(<br />)
+//indents the line
+
+var students = [“x”, “y”, “z”];
+var students = new Array (“x”, “y”, “z”);
+var students = new Array();
+students[0] = "x";
+students[1] = "y";
+students[2] = "z";
+//create and populate an array
+
+
+length property --> If you want to know the number of elements in an array, you can use the length property.
+prototype property --> If you want to add new properties and methods, you can use the prototype property.
+reverse method --> You can reverse the order of items in an array using a reverse method.
+sort method --> You can sort the items in an array using sort method.
+pop method --> You can remove the last item of an array using a pop method.
+shift method --> You can remove the first item of an array using shift method.
+push method --> You can add a value as the last item of the array.
+For loop
+for(statement1; statement2; statment3)
+
+{
+
+lines of code to be executed
+
+}
+The statement1 is executed first even before executing the looping code. So, this statement is normally used to assign values to variables that will be used inside the loop.
+The statement2 is the condition to execute the loop.
+The statement3 is executed every time after the looping code is executed.
+while loop
+while(condition)
+
+{
+
+lines of code to be executed
+
+}
+
+The “while loop” is executed as long as the specified condition is true. Inside the while loop, you should include the statement that will end the loop at some point of time. Otherwise, your loop will never end and your browser may crash.
+
+do…while loop
+do
+
+{
+
+block of code to be executed
+
+} while (condition)
+The do…while loop is very similar to while loop. The only difference is that in do…while loop, the block of code gets executed once even before checking the condition.
+
+If statement
+if (condition)
+
+{
+
+lines of code to be executed if condition is true
+
+}
+You can use If statement if you want to check only a specific condition.
+If…Else statement
+if (condition)
+
+{
+
+lines of code to be executed if the condition is true
+
+}
+
+else
+
+{
+
+lines of code to be executed if the condition is false
+
+}
+You can use If….Else statement if you have to check two conditions and execute a different set of codes.
+
+If…Else If…Else statement
+if (condition1)
+
+{
+
+lines of code to be executed if condition1 is true
+
+}
+
+else if(condition2)
+
+{
+
+lines of code to be executed if condition2 is true
+
+}
+
+else
+
+{
+
+lines of code to be executed if condition1 is false and condition2 is false
+
+}
+Function
+function functionname()
+
+{
+
+  lines of code to be executed
+
+}
+Function with Arguments
+function functionname(arg1, arg2)
+
+{
+
+  lines of code to be executed
+
+}
+Or ||
+And &&
+Var myName = prompt(“blah”)
+//opens prompt window with a text box
+
+JavaScript Return Value
+function functionname(arg1, arg2)
+
+{
+
+  lines of code to be executed
+
+  return val1;
+
+}
+You can also create JS functions that return values. Inside the function, you need to use the keyword return followed by the value to be returned.
+
+What are Cookies?
+A cookie is a piece of data that is stored on your computer to be accessed by your browser. You also might have enjoyed the benefits of cookies knowingly or unknowingly. Have you ever saved your Facebook password so that you do not have to type it each and every time you try to login? If yes, then you are using cookies. Cookies are saved as key/value pairs.
+Why do you need a Cookie?
+The communication between a web browser and server happens using a stateless protocol named HTTP. Stateless protocol treats each request independent. So, the server does not keep the data after sending it to the browser. But in many situations, the data will be required again. Here come cookies into a picture. With cookies, the web browser will not have to communicate with the server each time the data is required. Instead, it can be fetched directly from the computer.
+Javascript Set Cookie
+document.cookie = "cookiename=cookievalue"
+
+document.cookie = "cookiename=cookievalue; expires= Thu, 21 Aug 2014 20:00:00 UTC; path=/ "
+//create a cookie with a domain to the current page and path to the entire domain.
+
+JavaScript get Cookie
+
+var x =  document.cookie
+
+JavaScript Delete Cookie
+document.cookie = "cookiename= ; expires = Thu, 01 Jan 1970 00:00:00 GMT"
+
+
+<html>
+<head>
+	<title>Cookie!!!</title>
+	<script type="text/javascript">
+		function createCookie(cookieName,cookieValue,daysToExpire)
+        {
+          var date = new Date();
+          date.setTime(date.getTime()+(daysToExpire*24*60*60*1000));
+          document.cookie = cookieName + "=" + cookieValue + "; expires=" + date.toGMTString();
+        }
+		function accessCookie(cookieName)
+        {
+          var name = cookieName + "=";
+          var allCookieArray = document.cookie.split(';');
+          for(var i=0; i<allCookieArray.length; i++)
+          {
+            var temp = allCookieArray[i].trim();
+            if (temp.indexOf(name)==0)
+            return temp.substring(name.length,temp.length);
+       	  }
+        	return "";
+        }
+		function checkCookie()
+        {
+          var user = accessCookie("testCookie");
+          if (user!="")
+        	alert("Welcome Back " + user + "!!!");
+          else
+          {
+            user = prompt("Please enter your name");
+            num = prompt("How many days you want to store your name on your computer?");
+            if (user!="" && user!=null)
+            {
+            createCookie("testCookie", user, num);
+            }
+          }
+        }
+	</script>
+</head>
+<body onload="checkCookie()"></body>
+</html>
+
+getElementById, innerHTML Example
+ getElementById:  To access elements and attributes whose id is set.
+ innerHTML: To access the content of an element.
+getElementsByTagName Example
+getElementsByTagName: To access elements and attributes using tag name. This method will return an array of all the items with the same tag name.
+How to Create an Object
+var objName = new Object();
+objName.property1 = value1;
+objName.property2 = value2;
+objName.method1 = function()
+{
+line of code
+}
+Or
+var objName= {property1:value1, property2:value2, method1: function()
+
+{ lines of code} };
+
+OOPS Constructor
+But creating objects of this kind is not that useful because here also, you will have to create different objects for different students. Here comes object constructor into picture. Object constructor helps you create an object type which can be reused to meet the need of individual instance.
+This
+//refers to the object it belongs to
+
+<html>
+<head>
+	<script type="text/javascript">
+		function Student(first, last, id, english, maths, science)
+        {
+          this.fName = first;
+          this.lName = last;
+          this.id = id;
+          this.markE = english;
+          this.markM = maths;
+          this.markS = science;
+          this.calculateAverage = function()
+          {
+         	 return (this.markE + this.markM + this.markS)/3;
+          }
+		  this.displayDetails = function()
+		  {
+            document.write("Student Id: " + this.id + "<br />");
+            document.write("Name: " + this.fName + " " + this.lName + "<br />");
+            var avg = this.calculateAverage();
+            document.write("Average Marks: " + avg + "<br /><br />");
+		  }
+		}
+        var st1 = new Student("John", "Smith", 15, 85, 79, 90);
+        var st2 = new Student("Hannah", "Turner", 23, 75, 80, 82);
+        var st3 = new Student("Kevin", "White", 4, 93, 89, 90);
+        var st4 = new Student("Rose", "Taylor", 11, 55, 63, 45);
+        st1.displayDetails();
+        st2.displayDetails();
+        st3.displayDetails();
+        st4.displayDetails();
+	</script>
+</head>
+<body>
+</body>
+</html>
+
+Loop Through the Properties of an Object
+The for/in a loop is usually used to loop through the properties of an object. You can give any name for the variable, but the name of the object should be the same as that of an already existing object which you need to loop through.
+
+<html>
+<head>
+	<script type="text/javascript">
+		var employee={first:"John", last:"Doe", department:"Accounts"};
+        var details = "";
+        document.write("<b>Using for/in loops </b><br />");
+        for (var x in employee)
+        {
+          details = x + ": " + employee[x];
+          document.write(details + "<br />");
+        }
+	</script>
+</head>
+<body>
+</body>
+</html>
+
+
+What is External JavaScript?
+You plan to display the current date and time in all your web pages. Suppose you wrote the code and copied into all your web pages (say 100). But later, you want to change the format in which the date or time is displayed. In this case, you will have to make changes in all the 100 web pages. This will be a very time consuming and difficult task.
+So, save the JavaScript code in a new file with the extension .js. Then, add a line of code in all your web pages to point to your .js file like this:
+<script type="text/javascript" src="currentdetails.js">
+
+Writing into an HTML element, using innerHTML.
+Writing into the HTML output using document.write().
+Writing into an alert box, using window.alert().
+Writing into the browser console, using console.log().
+
+Javascript reference
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference
+
+

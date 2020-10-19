@@ -15,6 +15,7 @@ Jackie Cromer - military poc for SDI (sam cremar = fill in)
 Katie Hoesley - teacher
 Rebecca Mantell - support role/ administration - contact if going to miss any time
 Poli Gonzalez - instructor
+Gregory Oladipo - military instructor
 
 2nd itteration of this course, first for USSF
 learn to be a constructive contributor to a development team
@@ -48,5 +49,7 @@ Each unit has an evaluation at the end (pair programming, java fundamentals)
 no grade on the course - assesments are for us. 
 
 breakout rooms for the meeting
+Pair programming - overarching theme of this course
+
 
 
