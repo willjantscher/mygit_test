@@ -1,0 +1,37 @@
+git
+
+right click on folder, git bash here - sets up git window at location
+
+touch app.html - creates html doc at locaiton
+
+git init - creates a git repository at the location
+
+$ git config --global user.name 'Will Jantscher'
+
+$ git config --global user.email 'william.jantscher@gmail.com'
+
+git add index.html - adds file to git repository
+
+git status - show what is in the staging area
+
+git add *.html - adds all html files to staging area
+
+git add . - adds all files to staging area
+
+git commit - commit files
+
+$ git commit -m 'changed app.js' - includes comment in the command
+
+$ touch .gitignore - which files for git to ignore, just put file names in here.
+
+$ git branch login - adds a new branch
+
+git checkout login - switch to login branch
+
+git push - pushes everything to github
+
+git pull - pulls from github
+
+
+
+
