@@ -33,7 +33,7 @@ git push - pushes everything to github
 
 git pull - pulls from github
 
-______________________________________________________________________________________________________________________________________________________________
+10/19/20______________________________________________________________________________________________________________________________________________________________
 
 Pair Programming
 
@@ -81,4 +81,99 @@ As a Junior Developer working with someone more experienced, your top priority i
 pair feedback - Through constant feedback about their previous efforts, teams can identify areas for improvement and revise their practices. Feedback also supports simple design. Your team builds something, gathers feedback on your design and implementation, and then adjust your product going forward.
 
 ______________________________________________________________________________________________________________________________________________________________
+JavaScript fundamentals
+ES6 - Modern JavaScript, released 2015
+
+destructuring objects (good for large objects)
+{} is an object
+
+var user = {
+    first: 'benji',
+    last: 'marinacci'
+};
+
+var first = user.first
+var last = user.last; //old structure
+
+var {first, last) = user}; //new structure
+
+first; //=> benji
+
+spread operator
+use if we don't know how many arguments will be coming in
+
+arrow function expression (es6 syntax)
+const someNewFunction = () => {
+    console.log('something')
+}
+
+default parameters
+in function, set the default for something so if it not assigned it will have initial values
+function someNewFunction(greeting = 'hi') {
+    return greeting //doew not return undefined since greeting is defined in the function
+}
+
+//template literals 
+function someNewFunction(greeting, name) {
+    return greeting + ' ' + name + '!welcome to our website'
+    return `${greeting} ${name}! Welcome to our website`
+}
+
+someNewFunction('sup', 'dog')
+
+
+for...of Loop
+
+var nums = [1, 4, 6, 7];
+
+for (var val of nums) {
+    console.log(val);
+    //console.log(nums.indexOf(val));
+}
+
+let, const, var
+
+var - sets a variable, can be reassigned/changed (global/function scoped)
+const - cannot be reassigned, but it can be changed/modified (example, add to)
+let - can be updated but not redeclared, block scoped (only available inside the scope it's declared ex. in for loop)
+
+explicit return
+const canDrive = (person) => {
+  if (person.age > 15) {
+    return true
+  } else {
+    return false
+  }
+}
+
+implicit return
+const canDrive = person =>
+  person.age > 15
+
+
+const createProject = (name) => ({name})
+
+spread operator/clone/delete/modify properties
+
+
+let updateAge = (object, age) => {
+    const output = {
+        ...object,
+        age: age,
+    }
+    return output;
+}
+
+let printArgs = (...args) => {
+    //print all arguments, unkown ammount, want them in an object
+    return args;
+}
+//NOTE - this returns averything as an array
+
+function address({street, city, state, zip}) {
+  return `${street}, ${city}, ${state} ${zip}`
+}
+
+scopes and closures
+
 

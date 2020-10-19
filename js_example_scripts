@@ -76,6 +76,52 @@ function XO(str) {
 }
 
 ___________________________________________________________________________________________________________________________________________________
+//destructuring objects
+
+const student = {
+  name: 'katie',
+  age: 28,
+  location: 'minnesota',
+  occupation: 'teacher',
+  pets: [
+    {name: 'lenny', type: 'dog'}
+  ]
+}
+
+//destructure this
+var {name, occupation, pets} = student
+
+//print Katie
+console.log(name)
+
+//print 'dog'
+console.log(pets[0].type)
+
+//print teacher
+console.log(occupation)
+
+
+___________________________________________________________________________________________________________________________________________________
+//destructure array;
+//always starts at 0 index
+
+var numbers = [1, 2, 3, 4];
+
+var uno = numbers[0];
+var uno = numbers[0];
+var uno = numbers[0];
+
+var [uno, dos, tres] = numbers;
+
+console.log(uno);
 
 
 
+___________________________________________________________________________________________________________________________________________________
+
+const countries = ['Germany', 'USA', 'England', 'Thailand', 'Mexico'];
+
+var [one, two, three, four, five] = countries
+console.log(five)
+
+___________________________________________________________________________________________________________________________________________________
