@@ -133,9 +133,11 @@ for (var val of nums) {
 
 let, const, var
 
-var - sets a variable, can be reassigned/changed (global/function scoped)
+var - sets a variable, can be reassigned/changed (global/function scoped) (can be outside of if/for/while loops)
 const - cannot be reassigned, but it can be changed/modified (example, add to)
 let - can be updated but not redeclared, block scoped (only available inside the scope it's declared ex. in for loop)
+block has {}
+
 
 explicit return
 const canDrive = (person) => {
@@ -174,6 +176,56 @@ function address({street, city, state, zip}) {
   return `${street}, ${city}, ${state} ${zip}`
 }
 
+
 scopes and closures
+scope - reference to where values, objects and functions can be accessed
+global scope: includes variables declared outside of a function
+local scope: includes variables declared inside of a function
+function- variables declared in function are only visible within the function block
+block - {}
+code - the code inside the current block
+
+try to minimize global variables
+return function (){} inside of a function  is not calling the function
+can execute both functions if you do function()() or if you do newFunction = function ();
+
+closures
+closure - where an inner function has access to the outer (enclosed) functions variables, this creates a scope chain
+scope chains have access to its own scope, access to its outer functions variables, and access to global scope variables
+lexical scope: a variable defined outside of a function can be accessible inside of another function defined after variable declaration
+
+return innerFunc; //if not called, will read out [Function: innerFunc]
+
+function outerFunc() {
+  let outerVar = 'I am ouside!';
+
+  function innerFunc() {
+    var name = 'poli';
+    console.log(name);
+    console.log(outerVar);
+  }
+  console.log(outerVar);
+  return innerFunc;
+};
+
+// outerFunc();
+var myInnerFunc = outerFunc();
+myInnerFunc();
+
+closure stuff
+Here's a slightly more interesting example—a makeAdder function:
+
+function makeAdder(x) {
+  return function(y) {
+    return x + y;
+  };
+}
+
+var add5 = makeAdder(5);
+var add10 = makeAdder(10);
+
+console.log(add5(2));  // 7
+console.log(add10(2)); // 12
 
 
+Recursion
