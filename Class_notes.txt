@@ -1,1 +1,52 @@
-test
+zoom link: https://www.zoomgov.com/j/1607880370?pwd=QnQvVkxISjlFMGl0U0dGQ3crSGRLZz09
+
+Setup for mac 
+1. install VS code (https://code.visualstudio.com/)
+2. install VS code live share (https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack)
+3. Install Java version 11 (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+4. install Git (https://git-scm.com/downloads)
+5. install and setup chrome with book marks
+
+
+
+
+___________________________________________________________________________________________________________
+Jackie Cromer - military poc for SDI (sam cremar = fill in)
+Katie Hoesley - teacher
+Rebecca Mantell - support role/ administration - contact if going to miss any time
+Poli Gonzalez - instructor
+
+2nd itteration of this course, first for USSF
+learn to be a constructive contributor to a development team
+standup every morning
+
+galvanize - shock or excite (someone) into taking action
+
+class expectations
+9 AM - 5 PM constructivenotify if absent/tardy/leave early
+keep camera on
+ask questions!
+make mistakes - growth mindset
+knowledge vs understanding
+
+access to Mattermost
+class = javascript for first half, about week 7 is java
+
+schedule - syllabus will be distributed
+lunch = 12-1 (CST)
+4:30 (CST) is stand-down
+Wednesdays - hour after lunch = office hour for help with instructors/flex hour
+Fridays - retrospective at end of day (out about an hour early), what to do better for next time
+holidays off- veterans day
+Christmas - 24/25 off, following week is off - can use this time for capstone project
+lecture/questions/learn site to complete content
+
+Install live share for VS code---------------------------------------------------------------------
+Link to Live Share - https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack
+
+Each unit has an evaluation at the end (pair programming, java fundamentals)
+no grade on the course - assesments are for us. 
+
+breakout rooms for the meeting
+
+
