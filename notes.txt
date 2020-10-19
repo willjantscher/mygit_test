@@ -50,7 +50,7 @@ fewer bugs
 culture change
 
 navigator
-keeps big picute in mind
+keeps big picture in mind
 knows where you are going
 gives high or mid-level instructions
 not describing syntax
@@ -80,4 +80,5 @@ As a Junior Developer working with someone more experienced, your top priority i
 
 pair feedback - Through constant feedback about their previous efforts, teams can identify areas for improvement and revise their practices. Feedback also supports simple design. Your team builds something, gathers feedback on your design and implementation, and then adjust your product going forward.
 
+______________________________________________________________________________________________________________________________________________________________
 
