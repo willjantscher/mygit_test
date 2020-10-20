@@ -605,8 +605,51 @@ Sets contain unique values in no particular order.
 Set image
 
 A set would be great for....
-A raffle, where all the tickets are unique and you just want to randomly pick one (or several) out of them all.
+A raffle, where all the tickets are unique and you just want to randomly pick one (or several) out of them all
 
+------------------------------------------------------------------------------------------------------------------
+Higher order functions
+higher order function - a function taht takes a function (method) as a parameter, or returns a function after its execution
+
+forEach()
+  executes a provided function once for every array element - (for each object, etc)     object has key: value
+  classList.forEach(function(person) {    //created an anonomous function, person is the input parameter, can be named anything
+    console.log(person.name)
+  })
+
+.map()
+  creates a new array populated with the results of calling a provided function on every element in the calling array
+  const cityNames = classList.map(person => {
+    return person.location; //pull out all locations into the new cityNames array (does not return anything else)
+  });
+  console.log(cityNames);
+
+.filter()
+  creates a new array with all elements that pass the test implemented by the provided function
+  console.log(classList.filter(person => person.location ===('Chicago'))) will log all objects/array elements that meet Chicago location condition
+
+.reduce()
+  executes a reducer function (that you provide) on each element of the array, resulting in a single output value
+  ex. want to add all elements of array to one value
+  const personAges = classList.map(person => {
+    return person.age;
+  })  //created array of ages
+  console.log(personAges);
+  const reducer = (accumulator, currentValue) => accumulator + currentvalue;  //create your reducer,  currentvalue can be initialized but is updated for every pass of the array - they are all summed into the accumulator
+  personAges.reduce(reducer); //after all values are used, the accumulator is returned (accumulator )
+
+ex chaining
+  classList.filter(value => {
+    return value.location === ('Denver');
+    }).map(person => {
+      console.log(person.name);
+    });
+
+------solutions for datastructures will be posted
+
+
+10/21/20______________________________________________________________________________________________________________________________________________________________
+Pure functions
 
 
 
