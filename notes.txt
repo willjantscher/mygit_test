@@ -240,5 +240,376 @@ recursive function calls itself until it doesn't- needs a condition that stops t
 2. recursive case   
     the function called to change the input
     the function call to make the input
+recursion is good when you have an undetermined number of loops
 
 10/20/20______________________________________________________________________________________________________________________________________________________________
+DATA STRUCTURES
+JavaScript is a dynamic, loosely typed language
+  variables are not associated with a specific variable type (int, float, etc.)
+  let foo = 42 //is a number
+  foo = 'bar'; foo is now a string
+  foo = true; foo is now a boolean
+
+Data types in js
+string    'hello!'
+number    23
+boolean   true/false
+object    {name: 'Javascript'}
+array     
+function
+undefined
+null
+
+data structure - a particular way of organizing data in a computer so that it can be used effectiviely
+
+linear data types (lists, queues, stacks)
+
+binary search tree 
+
+choose the right data structure
+  how long to inser data? delete data? find data? sort data?
+
+Time complexity - 
+bit O Notation - describes the worst case (i.e. you are looking for last item in your list) performance of an algorithm or data structure in a relative way
+O(n), O(n^2)  n is the size of the data
+O(n) is linear, O (1) is flat, O(n!) is very computationally expensive
+O(1) - constant time, no loops, no matter how big the input set is, the result will be returned in the same amount of time
+O(n) - linear time, as input size increases, time to output increases linearly, a single loop
+O(n^2) - polynomial time, as input set increases in size, increases at the square of that size
+O(2^n) - exponential time, as input size increases, time to output increases linearly, a recursive call stack (fibonacci)
+O(log n) - logarithmic time, as input increeases, time to output increases at a relative
+O(n!) - factorial time
+
+Big theta - average time
+Big omega - best case time
+
+Bubble Sort - O(n^2) sort segment of numbers low to high, swap 2 numbers if needed, repeat until complete (multiple itterations)
+Binary search - O(log n) nodes, every time you check, number of things to check in the future goes down (at most have to check half of the elements)
+fibonacci - O(n!) recursive function, occurs in nature often, (program fractal?)
+  fibonacci number = all numbers less than n added together
+
+paired activity - onto galvanize
+Avery
+
+1. Stack 
+A stack works like a stack of plates -- plates are added and removed from the the top of the stack (LIFO: last in, first out).
+
+push(element) - Add an element to the top of the stack
+pop() - Remove and return the element on the top of the stack
+size() - Return the number of items on the stack
+peek() - Return the top element on the stack, but it won't remove it (the way pop() does)
+isEmpty() - Returns whether or not the Stack is empty
+printStack() - Prints all the elements of a queue
+//implementing methods
+class Stack {
+
+    constructor() {
+        this.items = [];
+    }
+
+    push(element) {
+        this.items.push(element);
+    }
+
+    pop() {
+        return this.items.pop();
+    }
+
+    size() {
+      return this.items.length;
+    }
+
+    peek() {
+      return this.items[this.items.length - 1]
+    }
+
+    isEmpty() {
+      return this.items.length === 0;
+    }
+
+    printStack() {
+     return this.items.join(' ');
+    }
+}
+
+
+
+2. Queue 
+A queue works like a line for an amusement park ride -- people enter at the end of the queue and leave from the front (FIFO: first in, first out).
+
+A queue would be great for....
+Issuing instructions to your sandwich-making robot.
+
+enqueue(element) - Adds an element to the back of the queue
+dequeue() - Remove and return the element at the front of the queue
+size() - Return the number of items in the queue
+front() - Return the element at the front of the queue
+isEmpty() - Returns true or false whether the queue has elements
+printQueue() - Prints all the elements of the queue
+
+//queues
+class Queue {
+
+    constructor() {
+        this.items = [];
+    }
+
+    enqueue(element) {
+        return this.items.push(element);
+    }
+
+    size() {
+      return this.items.length;
+    }
+
+    dequeue() {
+     return this.items.shift(); //last element in array is first in the queue, has been there longest (for this instance)
+    }
+
+    front() {
+        return this.items[0];
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+ printQueue() {
+     return this.items.reverse().join(' '); //need to reverse the array because the start of the queue is at the end of the array
+     //first in first out
+    }
+}
+
+
+3. Linked List 
+A linked list is a dynamic data structure that allows for constant time insertion and removal at any point in the linked list (compare this to an array which on average has linear time insertion and removal operations). In exchange for this insertion and removal speed, linked lists are not indexed and any find operations on a link list require the linear time operation of traversing the entire linked-list from the beginning.
+
+A linked list would be great for....
+An itinerary you expect to add and remove destinations to and from.
+
+.head property, a linkedListNode instance
+.tail property, a linkedListNode instance
+.addToTail() method, takes a value and adds it to the end of the list
+.removeHead() method, removes the first node from the list and returns its value
+.contains() method, returns boolean reflecting whether or not the passed-in value is in the linked list
+
+
+//like making a class
+var Node = (value) => {
+  var node = {} //create the empty object
+
+  node.value = value;   //add fields/key value pairs
+  node.next = null;
+
+  return node;  //passing back the node that was created
+}
+
+class LinkedList {  //when test code is calling, it populates the list
+
+//this is how it looks before any values
+  constructor() {
+      var list = {}
+      this.head = null;
+      this.tail = null;
+  }
+
+  addToTail(value) {
+      var newNode = Node(value);    //create new node
+      if(this.head === null && this.tail === null) {    //check if there are any nodes
+          this.head = newNode;
+          this.tail = newNode;
+      }
+      else {
+          this.tail.next = newNode  //have the old tail point to the newNode
+          this.tail = newNode;  //set the new tail to newNode
+      }
+  }
+
+  removeHead() {
+    //var placeHolder = this.head.value;
+        if (this.head.value === null)
+    {
+        return null;
+    }
+    else
+    {
+        var n = this.head.value;
+        var head = this.head;
+        var newHead = head.next;
+        this.head = newHead;
+        return n;
+    }
+  }
+
+  contains(target) {
+      var currentNode = this.head
+      while(currentNode)
+      {
+          if(currentNode.value === target)
+          {
+              return true;
+          }
+          else{
+              currentNode = currentNode.next;
+          }
+      }
+      return false;
+  }
+}
+
+
+4. Tree 
+A tree is a hierarchical data structure consisting of a node (potentially) with children. The children are trees unto themselves, that is, nodes with (potential) children. For this reason the tree is referred to as a recursive data structure.
+
+A tree would be great for....
+Making a family tree.
+
+A tree class, in functional with shared methods style, with the following properties:
+.children property, an array containing a number of subtrees
+.addChild() method, takes any value, sets that as the target of a node, and adds that node as a child of the tree
+A .contains() method, takes any input and returns a boolean reflecting whether it can be found as the value of the target node or any descendant node
+4
+Tree -------- this is wrong here 
+
+var Tree = function(value) {    //when a var is capitalized, it is like a class
+  var newTree = {};
+  newTree.value = value;
+
+  // your code here
+  newTree.children = [];  // fix me
+
+    var extend = function(obj1, obj2) {
+        for(var key in obj2) {
+            obj1[key] = obj2[key]; //take properties from second object and adding to the first
+        }
+    }
+    extend(newTree, treeMethods);
+    return newTree;
+};
+
+var treeMethods = {};
+
+treeMethods.addChild = function(value) {
+    this.children.push(Tree(value));
+};
+
+treeMethods.contains = function(target) {
+    if(this.value === target) {
+        return true;
+    }
+    for(var i = 0; i < this.children.length; i++)
+    {
+      If(this.children[i].contains(target))
+        {
+            return true;
+        }
+    }
+    return false;
+};
+
+
+
+
+5. Binary Search Tree 
+Binary trees are trees that can only have 0, 1, or 2 children. Remember that trees are recursive data structures and therefore a tree's children are themselves trees and can each have 0, 1, or 2 children. In a binary search tree, one child (out of potentially two) will always be less than the node's value (based on whatever sorting condition you wish) and the other child will always be greater than the node's value. Whether it is the 'left' or the 'right' child which is greater or lesser is consistent throughout the binary search tree. This structure results in particularly fast find operations. You'll be asked to answer just how fast yourself.
+
+A binary search tree would be great for....
+A dictionary of all English words.
+
+A .left property, a binary search tree (BST) where all values are lower than the current value.
+A .right property, a BST where all values are higher than the current value.
+A .insert() method, which accepts a value and places it in the tree in the correct position.
+A .contains() method, which accepts a value and returns a boolean reflecting whether or not the value is contained in the tree.
+A .depthFirstLog() method, which accepts a callback and executes it on every value contained in the tree.
+var BinarySearchTree = function(value) {
+  //TODO: IMPLEMENT THE ABOVE METHODS ON THE BST CLASS
+  var newBinTree = {}
+  newBinTree.left = null
+  newBinTree.right = null
+  newBinTree.value = value
+  
+  newBinTree.insert = function(value) {
+      let node = this
+      while (true) {
+          if (value < node.value) {
+              if (node.left === null) {
+                  node.left = BinarySearchTree(value)
+                  return
+              } else {
+                  node = node.left
+              }
+          } else if (value > node.value) {
+              if (node.right === null) {
+                  node.right = BinarySearchTree(value)
+                  return
+              } else {
+                  node = node.right
+              }
+          } else {
+              return
+          }
+      }
+  }
+  
+  newBinTree.contains = function(value) {
+      let node = this
+      while (true) {
+          if (value < node.value) {
+              if (node.left === null) {
+                  return false
+              } else {
+                  node = node.left
+              }
+          } else if (value > node.value) {
+              if (node.right === null) {
+                  return false
+              } else {
+                  node = node.right
+              }
+          } else {
+              return true
+          }
+      }
+  }
+  
+  newBinTree.depthFirstLog = function(cb) { //cb is a callback, it is a function being passed into this function
+      function recurse(node) {
+          if (node === null) {
+              return
+          }
+          node.value = cb(node.value)
+          recurse(node.left)
+          recurse(node.right)
+      }
+      recurse(this)
+      
+  }
+  
+  return newBinTree
+};
+
+
+
+6. Graph 
+Graphs consist of nodes (often referred to as vertices) and edges (often referred to as arcs) that connect the nodes. Unlike trees, graphs are not necessarily hierarchical. Graphs can be undirected, which means that the relationship of any 2 nodes connected by an edge is a symmetrical relationship, or they can be directed, which means there is an asymmetrical relationship between nodes that are connected by an edge.
+
+Graph image
+
+A graph would be great for....
+Representing how a collection of websites (or the entire world wide web) link to each other, and many other things 
+
+
+7. Set 
+Sets contain unique values in no particular order.
+
+Set image
+
+A set would be great for....
+A raffle, where all the tickets are unique and you just want to randomly pick one (or several) out of them all.
+
+
+
+
+
+
+

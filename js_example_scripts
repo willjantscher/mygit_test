@@ -128,11 +128,61 @@ ________________________________________________________________________________
 //spread operator (dont know how many inputs)
 
 var someFunction = (...args) => {
-  console.log(args)
+  console.log(args);
 }
 
 someFunction('hi', 'hello', 'goodbye');
 
+
+___________________________________________________________________________________________________________________________________________________
+//example of object.assign - create shallow copies of objects
+
+const user = { username: 'angelica' }
+
+const adminUser = Object.assign({}, user, { admin: true })
+
+console.log(user)
+// => { username: 'angelica' }
+
+console.log(adminUser)
+// => { username: 'angelica', admin: true }
+___________________________________________________________________________________________________________________________________________________
+
+//add/change/delete properties
+const clock = {
+  hours: 13,
+  minutes: 40,
+}
+
+const clone = {
+  ...clock,
+  seconds: 46,
+}
+// clock => { hours: 13, minutes: 40 }
+// clone => { hours: 13, minutes: 40, seconds: 46 }
+
+const clock = {
+  hours: 13,
+  minutes: 40,
+  seconds: 23,
+}
+
+const clone = {
+  ...clock,
+  minutes: 12,
+}
+// clock => { hours: 13, minutes: 40, seconds: 23 }
+// clone => { hours: 13, minutes: 12, seconds: 23 }
+
+const clock = {
+  hours: 13,
+  minutes: 40,
+  seconds: 23,
+}
+
+const { seconds, ...clone } = clock
+// clock => { hours: 13, minutes: 40, seconds: 23 }
+// clone => { hours: 13, minutes: 12 }
 ___________________________________________________________________________________________________________________________________________________
 var nums = [1, 4, 6, 7];
 
@@ -208,8 +258,8 @@ countDownNums(10);
 ___________________________________________________________________________________________________________________________________________________
 
 //yet another example of recursion
-  var output = '';
-function reverseString(string) {
+//note, you can initialize a variable (output in this instance) by declaring it as parameter of the parent function
+function reverseString(output, string) {
   if (string.length === 0)
   {
     console.log(output);
@@ -217,13 +267,44 @@ function reverseString(string) {
   }
   else
   {
-    output = output.concat(string.charAt(string.length-1));
-    reverseString(string.slice(0, -1));
+    reverseString(output.concat(string.charAt(string.length-1)),string.slice(0, -1));
   }
 }
-reverseString("hello world");
+reverseString('',"hello world");
 
 
+
+function reversString(string) {
+  if(typeof string !== 'string')
+  {
+    return
+  }
+  if(string.length === 0) {
+    return "";
+  }
+  else {
+    //console.log(string);
+    return reverseString(string.substring(1)) + string[0] //.substring is the string starting at var 1 (or the second variable), 
+  //ello + h 
+  //llo + e  + h
+  //lo + l + e + h
+  //0 + l + l + e + h
+  //each time the recursive function is called, the values are put into a stack, then combined when escape criteria are met
+  //call stack here
+    //Hello
+                //f(ello)        + H
+                //f(llo) + e
+            //f(lo) + l
+        //f(o) +l
+  //f('') + o
+
+  }
+}
+
+___________________________________________________________________________________________________________________________________________________
+//example of recursion with loops
+//each instance of the recursion pauses the previous one and it's variables are saved at that point
+//
 
 1	var rockPaperScissors = (rounds) => {
 2	  var outcomes = [];
@@ -235,7 +316,7 @@ reverseString("hello world");
 8	      outcomes.push(playedSoFar);
 9	    }
 10	    else {
-11	      for (var i = 0; i < plays.length; i++) {
+11	      for (var i = 0; i < plays.length; i++) { //can also do for(x in plays) and then plays[x]
 12	        getOutcomes(playedSoFar.concat(plays[i]), roundsLeft-1);
 13	      }
 14	    }
@@ -244,3 +325,31 @@ reverseString("hello world");
 17	  return outcomes;
 18	};
 19	rockPaperScissors(3);
+
+
+//another example
+var rockPaperScissors = (numberOfPlays) => {
+  //declare output array
+  var outcomes = [];
+  var plays = ["rock", "paper", "scissors"];
+  //declare the function
+  function recurse (list, n) { //list: list of plays we're going to build, n: number of plays we have remaining
+  if(n === 0) {
+    outcomes.push(list)//if no plays left, the list will be numberOfPlays
+  }
+  else {
+    for (const play of plays) {
+      list.push(play)
+      const l = list.slice() //making a copy of the array 'list'
+      recurse(l, n-1) // n-1 = one less # of plays remaining
+      list.pop(); //undo the play you just made, remove last item from list array
+    }
+  }
+  }
+  recurse([], numberOfPlays);
+  return outcomes;
+};
+rockPaperScissors(3);
+______________________________________________________________________________________________________________________
+
+
