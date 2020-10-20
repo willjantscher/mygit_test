@@ -177,7 +177,7 @@ function address({street, city, state, zip}) {
 }
 
 
-scopes and closures
+scopes and closures---------------------------------------------------------------------------------------------
 scope - reference to where values, objects and functions can be accessed
 global scope: includes variables declared outside of a function
 local scope: includes variables declared inside of a function
@@ -228,4 +228,17 @@ console.log(add5(2));  // 7
 console.log(add10(2)); // 12
 
 
-Recursion
+Recursion-----------------------------------------------------------------------------------------------
+-note return causes function to end theories
+recursion: a method of solving a problem where the solution depends on the solutions to smaller instances of the same programmer
+recursive function calls itself until it doesn't- needs a condition that stops the function from calling itself
+
+1. the base case (terminating condition)
+    the goal of our recursive function
+    the conditions that stop the recursion
+    can nest if statements
+2. recursive case   
+    the function called to change the input
+    the function call to make the input
+
+10/20/20______________________________________________________________________________________________________________________________________________________________

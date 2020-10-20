@@ -125,3 +125,122 @@ var [one, two, three, four, five] = countries
 console.log(five)
 
 ___________________________________________________________________________________________________________________________________________________
+//spread operator (dont know how many inputs)
+
+var someFunction = (...args) => {
+  console.log(args)
+}
+
+someFunction('hi', 'hello', 'goodbye');
+
+___________________________________________________________________________________________________________________________________________________
+var nums = [1, 4, 6, 7];
+
+for (var val of nums) {
+    console.log(val);
+}
+
+___________________________________________________________________________________________________________________________________________________
+
+//example for scope
+function outerFunc() {
+  let outerVar = 'I am ouside!';
+
+  function innerFunc() {
+    var name = 'poli';
+    console.log(name);
+    console.log(outerVar);
+  }
+  console.log(outerVar);
+  return innerFunc;
+};
+
+// outerFunc();
+var myInnerFunc = outerFunc();
+myInnerFunc();
+___________________________________________________________________________________________________________________________________________________
+
+//example of recursion
+var factorial = (number) => {
+  // If the number is negative, it doesn't have a factorial. Return an
+  // impossible value to indicate this.
+  if (number < 0) {
+    return -1;
+  }
+
+  // If the number is zero, its factorial is one.
+  if (number === 0) {
+    return 1;
+  }
+
+  // If the number is neither illegal nor zero, call factorial again,
+  // this time passing in a smaller number. Eventually we'll reach 0,
+  // causing each call to return to its caller and the recursion terminates.
+  return (number * factorial(number - 1));
+}
+console.log(factorial(5));
+
+___________________________________________________________________________________________________________________________________________________
+
+//another example of recursion
+
+const countDownNums = (seconds) =>
+{
+  if (isNaN(seconds))
+  {
+    return NaN;
+  }
+  else if (seconds < 0)
+  {
+    return 'No negative numbers'
+  }
+  else if (seconds == 0)
+  {
+    console.log('we have lift off!');
+    return;
+  }
+  console.log(seconds);
+  countDownNums(seconds - 1);
+}
+
+countDownNums(10);
+
+___________________________________________________________________________________________________________________________________________________
+
+//yet another example of recursion
+  var output = '';
+function reverseString(string) {
+  if (string.length === 0)
+  {
+    console.log(output);
+    return output;
+  }
+  else
+  {
+    output = output.concat(string.charAt(string.length-1));
+    reverseString(string.slice(0, -1));
+  }
+}
+reverseString("hello world");
+
+
+
+1	var rockPaperScissors = (rounds) => {
+2	  var outcomes = [];
+3	  //create the result array
+4	  var plays = ['rock', 'paper', 'scissors'];
+5	  //array of possible outcomes
+6	  var getOutcomes = (playedSoFar, roundsLeft) => {    
+7	    if (roundsLeft === 0) {
+8	      outcomes.push(playedSoFar);
+9	    }
+10	    else {
+11	      for (var i = 0; i < plays.length; i++) {
+12	        getOutcomes(playedSoFar.concat(plays[i]), roundsLeft-1);
+13	      }
+14	    }
+15	  };
+16	  getOutcomes([], rounds);
+17	  return outcomes;
+18	};
+19	rockPaperScissors(3);
