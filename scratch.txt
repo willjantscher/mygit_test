@@ -1,0 +1,130 @@
+// your code here
+const multiplyNumbers = (array, multiplier) =>  array.map(result => result * multiplier);
+
+
+const doubleLetters = (input) =>
+{
+  //check if input is empty
+  if(input.length === 0)
+  {
+    return('');
+  }
+  //convert string to array of letters
+  let arr = input.split('')
+  //create new array that adds each letter to itself
+  let newArr = arr.map(ltr => ltr + ltr);
+  //combine array elements into a tring
+  var output = newArr.join('');
+  return output;
+}
+
+let numbers = [1, 2, 3, 4, 5, 6]
+let result = numbers
+  .filter(oddNum => oddNum % 2 !== 0) //create new array of odd numbers only
+  .map(timesTen => timesTen * 10) //create new array of each element multiplied by 10
+  .reduce((outcome, currentValue) => currentValue * outcome) //multiply all elements of the array together
+console.log(result);
+
+
+class Stack { 
+
+    constructor() { 
+        this.items = []; 
+    } 
+  
+    push(element) { 
+        this.items.push(element);   //add element to top of stack, or back of the array (built in function)
+    } 
+
+    pop() { 
+        return this.items.pop();   //remove and return item on top of stack (build in function)
+    } 
+
+    peek() { 
+        return this.items[this.items.length - 1]; //return the top item of the stack but does not modify it in the stack
+    } 
+ 
+    isEmpty() { 
+        return this.items.length === 0; //if array length is 0, isEmpty returns true
+    }
+
+    printStack() { 
+        return this.items.join(' '); //returns all items of the stack with space in between
+    } 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Tree = function (value) {
+  this.value = value;
+  this.children = [];
+};
+
+Tree.prototype.countLeaves = function () {  //passing in a value, each value has .value and .children array
+    var counter = 0;
+    if(this.children.length === 0)
+    {
+        counter ++;
+    }
+    else 
+    {
+        for(let i = 0; i < this.children.length; i++)
+        {
+            counter += this.children[i].countLeaves()
+        }
+    }
+    return counter;
+};
+
+// NOTE: You shouldn't need to change anything below here, but feel free to look.
+
+Tree.prototype.addChild = function (child) {
+  if (!child || !(child instanceof Tree)) {
+    child = new Tree(child);
+  }
+
+  if (!this.isDescendant(child)) {
+    this.children.push(child);
+  } else {
+    throw new Error('That child is already a child of this tree');
+  }
+  return child;
+};
+
+
+Tree.prototype.isDescendant = function (child) {
+  if (this.children.indexOf(child) !== -1) {
+    return true;
+  } else {
+    for (var i = 0; i < this.children.length; i++) {
+      if (this.children[i].isDescendant(child)) {
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
+Tree.prototype.removeChild = function (child) {
+  var index = this.children.indexOf(child);
+  if (index !== -1) {
+    this.children.splice(index, 1);
+  } else {
+    throw new Error('That node is not an immediate child of this tree');
+  }
+};
+
+
+module.exports = { Tree };

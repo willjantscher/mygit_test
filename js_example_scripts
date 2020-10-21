@@ -351,5 +351,544 @@ var rockPaperScissors = (numberOfPlays) => {
 };
 rockPaperScissors(3);
 ______________________________________________________________________________________________________________________
+DATA STRUCTURS
+
+//Stack Class
+class Stack {
+
+    constructor() {
+        this.items = [];
+    }
+
+    push(element) {
+        this.items.push(element);
+    }
+
+    pop() {
+        return this.items.pop();
+    }
+
+    size() {
+      return this.items.length;
+    }
+
+    peek() {
+      return this.items[this.items.length - 1]
+    }
+
+    isEmpty() {
+      return this.items.length === 0;
+    }
+
+    printStack() {
+     return this.items.join(' ');
+     
+    }
+}
+
+//Que Class
+class Queue {
+
+    constructor() {
+        this.items = [];
+    }
+
+    enqueue(element) {
+        return this.items.push(element);
+    }
+
+    size() {
+      return this.items.length;
+    }
+
+    dequeue() {
+     return this.items.shift();
+    }
+
+    front() {
+        return this.items[0];
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+
+ printQueue() {
+     return this.items.reverse().join(' ');
+    }
+}
+
+//Linked List Class
+//like making a class
+var Node = (value) => {
+  var node = {} //create the empty object
+
+  node.value = value;   //add fields/key value pairs
+  node.next = null;
+
+  return node;  //passing back the node that was created
+}
+
+class LinkedList {  //when test code is calling, it populates the list
+
+//this is how it looks before any values
+  constructor() {
+      var list = {}
+      this.head = null;
+      this.tail = null;
+  }
+
+  addToTail(value) {
+      var newNode = Node(value);    //create new node
+      if(this.head === null && this.tail === null) {    //check if there are any nodes
+          this.head = newNode;
+          this.tail = newNode;
+      }
+      else {
+          this.tail.next = newNode  //have the old tail point to the newNode
+          this.tail = newNode;  //set the new tail to newNode
+      }
+  }
+
+  removeHead() {
+    //var placeHolder = this.head.value;
+        if (this.head.value === null)
+    {
+        return null;
+    }
+    else
+    {
+        var n = this.head.value;
+        var head = this.head;
+        var newHead = head.next;
+        this.head = newHead;
+        return n;
+    }
+  }
+
+  contains(target) {
+      var currentNode = this.head
+      while(currentNode)
+      {
+          if(currentNode.value === target)
+          {
+              return true
+          }
+          else{
+              currentNode = currentNode.next
+          }
+      }
+      return false;
+  }
+}
+
+//Tree Class (some errors here)
+var Tree = function(value) {    //when a var is capitalized, it is like a class
+  var newTree = {};
+  newTree.value = value;
+
+  // your code here
+  newTree.children = [];  // fix me
+
+    var extend = function(obj1, obj2) {
+        for(var key in obj2) {
+            obj1[key] = obj2[key]; //take properties from second object and adding to the first
+        }
+    }
+    extend(newTree, treeMethods);
+    return newTree;
+};
+
+var treeMethods = {};
+
+treeMethods.addChild = function(value) {
+    this.children.push(Tree(value));
+};
+
+treeMethods.contains = function(target) {
+    if(this.value === target) {
+        return true;
+    }
+    for(var i = 0; i < this.children.length; i++)
+    {
+    if(this.children[i].contains(target))
+        {
+        return true;
+        }
+    }
+    return false;
+};
 
 
+
+
+//Binary Search Tree
+var BinarySearchTree = function(value) {
+  //TODO: IMPLEMENT THE ABOVE METHODS ON THE BST CLASS
+  var newBinTree = {}
+  newBinTree.left = null
+  newBinTree.right = null
+  newBinTree.value = value
+  
+  newBinTree.insert = function(value) {
+      let node = this
+      while (true) {
+          if (value < node.value) {
+              if (node.left === null) {
+                  node.left = BinarySearchTree(value)
+                  return
+              } else {
+                  node = node.left
+              }
+          } else if (value > node.value) {
+              if (node.right === null) {
+                  node.right = BinarySearchTree(value)
+                  return
+              } else {
+                  node = node.right
+              }
+          } else {
+              return
+          }
+      }
+  }
+  
+  newBinTree.contains = function(value) {
+      let node = this
+      while (true) {
+          if (value < node.value) {
+              if (node.left === null) {
+                  return false
+              } else {
+                  node = node.left
+              }
+          } else if (value > node.value) {
+              if (node.right === null) {
+                  return false
+              } else {
+                  node = node.right
+              }
+          } else {
+              return true
+          }
+      }
+  }
+  
+  newBinTree.depthFirstLog = function(cb) {
+      function recurse(node) {
+          if (node === null) {
+              return
+          }
+          node.value = cb(node.value)
+          recurse(node.left)
+          recurse(node.right)
+      }
+      recurse(this)
+      
+  }
+  
+  return newBinTree
+};
+
+//Graph Class
+// Instantiate a new graph
+var Graph = function() {
+    this.nodes = {}
+};
+// Add a node to the graph, passing in the node's value.
+Graph.prototype.addNode = function(node) {
+    this.nodes[node] = []
+};
+// Return a boolean value indicating if the value passed to contains is represented in the graph.
+Graph.prototype.contains = function(node) {
+    return this.nodes[node] ? true : false 
+};
+// Removes a node from the graph.
+Graph.prototype.removeNode = function(node) {
+    delete this.nodes[node]
+    
+    for(let n in this.nodes) {
+        if(this.nodes[n].includes(node)) {
+            this.nodes[n].splice(this.nodes[n].indexOf(node), 1)
+        }
+    }
+};
+// Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
+Graph.prototype.hasEdge = function(fromNode, toNode) {
+    return (this.nodes[fromNode].includes(toNode))
+};
+// Connects two nodes in a graph by adding an edge between them.
+Graph.prototype.addEdge = function(fromNode, toNode) {
+    if(!this.hasEdge(fromNode, toNode)) {
+        this.nodes[fromNode].push(toNode)
+        this.nodes[toNode].push(fromNode)
+    }
+};
+// Remove an edge between any two specified (by value) nodes.
+Graph.prototype.removeEdge = function(fromNode, toNode) {
+    this.nodes[fromNode].splice(this.nodes[fromNode].indexOf(toNode), 1);
+    this.nodes[toNode].splice(this.nodes[toNode].indexOf(fromNode), 1);
+};
+// Pass in a callback which will be executed on each node of the graph.
+Graph.prototype.forEachNode = function(cb) {
+    for(let key in this.nodes) {
+        cb(key)
+    }
+};
+
+//Set Class
+var Set = function() {
+  var set = Object.create(setPrototype);
+  set._storage = {}; // fix me
+  return set;
+};
+var setPrototype = {};
+setPrototype.add = function(item) {
+    this._storage[item] = ""
+};
+setPrototype.contains = function(item) {
+    if(item in this._storage) {
+        return true; 
+    } else {
+        return false
+    }
+};
+setPrototype.remove = function(item) {
+    delete this._storage[item]
+};
+
+//Hash Table Class
+// This class represents an array with limited functionality and a maximum size.
+// It will ensure that you don't accidentally try to use up too much space.
+//
+// Usage:
+//   limitedArray.set(3, 'hi');
+//   limitedArray.get(3); // returns 'hi'
+var LimitedArray = function(limit) {
+  var storage = [];
+  var limitedArray = {};
+  limitedArray.get = function(index) {
+    checkLimit(index);
+    return storage[index];
+  };
+  limitedArray.set = function(index, value) {
+    checkLimit(index);
+    storage[index] = value;
+  };
+  limitedArray.each = function(callback) {
+    for (var i = 0; i < storage.length; i++) {
+      callback(storage[i], i, storage);
+    }
+  };
+  var checkLimit = function(index) {
+    if (typeof index !== 'number') {
+      throw new Error('setter requires a numeric index for its first argument');
+    }
+    if (limit <= index) {
+      throw new Error('Error trying to access an over-the-limit index');
+    }
+  };
+  return limitedArray;
+};
+// This is a "hashing function". You don't need to worry about it, just use it
+// to turn any string into an integer that is well-distributed between the
+// numbers 0 and `max`
+var getIndexBelowMaxForKey = function(str, max) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = (hash << 5) + hash + str.charCodeAt(i);
+    hash = hash & hash; // Convert to 32bit integer
+    hash = Math.abs(hash);
+  }
+  return hash % max;
+};
+///////////TYPE BELOW HERE! 
+var HashTable = function() {
+  this._size = 0;
+    this._limit = 8;
+  this._storage = LimitedArray(this._limit);
+};
+HashTable.prototype.insert = function(k, v) {
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var bucket = this._storage.get(index) || [];
+  for (var i = 0; i < bucket.length; i++) {
+    var tuple = bucket[i];
+    if (tuple[0] === k) {
+      var oldValue = tuple[1];
+      tuple[1] = v;
+      return oldValue;
+    }
+  }
+  bucket.push([k, v]);
+  this._storage.set(index, bucket);
+  this._size++;
+  if (this._size > this._limit * 0.75) {
+    this._resize(this._limit * 2);
+  }
+  return undefined;
+  };
+HashTable.prototype.retrieve = function(k) {
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var bucket = this._storage.get(index) || [];
+  for (var i = 0; i < bucket.length; i++) {
+    var tuple = bucket[i];
+    if (tuple[0] === k) {
+      return tuple[1];
+    }
+  }
+  return undefined;
+  };
+HashTable.prototype.remove = function(k) {
+  var index = getIndexBelowMaxForKey(k, this._limit);
+  var bucket = this._storage.get(index) || [];
+  for (var i = 0; i < bucket.length; i++) {
+    var tuple = bucket[i];
+    if (tuple[0] === k) {
+      bucket.splice(i, 1);
+      this._size--;
+      if (this._size < this._limit * 0.25) {
+        this._resize(Math.floor(this._limit / 2));
+      }
+      return tuple[1];
+    }
+  }
+  return undefined;
+  };
+HashTable.prototype._resize = function(newLimit) {
+  var oldStorage = this._storage;
+  // min size of 8, return if nothing to do!
+  newLimit = Math.max(newLimit, 8);
+  if (newLimit === this._limit) { return; }
+  this._limit = newLimit;
+  this._storage = LimitedArray(this._limit);
+  this._size = 0;
+  oldStorage.each(function(bucket) {
+    if (!bucket) { return; }
+    for (var i = 0; i < bucket.length; i++) {
+      var tuple = bucket[i];
+      this.insert(tuple[0], tuple[1]);
+    }
+  }.bind(this));
+};
+
+___________________________________________________________________________________________________________________________________________________
+//higher order functions
+const locationData = [
+  { cityName: 'Naples', state: 'Florida', averageTemp: 76, airport: false, previouslyHostedOlympics: false },
+  { cityName: 'Minneapolis', state: 'Minnesota', averageTemp: 55, airport: true, previouslyHostedOlympics: false },
+  { cityName: 'Los Angeles', state: 'California', averageTemp: 90, airport: false, previouslyHostedOlympics: false },
+  { cityName: 'Milwaukee', state: 'Wisconsin', averageTemp: 43, airport: false, previouslyHostedOlympics: true },
+  { cityName: 'New York City', state: 'New York', averageTemp: 62, airport: true, previouslyHostedOlympics: false },
+  { cityName: 'Anchorage', state: 'Alaska', averageTemp: 33, airport: true, previouslyHostedOlympics: false },
+  { cityName: 'Seattle', state: 'Washington', averageTemp: 72, airport: false, previouslyHostedOlympics: true },
+  { cityName: 'Portland', state: 'Oregon', averageTemp: 40, airport: false, previouslyHostedOlympics: true } 
+]
+
+// I want all city names 
+console.log(locationData.map(city => {return city.cityName}));
+
+// I want all entries where there are airports
+console.log(locationData.filter(airport => {return airport.airport === true}))
+
+// I want all city and states - formatted like 'City, State' -- whose average temperature is above 50 degrees 
+const cityState = locationData.filter(entry => entry.averageTemp > 50).map(entry => {
+  return `${entry.cityName}, ${entry.state}`
+})
+console.log(cityState)
+
+// I want all city names where the average temp is below 50 degrees 
+
+
+// I'd like the average temperature of the listed cities 
+console.log(locationData.map(city => city.averageTemp).reduce((result, temp) => result + temp)/locationData.length)
+
+
+// I'd like all state names where the average temp is greater than 70
+console.log(locationData.filter(place => place.averageTemp > 70)
+.map(place => place.state)
+)
+
+// I'd like all entries where the olympics have NOT previously been held 
+let noCityOlympics = locationData.filter(city => !city.previouslyHostedOlympics)  //! is same as checking if false
+console.log(noCityOlympics)
+___________________________________________________________________________________________________________________________________________________
+//Use Array's reduce, map and filter (or at least two of them) methods to reduce the input array of student data to an average age of the entire class.
+
+const students = [
+    { name: "Stephen", age: 24 },
+    { name: "Alice", age: 19 },
+    { name: "Jordan", age: 29 },
+    { name: "Julie", age: 21 },
+    { name: "Chris", age: 26 }
+]
+
+//use map to pull ages only
+//use reduce to sum all the values, then divide by students.length
+const averageAge = students.map(ages => {return ages.age}).reduce((result,element) => {return result + element})/students.length;
+console.log(averageAge);
+
+
+___________________________________________________________________________________________________________________________________________________
+//example for making a counter of leaves on a tree
+
+var Tree = function (value) {
+  this.value = value;
+  this.children = [];
+};
+
+Tree.prototype.countLeaves = function () {  //passing in a value, each value has .value and .children array
+    var counter = 0;
+    if(this.children.length === 0)
+    {
+        counter ++;
+    }
+    else 
+    {
+        for(let i = 0; i < this.children.length; i++)
+        {
+            counter += this.children[i].countLeaves()
+        }
+    }
+    return counter;
+};
+
+// NOTE: You shouldn't need to change anything below here, but feel free to look.
+
+Tree.prototype.addChild = function (child) {
+  if (!child || !(child instanceof Tree)) {
+    child = new Tree(child);
+  }
+
+  if (!this.isDescendant(child)) {
+    this.children.push(child);
+  } else {
+    throw new Error('That child is already a child of this tree');
+  }
+  return child;
+};
+
+
+Tree.prototype.isDescendant = function (child) {
+  if (this.children.indexOf(child) !== -1) {
+    return true;
+  } else {
+    for (var i = 0; i < this.children.length; i++) {
+      if (this.children[i].isDescendant(child)) {
+        return true;
+      }
+    }
+    return false;
+  }
+};
+
+Tree.prototype.removeChild = function (child) {
+  var index = this.children.indexOf(child);
+  if (index !== -1) {
+    this.children.splice(index, 1);
+  } else {
+    throw new Error('That node is not an immediate child of this tree');
+  }
+};
+
+
+module.exports = { Tree };

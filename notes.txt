@@ -119,6 +119,49 @@ function someNewFunction(greeting, name) {
     return `${greeting} ${name}! Welcome to our website`
 }
 
+//shorten the syntax, if just returning you can ommit {} and (),3
+if the only statement is a return statement, you can change the curly braces to parenthesis, and most of the time you don't even need those:
+
+const canDrive = person => {
+  return person.age > 15
+}
+
+// becomes...
+const canDrive = person => (
+  person.age > 15
+)
+// or...
+const canDrive = person =>
+  person.age > 15
+
+// and even works with multiline statements like this ternary...
+const canDrive = person =>
+  person.age > 15 ?
+    true :
+    false
+And it can also work on the same line:
+
+const canDrive = person => person.age > 15
+
+ES6 and higher order functions
+Higher Order Functions
+You can declare higher-order functions with terse arrow syntax as well:
+
+function combine(a) {
+  return function (b) {
+    return [a, b]
+  }
+}
+becomes...
+
+const combine = a => b => [a, b]
+And you could call either one with:
+
+combine(1)(2)
+
+
+
+
 someNewFunction('sup', 'dog')
 
 
@@ -294,10 +337,10 @@ Avery
 1. Stack 
 A stack works like a stack of plates -- plates are added and removed from the the top of the stack (LIFO: last in, first out).
 
-push(element) - Add an element to the top of the stack
-pop() - Remove and return the element on the top of the stack
+push(element) - Add an element to the top of the stack (end of the array)
+pop() - Remove and return the element on the top of the stack (end of the array)
 size() - Return the number of items on the stack
-peek() - Return the top element on the stack, but it won't remove it (the way pop() does)
+peek() - Return the top element on the stack, but it won't remove it (end of the array)
 isEmpty() - Returns whether or not the Stack is empty
 printStack() - Prints all the elements of a queue
 //implementing methods
@@ -602,11 +645,15 @@ Representing how a collection of websites (or the entire world wide web) link to
 7. Set 
 Sets contain unique values in no particular order.
 
-Set image
-
 A set would be great for....
 A raffle, where all the tickets are unique and you just want to randomly pick one (or several) out of them all
 
+
+8. Hash Table 
+Hash tables (sometimes called hash maps) store key value pairs. They do so in a memory efficient way by using a 'hashing function' that translates keys into numerical indices located within a fixed block of memory (think about the contiguous blocks of memory used in arrays). Hash tables only increase their size in memory when necessary, and reduce their size in memory when possible.
+
+A hash table would be great for....
+A contact list you might add to or remove from over time.
 ------------------------------------------------------------------------------------------------------------------
 Higher order functions
 higher order function - a function taht takes a function (method) as a parameter, or returns a function after its execution
@@ -650,6 +697,180 @@ ex chaining
 
 10/21/20______________________________________________________________________________________________________________________________________________________________
 Pure functions
+pure function - a function that depends only on its input arguments and no external state can only make calls to other pure functionscan substitue the result for the function call
+  note - using an outside variable makes it impure
+  impure if it changes one of the inputs, depends on an outside input (global variable), or returns different values for different runs
+
+more ES6 review
+
+// Spread Operator ///
+
+/////////EXAMPLE1/////////
+// function sum(x, y, z) {
+//   return x + y + z;
+// }
+
+// const numbers = [1, 2, 3];
+
+// console.log(sum(...numbers));
+
+
+
+
+/////////EXAMPLE2/////////
+// var students = ["Katie", "Gregory", "Poli"]
+
+// var numbers = [1, 2, 3, 4]
+
+// var studentsAndNumbers = [...students, ...numbers]
+
+// console.log(studentsAndNumbers)
+
+//how could I create a new array w/[numbers] and 5, 6, 7 (totaling [1, 2, 3, 4, 5, 6, 7])
+
+
+
+
+/////////EXAMPLE3/////////
+// function multiply(...args) {
+//   return args.reduce((accumulator, currentValue) => {
+//     return accumulator *= currentValue
+//   })
+// }
+
+//show creating a different initial value that is the default
+// show what the accumulator is via console.log
+
+
+// multiply(1, 3)
+// multiply(10, 2)
+
+
+
+///EXAMPLE 4////
+// let obj1 = { foo: 'bar', x: 42 };
+// let obj2 = { foo: 'baz', y: 13 };
+
+// let clonedObj1 = {...obj1}
+// console.log(clonedObj1)
+
+// let mergedObj = {...obj1, ...obj2}
+// console.log(mergedObj)
+// //you can see in the second that if you have colliding elements they will only appear once (ie: the second replaces the first)
+
+
+
+
+
+/// OBJECT ASSIGN / REST /////// 
+
+///// EXAMPLE 1 ///////
+// const studentData1 = { name: "Dan", class: "Science" }
+// const studentData2 = { location: "Florida", year: 10}
+
+// Object.assign(studentData1, studentData2)
+// console.log(studentData1)
+
+
+////// EXAMPLE 2 /////// add properties 
+// const employee = { name: "Candice", location: 4421 }
+
+// const managingEmployee = {
+//   ...employee, 
+//   manager: true
+// }
+
+// console.log(managingEmployee)
+
+
+
+//// EXAMPLE 3 ///// updating properties / changing them
+// const tvListing = { title: "It's Always Sunny in Philadelphia", network: "FX", time: 0800 }
+
+// const updatedTvListing = {
+//   ...tvListing, 
+//   time: 1900
+// }
+
+// console.log(updatedTvListing)
+
+
+
+//// EXAMPLE 4 ///// deleting properties / changing them
+// const travelPlan = { destination: "Italy", departureTime: 0700, passportNecessary: true, airline: "Delta" }
+
+// // Turns out - we don't need our passports to go to Italy anymore
+
+// const { passportNecessary, ...updatedTravelPlan} = travelPlan
+
+// console.log(travelPlan)
+// console.log(updatedTravelPlan)
+
+
+
+
+
+// DESCTRUCTURING PARAMETERS //// 
+
+// function sayHello(greetingInfo) {
+//   return `${greetingInfo.greeting}, ${greetingInfo.name}!`
+// }
+
+// const greetingData = {greeting: "Hello", name: "Alan"}
+
+// sayHello(greetingData)
+
+///////// LETS REFACTOR THAT!! /////////
+
+// const greetingData = {greeting: "Hello", name: "Alan"}
+
+// function sayHello({ greeting, name }) {
+//   return `${greeting}, ${name}`
+// }
+
+// sayHello(greetingData)
+
+/// RECURSION EXAMPLE /// 
+//LIVE CODE: ODDNUMBER() 
+
+
+-------------------------------------------------------------------------------------------------------------------------------
+.split() converts string to array base on the element passed in ex. ('')
+.join() joins array into 1 element with () in between each
+.shift() - removes first element from an array and returns that element;
+.unshift() - add element to front of array
+
+callbacks
+
+Asynchronous code
+JavaScript is a single-threaded language  this means it has one call stack and one memory heap. it executes in order and must finish executing a piece code before moving to the next
+asynchronous code - allows multiple things to happen at the same time 
+
+Callbacks 
+  a callback function - a function passed into another function as an argument, which is invoked inside the outer function to complete some kind of routine or action
+  single tread - runs code sequentially in top-down order
+  callbacks ensure that a function isn't going to run before some task is completed, ...
+
+  callback is an input into a function and is itself a function;
+  setTimeout() - The setTimeout() method calls a function or evaluates an expression after a specified number of milliseconds.
+    ex. setTimeout(function(){ alert("Hello"); }, 3000);  
+      setTimeout() is built into browsers and Node but not JavaScript itself.
+
+The conditional (ternary) operator is the only JavaScript operator that takes three operands: a condition followed by a question mark (?), then an expression to execute if the condition is truthy followed by a colon (:), and finally the expression to execute if the condition is falsy. This operator is frequently used as a shortcut for the if statement.
+
+---------------------------------------------------------------------------------------------------------
+Event Loop
+  dictates the order of how things execute
+  call stack is a LIFO queue (last in, first out) (put on top, take off top)
+  the event loop continuously checks the call stack to see if there's any funtion that needs to run, ...
+
+  if using setTimeout(function,0), this will not execute until all non-held things executed (in standard js, maybe different for Node.js)
+  API - application programming interface
+  the wait time for setTimeout starts right away (doesn't wait until stack is cleared to start the timer)
+
+Promise - like a placeHolder, they hold a spot, but the value is not there yet
+  if you have two promises, whichever rosolves first returns first
+
 
 
 
