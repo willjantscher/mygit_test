@@ -837,7 +837,7 @@ var Tree = function (value) {
 };
 
 Tree.prototype.countLeaves = function () {  //passing in a value, each value has .value and .children array
-    var counter = 0;
+    var counter = 0;  //does not reset every time since each recursion has its
     if(this.children.length === 0)
     {
         counter ++;
@@ -892,3 +892,74 @@ Tree.prototype.removeChild = function (child) {
 
 
 module.exports = { Tree };
+
+
+
+___________________________________________________________________________________________________________________________________________________
+
+asynchronous code
+
+////// Callback Examples ///////// 
+
+// const first = () => {
+//   console.log(1)
+// }
+
+// const second = () => {
+//   console.log(2)
+// }
+
+// first()
+// second()
+
+
+// NOW WHAT IF WE USE SETTIMEOUT 
+
+// const first = () => {
+//   setTimeout( () => {
+//     console.log(1)
+//   })
+// }
+
+// const second = () => {
+//   console.log(2)
+// }
+
+// first() 
+// second()
+
+
+
+// //////// EXAMPLE 2 /////////
+
+// const multiplyInputsByThree = (collection, callback) => {
+//   var newCollection = []
+//   for(let i = 0; i < collection.length; i++) {
+//     // WHAT SHOULD I DO HERE?
+//     newCollection.push(callback(collection[i]) )
+//   }
+//   return newCollection
+// }
+
+// //DEFINE THE CALLBACK 
+// const multiply = (value) => {
+//   return value * 3
+// }
+
+// // INPUT COLLECTION 
+// const numbers = [1, 2, 3, 4, 5]
+
+// console.log(multiplyInputsByThree(numbers, multiply))
+
+
+
+
+//////// EXAMPLE 3 /////////
+
+const randomFunction = (thing) => {
+        setTimeout(() => {  console.log("First call!", thing) }, 1000)
+        setTimeout(() => {  console.log("Second call!", thing) }, 500)
+        setTimeout(() => {  console.log("Third call!", thing) }, 200)
+}
+
+randomFunction('hi')

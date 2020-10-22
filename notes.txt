@@ -875,5 +875,23 @@ Promise - like a placeHolder, they hold a spot, but the value is not there yet
 
 
 
+10/22/20______________________________________________________________________________________________________________________________________________________________
+
+Instantiation patterns are ways to create something in JavaScript. JavaScript provides four different methods to create objects. Regardless of which method you use, every method will provide the following functionality:
+  Create an object
+  Create methods and properties for that object
+There are four instantiation patterns in JavaScript. They are:
+  Functional
+  Functional-shared
+  Prototypal
+  Pseudoclassical
 
 
+
+
+
+
+
+
+
+  

@@ -1,2 +1,4 @@
 #My git test
-this is my git test
+This is everything from the SDI course
+
+
