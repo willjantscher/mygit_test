@@ -10,7 +10,12 @@ Setup for mac
         make sure to add choclatary
         in VS code - npm install
 7. get homebrew?    https://brew.sh/        for mac
+8. install Postman
 
+buy book The JavaScript Ninja
+You Don't Know JS Yet (2 book series)
+        get the es6 one 
+        
 
 
 

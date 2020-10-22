@@ -1089,9 +1089,50 @@ function myFunction(input,output){
   fs.unlinkSync(input)
 
 }
-
 ___________________________________________________________________________________________________________________________________________________
 
+promises - https://repl.it/@bwreid/Introduction-to-Promises#main.js
+https://repl.it/@WillJantscher/Introduction-to-Promises-Exercise
+
+
+var promise = new Promise(function(resolve, reject) { 
+    resolve('Galvanize'); 
+}) 
+
+promise 
+    .then(function(successMessage) { 
+        console.log(successMessage); 
+    }, function(errorMessage) { 
+        console.log(errorMessage); 
+    }) 
+
+
+    -----------------------------------
+
+var promise = new Promise(function(resolve, reject) {
+  /* Do something, possibly async, then... */
+
+  if (/* everything turned out fine */) {
+    resolve("Stuff worked!");
+  }
+  else {
+    reject(Error("It broke"));
+  }
+});
+
+-------------------------------------------
+
+doSomething()
+.then(function(result) {
+  return doSomethingElse(result);
+})
+.then(function(newResult) {
+  return doThirdThing(newResult);
+})
+.then(function(finalResult) {
+  console.log('Got the final result: ' + finalResult);
+})
+.catch(failureCallback);
 
 
 
