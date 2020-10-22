@@ -6,6 +6,10 @@ Setup for mac
 3. Install Java version 11 (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 4. install Git (https://git-scm.com/downloads)
 5. install and setup chrome with book marks
+6. download and install node.js   https://nodejs.org/en/download/
+        make sure to add choclatary
+        in VS code - npm install
+7. get homebrew?    https://brew.sh/        for mac
 
 
 

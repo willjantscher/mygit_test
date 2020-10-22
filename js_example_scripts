@@ -963,3 +963,135 @@ const randomFunction = (thing) => {
 }
 
 randomFunction('hi')
+
+
+
+___________________________________________________________________________________________________________________________________________________
+//File I/O 
+Write a function called myFunction that reads a list of names from a file and capitalizes any uncapitalized names. Then write to update the file in place.
+
+NOTES:
+
+For this example, use the synchronized versions of the read and write functions
+You do not need the require statement, var fs = require("fs") is already implemented
+Input example looks like this:
+michael smith
+john doe
+jane doe
+kim brown
+Output example looks like this:
+Michael Smith
+John Doe
+Jane Doe
+Kim Brown
+
+
+function myFunction(input){
+
+  //no need for the require statement as it is already implemented
+  //var fs = require("fs")
+
+  // ..........YOUR CODE HERE..........
+  // use the below methods in your code (you will need to change the passsed in parameters)
+
+    
+  //Reads an input file and returns the contents as a string
+  //regular expressions
+  
+  const capitalize = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1)
+  }
+  
+  let data = fs.readFileSync(input)
+  let caps = data.toString()
+  caps = caps.split(' ').map(capitalize).join(' ')
+  caps = caps.split('\n').map(capitalize).join('\n')
+  
+  fs.writeFileSync(input, caps)
+}
+
+
+
+
+function myFunction(input){
+
+  //no need for the require statement as it is already implemented
+  //var fs = require("fs")
+
+  // ..........YOUR CODE HERE..........
+  // use the below methods in your code (you will need to change the passsed in parameters)
+
+    
+  //Reads an input file and returns the contents as a string
+  //regular expressions
+  const regex = /(\b[a-z])/g    //regular expression, looking for patterns, finds each word
+  var myData = fs.readFileSync(input, (err, data) => {
+      if (err) throw err;
+        });
+        
+      var temp = myData.toString().replace(regex, (x) => {
+          return x.toUpperCase()
+      });
+      
+  //writes the contents to a file
+  fs.writeFileSync(input, temp, (err) => {
+      if (err) throw err;
+        }
+      );
+}
+
+
+___________________________________________________________________________________________________________________________________________________
+File I/O
+Write a function called myFunction that reads from a csv file, parses the csv contents into objects, writes the result to a JSON file, and deletes the original csv file
+
+NOTES:
+
+For this example, use the synchronized versions of the read, write, and unlink functions
+You do not need the require statement, var fs = require("fs") is already implemented
+Input csv file example looks like this:
+First Name,Last Name
+Mike,Smith
+Jane,Doe
+Output json file example looks like this:
+[{"First Name":"Mike","Last Name":"Smith"},{"First Name":"Jane","Last Name":"Doe"}]
+
+
+function myFunction(input,output){
+
+  //no need for the require statement as it is already implemented
+  //var fs = require("fs")
+
+  // ..........YOUR CODE HERE..........
+  // use the below methods in your code (you will need to change the passsed in parameters)
+
+  //Reads an input file and returns the contents as a string
+  let data = fs.readFileSync(input);    //read input data and assigning to data variable
+  data = data.split('\n').filter(line => line !== "")
+            .map(line => line.split(','))
+  let key1 = data[0][0];
+  let key2 = data[0][1]
+  
+  let objArray = []
+  
+  for(let i = 1; i < data.length; i++) {
+      let obj = {}
+      obj[key1] = data[i][0]
+      obj[key2] = data[i][1]
+      objArray.push(obj)
+  }
+  
+
+  //writes the contents to a file
+  fs.writeFileSync(output, JSON.stringify(objArray));
+  
+  // deletes a file
+  fs.unlinkSync(input)
+
+}
+
+___________________________________________________________________________________________________________________________________________________
+
+
+
+
