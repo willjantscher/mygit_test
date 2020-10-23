@@ -7,8 +7,17 @@ Setup for mac
 4. install Git (https://git-scm.com/downloads)
 5. install and setup chrome with book marks
 6. download and install node.js   https://nodejs.org/en/download/
-        make sure to add choclatary
-        in VS code - npm install
+        make sure to add choclatary     
+                //need to install packages/DLC          //npm is node packet manager, can install locally or globally
+                https://www.npmjs.com/package/package to see all packages for npm
+        in VS code - npm install                //installs to the local directory, use -g to install globally
+                   - npm install node-fetch             //to install fetch, not native to node or js
+                        const fetch = require('node-fetch')     
+                use -g at the end to make it accessible globally
+
+
+//when developing app/program that uses these packages, they will be compiled...
+
 7. get homebrew?    https://brew.sh/        for mac
 8. install Postman
 
@@ -16,8 +25,6 @@ buy book The JavaScript Ninja
 You Don't Know JS Yet (2 book series)
         get the es6 one 
         
-
-
 
 ___________________________________________________________________________________________________________
 Jackie Cromer - military poc for SDI (sam cremar = fill in)

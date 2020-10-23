@@ -898,6 +898,27 @@ Learning Objectives
 Use Javascript to read, write, update, and delete files
 The Node.js file system module allows you to work with the file system on your computer. To include the File System module, you can use the require() method:
 
+sync functions block the code, async functions allow things to happen while it processes
+fs.readFile('filename', 'data type', function(err, data)){  //takes in 3 parameters
+  //code
+})
+var file = fs.readFileSync('filename', 'data type');  //takes in 2 parameters
+fs.writeFile('filename', data);
+fs.appendFile('filename', 'content_to_add', function (err) {})  // add to end of file
+fs.open('filename', 'w', function (err, file) {   //takes a flag as the seconds argument, 'w' is for writing, if file does not exist, it is created
+  if (err) throw err;
+  console.log();
+})
+fs.writeFile('filename', 'content', function (err) {  //create a new file
+  if (err) throw err;
+  .....
+})  
+fs.writeFileSynce(inputfile, content);
+fs.unlink('filename', function (err) {})    //used to delete files
+fs.rename('filename', 'newfilename', function (err) {}) //rename files
+
+
+
 var fs = require('fs')
 
 Common Uses for the File System module:
@@ -1232,6 +1253,7 @@ greet(true) //if this is true, do the .then
 console.timeEnd()
 console.time()
 
+.then() is used for resolve cases - then() takes two arguments: a callback for success, and another for failure. Both are optional, so you can add a callback for the success or failure case only.
 .catch() is used for rejects - as apposed to .then
 .catch() in promise will give message but not from an error type
 
@@ -1268,11 +1290,113 @@ finally{}   executes regardless of the try/catch result
 Error is a general error, there are specific types of error,
 -------------------------------------------------------------------------
 
+10/23/20______________________________________________________________________________________________________________________________________________________________
+Fetch
+  //make sure you load the right npm packages and require the specific package in the script (or globaly -g)
+  //npm install
+    //npm install node-fetch
+
+NOTE:
+  1st - install the module in console 
+    $ npm install node-fetch
+  2nd - load and configure the module (in script)
+    const fetch = require('node-fetch');
+
+---------------------------------------
+overview of promises
+  start in a pending state, then fulfilled or rejected (can only change state once), when no state change - hanging
+    executor holds the resolve and reject
+    resolve() or reject()
+    fulfilled or rejectedd (callbacks)
+    .then() or .catch()   //these can be chained together
+  try{} catch(){} //
+
+  Promise.all()
+According to MDN  , the Promise.all() method returns a single Promise that fulfills when all of the Promises passed as an iterable have been fulfilled or when the iterable contains no Promises or when the iterable contains Promises that have been fulfilled and non-Promises that have been returned. It rejects with the reason of the first Promise that rejects, or with the error caught by the first argument if that argument has caught an error inside it using try/catch/throw blocks.
+Below is the syntax for using Promise.all(iterable);.
+
+Parameters
+Iterable -An iterable object such as an Array.
+
+-----------------------------------------------------------
+
+Fetch   -trying to get information back (API data)
+  ex: 
+  fetch('https://api.github.com')
+  .then(response=>response.json())
+  .then(data => console.log(data))
+Fetch always returns a promise  
+  Promise resolves to the response object
+    the response object has different helper methods like
+      response.json()
+      response.text()
+      response.blob()
+      etc.
+
+first parameter is the requested URL
+  can optionally pass a second parameter which is a configuration object  (post, get, etc...)
+
+
+ex:
+fetch('https://api.github.com')
+    .then(response => response.json())
+    .then(data => console.log(data)); 
+
+in terminal
+  (he mkdir (make new directory/folder) then change directory (navigated into a folder), touch will create an empty file, so he made a new folder, opened the folder and made a blank file. then he opened the blank file in his text editor of choice (vim))
+
+
+
+//await is a package we will need to get
+
+async function fetchAsync () {    //async and await work together, async (need to download) before the function is declaring this function as asynchronous 
+  //await response of a fetch call, only proceed once promise
+  let data = await (await fetch('https://api.github.com')).json();  //await (wait for the fetch)
+  return data;
+}
+
+fetchAsync().
+  then(data => console.log(data))
+  .catch(reason => console.log(reason.message))   //.message reduces error to just the message part
+
+//reference for why to use async/await  (https://medium.com/@imorobebh/javascript-fetch-synchronous-or-asynchronous-fd24f8ba6129)
 
 
 
 
 
+//example usint fetch() to post data
+If you wanted to use fetch() to POST JSON data, you could do it like this:
 
+const data = { username: 'example' };
+
+fetch('https://example.com/profile', {
+  method: 'POST', // or 'PUT'
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+})
+.then(response => response.json())
+.then(data => {
+  console.log('Success:', data);
+})
+.catch((error) => {
+  console.error('Error:', error);
+});
+
+
+
+//html and html stuff
+//post is used to tell server to do something (CRUD - Create)
+
+
+
+//Checkpoint with Ada Lazuli
+If you can add ppl, my github name is Maple-Lazuli
+:) 
+
+object oriented programming
+test/troubleshoot
 
 
