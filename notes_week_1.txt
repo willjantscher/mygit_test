@@ -1393,10 +1393,19 @@ fetch('https://example.com/profile', {
 
 
 //Checkpoint with Ada Lazuli
-If you can add ppl, my github name is Maple-Lazuli
-:) 
+name is Maple-Lazuli
+
 
 object oriented programming
 test/troubleshoot
+
+
+Build your first Node.js Command Line application
+https://developer.okta.com/blog/2019/06/18/command-line-app-with-nodejs
+
+mkdir hello-cli
+cd hello-cli
+npm init
+
 
 

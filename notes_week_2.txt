@@ -1,0 +1,30 @@
+10/26/20_______________________________________________________________________________________________
+Object Oriented Programming
+    use objects to model real world things
+
+Classes (ES6)
+    special functions
+    classes are the blueprint of an object, a class can have many objects
+    a class is a template, objects are instances of the class
+    also have methods available in classes (functions)
+
+
+Constructor
+The constructor method is a special method for creating and initializing an object created with a class. There can only be one special method with the name "constructor" in a class.
+    enables you to provide any custom initialization 
+    if you don't provide, a default constructor will be supplied
+
+to make a new of a class, let xxxx = neaw Xxxx();
+
+
+class declaration
+    ex:
+    class Dog {
+    constructor(breed, age) {
+        this.breed = breed;
+        this.age = age;
+    }
+}
+
+
+

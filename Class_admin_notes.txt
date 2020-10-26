@@ -14,7 +14,7 @@ Setup for mac
                    - npm install node-fetch             //to install fetch, not native to node or js
                         const fetch = require('node-fetch')     
                 use -g at the end to make it accessible globally
-
+7. install intellij   https://www.jetbrains.com/idea/download/#section=windows     
 
 //when developing app/program that uses these packages, they will be compiled...
 
@@ -66,6 +66,4 @@ no grade on the course - assesments are for us.
 
 breakout rooms for the meeting
 Pair programming - overarching theme of this course
-
-
 
