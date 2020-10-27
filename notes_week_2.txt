@@ -115,5 +115,54 @@ accessors are like methods for accessing or changing properties of a class insta
     Getters and setters are just syntactic sugar. The compiler will compile your getters and setters into getter and setter methods eventually. So by writing getter and setter methods yourself, you are kind of doing the job of the compiler.
 get/set are useful if you need to execute some function on parameters multiple times throughout your code - ex first and last name seperate, but combine for full name (get) or update with full name (set)
 
+_ indicates a restricted property on a class in javascript
+encapsulation: restricting access to instances...
+
+-------------------------------------------------------
+this - keyword - refers to some likely-focal object during method or constructor invocation
+    des not refer to function itself    
+    is the calling context of the function
+    The keyword this is an identifier for values (similar to a variable or a function parameter), that is designed to support Object Oriented Programming. 
+    The keyword this is almost exclusively useful when it appears within the body of a function, and that's generally where you'll see it.
+
+execution context - the setting a function performs in  
+    where -lexical (arrow functions)
+    how -dynamic (4 ways to invoke)
+
+types of invocation
+    simple invocation
+    method invocation
+    indirect invocation
+    constructor/class invocation
+    function invocation
+    method invocation
+
+    this can refer to many things
+
+.call -  calls a function with a given this value and arguments provided individually.
+.apply - method calls a function with a given this value, and arguments provided as an array (or an array-like object).
 
 
+var fun = () => {
+    log(this)
+}
+
+There are only 5 patterns for how the keyword this can appear in your code.
+
+log(this); //GLOBAL REFERENCE => `this` is bound to the global object (which is `windows` in a browser)
+
+fun(); // FREE FUNCTION INVOCATION => `this` is bound to the global object (which is `windows` in a browser)
+
+fun.call(obj); // .call or .apply() INVOCATION => `this` is bound to the first argument to .call() or .apply()
+
+fun.apply(obj); // .call or .apply() INVOCATION => `this` is bound to the first argument to .call() or .apply()
+
+new fun() // CONSTRUCTION MODE => `this` is bound to a new object created for that invocation 
+
+
+---------------------------------------------------------
+Dependancy and injection
+    allow an instance to use the methods of another
+    we inject one instance into another
+        (russian doll)
+    Dependency injection is a strategy used to isolate a class from its dependencies.
