@@ -27,4 +27,93 @@ class declaration
 }
 
 
+10/27/20_______________________________________________________________________________________________
+Encapsulation
+
+to run code, set Cd to location, type npm 'folder' or 'foler/filename.js/txt etc
+
+Can't use .forEach as an async function, instead use for(var x of y) {}
+
+Command Line Interfaces
+Passing in arguments via the command line is an extremely basic programming task, and a necessity for anyone trying to write a simple Command-Line Interface (CLI). In Node.js, as in C and many related environments, all command-line arguments received by the shell are given to the process in an array called argv (short for 'argument values').
+    process.argv - argv is the array of command0line arguments
+
+For iterative function, need to return this
+    add (item) {
+      this.contents.push(item)
+      return this
+    }
+
+.includes uses object.is
+it checks if the specific instance is the same instance
+
+
+Encapsulation   - restricting access and promoting self containerization
+    this
+    dependency injection
+    polymorphism
+    OO Testing
+
+Encapsulation   - process of wrapping property and function within a single unit, in javascript we use encapsulation in the form of classes0 a class is a program-code-template that allows developers to create an object htat has both data and behaviors
+
+    approximate java-style "private" instance fields
+    public vs private
+    how to enable access to private information in a class
+    write setters and getters to tkae the place of setter and getter methods
+        getter/accessor -similar to eachother
+        setter/mutator -similar to eachother
+ES6 adds syntax to make encapsulation easier
+.defineProperties() - 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Console Commands
+
+ls - list files (will list all files in current directroy)
+pwd - to find out where you are within your computer
+mkdir - make directory (make a new folder) add name after
+    navigate to there using cd <folder name>
+cd -changes directory
+    cd or cd ~ - Takes us to the home directory.
+    cd <folder name> - Takes us forward one step to the folder that is typed in.
+    cd .. - Moves us back one level to the parent folder.
+    cd ../.. - Moves us back two levels. Add more /.. for each level we want to navigate up.
+clear - clears terminal
+touch - creates new file (add extension like .txt)
+open - opne a file or folder, input <folder/file name>
+history - see commands run in session
+cat - see contents of particular file, need to have the right directory
+say - makes computer speak to me, need qoutes in this command
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Encapsulation - concept for restricting code stuff
+
+get <functionname> ()   - Getter must not have any formal parameters.
+    ex: (non-ES6 version that we will probably never use)
+    function Range(from, to) {
+        getFrom() {     //accesses
+            return from;
+        }
+        ...
+        Object.defineProperties(this, ){
+            from: {get: getFrom, set: setFrom, enumberable:true, configruable: false},
+            to: {get: getTo, set: setTo, enumerable:true, donfigurable: false}
+        }
+    }
+
+ES6 example
+the reason for not accessing the properties directly is in case you wanted to add functionality without having to refactor... For instance what if you returned the _numberOfFloors property when instead you added a feature that always removed floor 13 as part of the code. If you are using the getter method, you would be returning the right amount but if you read the property direct you would not get the floor removed...
+https://repl.it/@GregoryOladipo/Encapsulation-LEARN#index.js
+
+getters and setters - 
+    use get to pull information from the object
+    use set to tell object to change something
+    interacting with the object as opposed to changing it directly (there is a restriction on access, so get and set are used to access the object)
+There are 2 kinds of object properties
+    The first kind is data properties. We already know how to work with them. All properties that we’ve been using until now were data properties.
+    The second type of properties is something new. It’s accessor properties. They are essentially functions that execute on getting and setting a value, but look like regular properties to an external code.
+
+accessors are like methods for accessing or changing properties of a class instance
+    get/set keywords have unique and singular purpose
+    Getters and setters are just syntactic sugar. The compiler will compile your getters and setters into getter and setter methods eventually. So by writing getter and setter methods yourself, you are kind of doing the job of the compiler.
+get/set are useful if you need to execute some function on parameters multiple times throughout your code - ex first and last name seperate, but combine for full name (get) or update with full name (set)
+
+
 
