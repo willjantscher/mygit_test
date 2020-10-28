@@ -300,5 +300,4 @@ TESTING (OOP testing) Object Oriented Program
     there are different testing tools that can be used for (mocha, jasmine, etc. )
     if something is capitalized, assume it is a class!!!!!!
 
-
-    
+npm install ==global mocha
