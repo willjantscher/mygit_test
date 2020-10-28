@@ -1,6 +1,12 @@
 zoom link: https://www.zoomgov.com/j/1607880370?pwd=QnQvVkxISjlFMGl0U0dGQ3crSGRLZz09
 
 Setup for mac 
+https://medium.com/javascript-scene/setting-up-a-new-macbook-for-javascript-development-289df3f8f9
+
+Make sure to Enable the terminal code command: open VS Code and type CMD+SHIFT+P and type “shell command” and select “Install ‘code’ command in PATH”.
+
+https://www.freecodecamp.org/news/how-to-configure-your-macos-terminal-with-zsh-like-a-pro-c0ab3f3c1156/
+
 1. install VS code (https://code.visualstudio.com/)
 2. install VS code live share (https://marketplace.visualstudio.com/items?itemName=MS-vsliveshare.vsliveshare-pack)
 3. Install Java version 11 (https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)

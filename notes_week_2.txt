@@ -166,3 +166,139 @@ Dependancy and injection
     we inject one instance into another
         (russian doll)
     Dependency injection is a strategy used to isolate a class from its dependencies.
+
+create a class
+another class references instances of another class, and uses their methods/properties
+
+------------------------------------------------------------------------------------------------------------------
+Yargs helps you build interactive command line tools, by parsing arguments and generating an elegant user interface.
+https://www.npmjs.com/package/yargs
+npm i yargs
+------------------------------------------------------------------------------------------------------------------
+
+
+10/27/20_________________________________________________________________________________________________________________________
+Command line applications
+https://developer.okta.com/blog/2019/06/18/command-line-app-with-nodejs
+Command line applications (CLI) are often the core tools for automating tasks, such as deploying production applications, running tests, building reports, migrating data, DevOps, and the list goes on and on.
+
+
+to initializae a project
+type npm init 
+    press enter throughout or enter in information
+    can set git repository if not automatic
+
+type npm install -g to install an applications
+type this to see all globally installed node modules
+    npm ls -g --depth=0
+
+Next, we need to add a bin property to our package.json file. This maps the command name (ginit) to the name of the file to be executed (relative to package.json):
+
+
+------------------------------------------------------------------------------------------------------------------
+with Gregory Oladipo
+
+
+//using z shell, don't have paths set?
+//setup the environment
+//bash has different files profile,history,rc... these run the environment... need to set the path for my bins
+//profiles, omyzshell (get this), run through that, read more documentation
+
+//read different books
+//sort by category
+//book (Git)
+//books on command line (all unix cmds work in linux)
+//best book(the linux command line - william e shotts)
+//Pythod Crash Course
+//lots of work may be re-factoring (update old code)
+//book (Refactoring Improving the design of existing code)------------------
+//          Clean Code-----------------------------           
+    //working effectively with legacy code
+
+//ES6 and Beyond ---------------- book for javascript
+    //also, Stoyan Stefanov - Object Oriented JavaScript            ---Javascript: the .... David Flanagan
+
+    //books = organic in-context method for learning
+        //do the examples
+//commit to reading over time
+//commit to x hours a day, always.... 
+
+//program =-==== Notion
+    //
+
+------------------------------------------------------------------------------------------------------------------
+Asynchronous code review
+
+promises
+    write asynchronous code that looks likje synchronous code
+    no need to write state-checking code
+    AVOID callback hell
+var promise = new Promise(executor);    //executor is another function
+
+hoisting
+    in javascript, functions are hoisted (reads function delcarations as above everything else)
+
+fetch is a promise!
+encapsulation _something
+    withing class
+    things we don't want to touch directly
+    get and set methods
+    _ is an indicator that this should never be used outside of a getter/setter
+
+can put multiple promises in an array, call promis.all on the array, and then the output would be an array of all the promises' returns that will be returned after all promises are donfigurable
+
+function needs to be async function if calling fetch inside of it
+
+sourcetree for git stuff
+    or the github app
+    git the book is free online Orielly
+
+------------------------------------------------------------------------------------------------------------------
+polymorphism    (part of object oriented programming)
+When multiple classes inherit from the same superclass, there are many interesting properties:
+    Each of the subclasses have a common interface. Specifically, that common interface is made up of the instance variables and methods defined in the super class.
+    Each of the subclasses have the ability to override a method to provide special implementation while keeping the same interface.
+With this in mind, we can design functions that can take in instances of different classes (but share a common super class) and design for this common interface.
+
+polymorphism
+        takes advantage of a family of classes and their relationship to their super or parent class
+        these subclasses share commonalities with their parents (variables and methods)
+
+        we can use functions to leverage these similar signatures
+        SUBCLASSES can OVERRIDE the general/default functionality of their parent by "overriding"
+              addFloor() {
+                super.addFloor();
+                this.specialActionNeeded = true;
+                }
+child classes inherit the methods of the parent automatically;
+    chile will also inherit properties of the parent (without calling super)
+    only need to call super for items that are being passed into the child class call -- can just call super()
+must call method the exact same name to overide the method of the parent class
+
+dependancy injection (2 instances of different classes, pass on into another to call some function of the first)
+
+can call contructor(...args) {
+    super(...args)
+}
+over riding - child overides parent functions
+overloading - same function with different arguments (different parameters being passed in)
+
+
+------------------------------------------------------------------------------------------------------------------
+Object Oriented Testing
+USE SOURCE TREE
+
+    When approaching testing in OOP, attempting to make tests pass with the least amount of code possible is the optimal approach.
+    The goal is to write the minimum amount of sensible code in order to get the test to pass.
+    Do the simplest thing and only do things that are required by the tests.
+
+Describe is a function in the Jasmine testing framework. It simply describes the suite of test cases enumerated by the "it" functions.
+    Also used in the mochajs framework.
+
+TESTING (OOP testing) Object Oriented Program
+    test driven development - development technique where you must first write a test that fails before you write new functional code
+    there are different testing tools that can be used for (mocha, jasmine, etc. )
+    if something is capitalized, assume it is a class!!!!!!
+
+
+    
