@@ -378,7 +378,19 @@ write the test first
 ------------------------------------------------------------------------------------------------------------------
 use liveshare
     extensions tab in left of VS code
-    
+    click Live Share in bottom left, log in with account
+        will do some authorization things
+    click liveshare tab on the left
+        can add participants
+    pushpin in top right, will follow when changing files if selected
+------------------------------------------------------------------------------------------------------------------
+
+TDD in practice module
+    //30 minutes first 
+
+
+
+//git rm -r --cached ./node_modules   to stop tracking files
 
 
 
