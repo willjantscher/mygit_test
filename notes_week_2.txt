@@ -305,7 +305,7 @@ npm install --global mocha
 NEW section on TDD (test development d...)
 
 10/29/20_______________________________________________________________________________________________
-TESTING 
+TESTING     ¯\_(ツ)_/¯
     first - run and see what fails
         make tests pass
         refactor
@@ -313,7 +313,74 @@ TESTING
             repeat
 Checkpoint
 
-TDD  
+TDD  - Test-Driven Development
+    think about applications rather than just algortihms, we are engineers of digital products
+    user stories
+    acceptance criteria
+        tests run every time there is a change to the codebase
+        Platform 1 = where applications are deployed
+            unit test, end to end test, etc are run every time there is a change to the code base
+MVP = Minimum Viable product
+
+security for the code is done when code is being prepared to being deployed
+
+scope creep - changes over time that add/modify requirements
+
+Definition of done
+    The Definition of Done is an agreed upon set of items that must be completed before a project or user story can be considered complete.
+
+user story example:
+    as a customer, I want to see that the vending machine has items, so that I can purchase them.
+        Acceptance criteria
+        definition of done:
+            when I approach
+            I see items inside that I can buy
+        This is the acceptance criteria
+            seeSelections() returns an array of objects with item and price:
+                [{'crisps': 'Rs 100'}, {'chocolate': 'Rs 350'}, ...]
+
+------------------------------------------------------------------------------------------------------------------
+setup directory and move terminal to there
+    ls
+    mkdir somefoldername
+    cd somefoldername
+------------------------------------------------------------------------------------------------------------------
+jest as testing framework - jest is in node module in npm (node package manager)
+    npm init -y         //will create a package.json
+
+package.json    
+    is a list of dependancies that are used for an application (they need to add these dependancies)
+        these get put in a node modules folder when installed
+    scripts section - writing here gives ability to run specific code by typing the script name in the terminal
+
+    package.json can list all versions/ranges of a given package that are required, and npm install would download them all if they are in the package.json
+
+
+------------------------------------------------------------------------------------------------------------------
+TDD Example
+
+make a folder for the test and another for the program
+    make a gitignore file   //wont need version control of everything
+        touch .gitignore        //makes a file
+        echo node_modules/ >> .gitignore        //paste these words inside of it
+        cat .gitignore  //check contents of the file
+    npm install jest    //install this module here
+        this adds jest as a dependancy in the package.json
+        //this also makes a node modules folder and stores all modules in here, note we are ignoring this in .gitignore since we don't need to keep this on git
+ls -als     //shows more details 
+
+write the test first
+    create the file
+        touch test/Machine.test.js      will create in the test folder'
+            programname.test    --name this way for simplicity
+
+
+------------------------------------------------------------------------------------------------------------------
+use liveshare
+    extensions tab in left of VS code
+    
+
+
 
 
 
