@@ -304,6 +304,16 @@ TESTING (OOP testing) Object Oriented Program
 npm install --global mocha
 NEW section on TDD (test development d...)
 
+10/29/20_______________________________________________________________________________________________
+TESTING 
+    first - run and see what fails
+        make tests pass
+        refactor
+        fails
+            repeat
+Checkpoint
+
+TDD  
 
 
 
