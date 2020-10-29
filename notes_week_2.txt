@@ -373,7 +373,8 @@ write the test first
     create the file
         touch test/Machine.test.js      will create in the test folder'
             programname.test    --name this way for simplicity
-
+npm install --save-dev jest
+    this changes .json dependencies to devDependencies
 
 ------------------------------------------------------------------------------------------------------------------
 use liveshare
@@ -387,12 +388,26 @@ use liveshare
 
 TDD in practice module
     //30 minutes first 
-
-
-
 //git rm -r --cached ./node_modules   to stop tracking files
 
+TDD guide with jest 
+    https://www.jstwister.com/post/unit-testing-beginners-guide-testing-functions/
 
 
+mocking in javascript
+    can use a blocking while loop to pause a function... set date and time, then while loop while that - current < wait time.... 
+pure function - always returns same thing
 
+
+when testing
+    SEAT
+        Setup the problem (declare constants, establish instances of classes)
+        Exercise (code runing)
+        Assert  expect().toBe()
+
+use mock to keep tests from running a long time 
+    prevent waits in functions
+    prevents waiting for data from url
+create a mock<> and use that in the tests,
+    use the same syntax as would be expected
 
