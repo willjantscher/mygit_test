@@ -401,13 +401,87 @@ pure function - always returns same thing
 
 when testing
     SEAT
-        Setup the problem (declare constants, establish instances of classes)
+        Setup the problem (declare constants, establish instances of classes) - generate variables and their states
         Exercise (code runing)
         Assert  expect().toBe()
+        Teardown (if needed)
 
 use mock to keep tests from running a long time 
     prevent waits in functions
     prevents waiting for data from url
 create a mock<> and use that in the tests,
     use the same syntax as would be expected
+
+10/30/20_______________________________________________________________________________________________
+testing using mock dependancies
+    do not want tests to wait on app latency, change test inputs to mock inputs
+
+const mockSave = jest.fn()         //jest makes jest treat mockSave as a function
+    const mockDatabase = {
+        save: mockSave
+    }
+can call mockSave function by typing .... .save
+
+    jest    
+        toBe vs toEqual //tobe is more specific, must be the exact same object in memory
+        .toHaveBeenCalledWith(input parameter)
+
+npm i -D jest
+
+const start = new Date().getTime()
+while (new Date().getTime() < start + 5000) {}
+    //this simulates 5 seconds of latency
+//some code that will run after the delay
+
+DAO = Data Access Object
+
+object  (has keys and values)
+const person = { firstName: 'Katie', lastName: 'Hoesley' }
+    access a value by --- person.firstName (will be Katie)
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+example of using mock 
+https://codewithhugo.com/jest-mock-spy-module-import/
+
+
+// PersonDataAccessObject.js
+
+class PersonDataAccessObject { 
+  constructor(database) {
+    this.database = database
+  }
+
+  saveToDatabase(person) {
+    this.database.save(person)
+  }
+}
+
+// do not modify the above PersonDataAccessObject
+
+// PersonDataAccessObject.test.js
+
+describe('the PersonDataAccessObject', () => {
+  it('calls the function that would save Ada Lovelace to the database', () => {
+    //setup
+    const mockSaveMethod = jest.fn() // replace undefined with the appropriate mock for saving to the database
+    const mockDatabase = {
+      save: mockSaveMethod
+    }; //replace undefined with the appropriate mock for a database
+    const personDataAccessObject = new PersonDataAccessObject(mockDatabase) 
+    const expected = {firstName: 'Ada', lastName: 'Lovelace'}
+
+    // exercise
+    personDataAccessObject.saveToDatabase(expected);
+    
+    // assert
+    expect(mockSaveMethod).toHaveBeenCalledWith(expected);
+  })
+})
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 
