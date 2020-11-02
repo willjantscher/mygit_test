@@ -1,0 +1,31 @@
+11/2/20_______________________________________________________________________________________________
+HTML and CSS
+using REACT
+
+<!-- to open in command line, type open index.html -->
+
+<ol></ol>    open line
+<li>text</li>   list item
+
+<ul>    unordered list, gives dots
+<br>    gives line break
+<h1>    header, larger test
+<p>     paragraph
+<hr>    gives a horizontal rule
+
+<img src="" alt="">     source then address, alt then text, will put in text if source not working
+
+
+
+pwd             //show location
+cd ~/Desktop    //change directory
+cd html         //go into html foder we created
+git init        //initialize this in git
+ls -la          //show all files including hidden ones
+git status
+git add .
+git commit -m'some message'
+
+
+
+

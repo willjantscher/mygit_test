@@ -480,6 +480,13 @@ describe('the PersonDataAccessObject', () => {
 })
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+More stuff with mock testing
+
+checkpoint - work through this as pairs 
+
+    //npm install, npm start, npm init 
+    //reader and parser are dependancies, 
+
 
 
 
