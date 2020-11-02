@@ -16,7 +16,7 @@ using REACT
 <img src="" alt="">     source then address, alt then text, will put in text if source not working
 <span>something</span>
 
-
+--------------------------------------------------------------------------------
 pwd             //show location
 cd ~/Desktop    //change directory
 cd html         //go into html foder we created
@@ -31,11 +31,12 @@ git show-branch         //will show the last commit message
 
 command option j to open the code in chrome brower
 
-
-
-
-
-
 //install iTerm in conjunction with zsh and oh-myzsh
     install power line font something
-    
+--------------------------------------------------------------------------------
+
+
+
+
+
+
