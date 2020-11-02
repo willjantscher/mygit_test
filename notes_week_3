@@ -14,7 +14,7 @@ using REACT
 <hr>    gives a horizontal rule
 
 <img src="" alt="">     source then address, alt then text, will put in text if source not working
-
+<span>something</span>
 
 
 pwd             //show location
@@ -25,7 +25,17 @@ ls -la          //show all files including hidden ones
 git status
 git add .
 git commit -m'some message'
+git diff index.html         //will show differences
+git show-branch         //will show the last commit message
+
+
+command option j to open the code in chrome brower
 
 
 
 
+
+
+//install iTerm in conjunction with zsh and oh-myzsh
+    install power line font something
+    
