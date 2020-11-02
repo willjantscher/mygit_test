@@ -35,8 +35,21 @@ command option j to open the code in chrome brower
     install power line font something
 --------------------------------------------------------------------------------
 
+you can add attributes to tags  -these are in quotes below
+    ex: div class="collapsabile"
+
+id is unique
+class can be shared over ultiple items
+
+the label for="" should match the input id
 
 
+Tuesday will be on our own
+Finish everything in learn
+get ready for REACT
+details in mattersmost
+Install things mentioned in the tutorial for REACT  
 
 
-
+must do tutorial
+work through the learn (as much as you want)
