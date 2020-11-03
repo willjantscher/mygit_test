@@ -57,7 +57,120 @@ work through the learn (as much as you want)
 
 11/2/20_______________________________________________________________________________________________
 self work due to elections today
+DOM Minipulation
+    Document Object Model - a representation of the HTML files
+    DOM manipulation - chanigning the structure of the page as users interact with item
+    DOM is an API - application programming interface - a way for programs to interact with each-other
+web page is a Document
+    textually represented- HTML
+    visually represented - browser window
+    digitally represented  - DOM
+tree data structure
+    root node
+        nodes
+            more nodes
+child and parent nodes
 
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+https://jsfiddle.net/willjantscher/mpvfcr6z/88/ and https://jsfiddle.net/willjantscher/akxb0qmy/38/
+Code for DOM manipulation
 
+document.addEventListener('DOMContentLoaded', function () {
+  // Write your code here! Don't forget the above in later lessons.
+	const footer = document.querySelector("footer")
+  //console.log(footer)
+  
+  const removeMe = document.querySelector("div")
+  //console.log(removeMe)
+  
+  
+  removeMe.parentNode.removeChild(removeMe)
+/*   document.body.removeChild(removeMe)
+  console.log(removeMe) */
+  
+  footer.className = "galvanize-link"
+  //console.log(footer.className)
 
+	/* footer.innerHTML = "test" */
+  
+  document.getElementsByTagName("a")[0].setAttribute("href", "http://galvanize.com/");
+  
+/* 	footer.setAttribute("href", "http://galvanize.com/");
+	  console.log(footer) */
+    
+    var newHeader = document.createElement('h1')
+    var headerNode = document.createTextNode("this is my text in a header.")
+    
+    newHeader.appendChild(headerNode);
+        
+    document.body.insertBefore(newHeader, document.body.children[0])
+    
+    newHeader.text="something here"
+    
+})
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+addEventListener
+monitorEvents(window)
+when manipulating the DOM, it's important that your javascript code not load until the DOM is ready. There are a couple of ways to do this. The most common way is to use the DOMContentLoaded event:
+
+When an event happens. It captures down the DOM tree from <html> to the element where the event happened. Then, it bubbles back up the DOM tree until it gets back to <html>. Along each element it passes, it fires the event.
+These 2 phases -- event capturing and event bubbling -- are collectively known as event propagation.
+There is a third Boolean parameter of addEventListener that specifies if you want the handler to fire on capture or bubble. It defaults to false, which is bubble. But if you set it to true, it will fire on capture.
+
+CSS
+Cascading Style Sheets
+Internal
+    <head>
+    <title><title>
+    <style type=”text/css”>
+    CSS Content Goes Here
+    </style>
+    </head>
+    <body>
+External
+    <link rel=”stylesheet” type=”text/css” href=“Path To stylesheet.css” />
+or 
+    <style type=”text/css”>@import url(Path To stylesheet.css)</style>
+<head>
+<title><title>
+<link rel=”stylesheet” type=”text/css”href=”style.css” />
+</head>
+<body>
+
+Inline
+    <p style=”color: #ff0000;”>Some red text</p>
+All the various methods will cascade into a new “pseudo” stylesheet in the following order:
+    Inline Style (inside (X)HTML element)
+    Internal Style Sheet (inside the <head> tag)
+    External Style Sheet
+
+HTML Elements (div, p, ul, etc) are the least specific CSS selectors. The next level of specificity is provided by classes. To add a class to an element, we use a class attribute. For example, give your first HTML div a class of "red", and then change your stylesheet to look like this:
+order of specificity (increasing)
+    HTML Elements (div, p, ul, etc)
+    class attribute (reference with .classname)
+    id (reference with #)
+    After ids, the next level of specificity is inline styling. After that is the !important tag. (dont use either of these)
+most specific item takes priority
+
+IDs should be completely unique
+classes do not need to be
+
+Can use CSS frameworks 
+https://materializecss.com/
+https://getbootstrap.com/docs/4.5/getting-started/introduction/
+    these will make things pretty at first
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+use Bootstrap Cascading Content Delivery Network
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css" integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
