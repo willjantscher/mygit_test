@@ -174,3 +174,223 @@ use Bootstrap Cascading Content Delivery Network
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------
+REACT
+https://reactjs.org/tutorial/tutorial.html
+
+npx create-react-app my-app
+    or npm init react-app my-app
+cd my-app
+npm start
+    can start from a template
+--template [template-name] 
+
+11/4/20_______________________________________________________________________________________________________________________________________
+REACT
+    go through tutorial
+    go through learn modules
+    finish html problem submission
+    review DOM manipulation
+    more react
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+React is a declarative, efficient, and flexible JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called “components”.
+We use components to tell React what we want to see on the screen. 
+A component takes in parameters, called props and returns a hierarchy of views to display via the render method.
+The render method returns a description of what you want to see on the screen. 
+    ender returns a React element - lightweight description of what to render
+React uses JSX syntax
+    The <div /> syntax is transformed at build time to React.createElement('div').
+You can put any JavaScript expressions within braces inside JSX.
+
+In JavaScript classes, you need to always call super when defining the constructor of a subclass. 
+    All React component classes that have a constructor should start with a super(props) call.
+
+when you call setState in a component, React automatically updates the child components inside of it too.
+The DOM <button> element’s onClick attribute has a special meaning to React because it is a built-in component. For custom components like Square, the naming is up to you. We could give any name to the Square’s onClick prop or Board’s handleClick method, and the code would work the same. In React, it’s conventional to use on[Event] names for props which represent events and handle[Event] for the methods which handle the events.
+
+In React, function components are a simpler way to write components that only contain a render method and don’t have their own state.
+     Instead of defining a class which extends React.Component, we can write a function that takes props as input and returns what should be rendered
+
+ternary operator
+    condition ? expr1 : expr2 
+    if condition true, return expr1, else expr2
+
+Unlike the array push() method you might be more familiar with, the concat() method doesn’t mutate the original array, so we prefer it.
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+JSX (JavaScript + XML) is an extension of JavaScript that allows you to write HTML directly within JavaScript.
+
+To specify a CSS class, use the className attribute, instead.
+    This applies to all regular DOM elements like <div>, <a>, and others. 
+        The reason for this is that class is a reserved word in JavaScript.
+https://flaviocopes.com/jsx-return-multiple-elements/
+
+When writing JSX in React, there’s one caveat: you must return one parent item. Not more than one.
+cant do this:
+const Pets = () => {
+  return (
+    <Dog />
+    <Cat />
+  )
+}
+so do this: (but this creates an unecessary HTML element)
+const Pets = () => {
+  return (
+    <div>
+      <Dog />
+      <Cat />
+    </div>
+  )
+}
+or this
+const Pets = () => {
+  return [
+      <Dog />,
+      <Cat />
+  ]
+}
+or this
+const Pets = () => {
+  return (
+    <Fragment>
+      <Dog />
+      <Cat />
+    </Fragment>
+  )
+}
+
+https://www.reactenlightenment.com/react-jsx/5.1.html
+JSX is like a shorthand for calling React.createElement()
+
+The syntax is intended to be used by preprocessors (i.e., transpilers like Babel) to transform HTML-like text found in JavaScript files into standard JavaScript objects that a JavaScript engine will parse.
+
+A React Component is a function that returns a single React Element
+The following defines a React Component called Greeting.
+
+    import React from 'react';
+
+    function Greeting(){
+    return (
+        <h1>Hello!</h1>
+    )
+    }
+
+    export default Greeting
+
+Components cannot return null or Objects or Arrays. They must return a single React element.
+In order to use a React Component as a React Element, simply wrap it in a self-closing HTML tag.
+Remember: a React component can only return a single element. If you need the component to display multiple elements or have nested child components, they must be wrapped in a single enclosing parent element.
+
+To create a React component:
+    Import React
+    Define a function that returns a single React element
+    Export the function with export default
+To include a React component:
+    Import React
+    Define a function that returns a React element
+    Within that React element reference the other component by wrapping it in self-closing HTML tags
+https://facebook.github.io/react/docs/react-component.html
+
+When you render a React Component, you can pass it data via props. 
+
+anything inside {} gets evaluated as JavaScript
+
+passing <Person /> elements the following props object:
+{
+  id: 43,
+  firstName: "Michelle",
+  lastName: "Obama"
+}
+  <Person id={43} firstName="Michelle" lastName="Obama" />
+
+Deconstruction
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment#Pulling_fields_from_objects_passed_as_function_parameter
+
+props on a component should never be altered in any way. They are immutable. Instead, if we want to be able to alter the data in any way we have a separate concept called State
+    Class Component
+In order for React to function properly, the setState method is the only means we should be using to manipulate state within a component.
+https://reactjs.org/docs/react-component.html#setstate
+
+
+
+DOM manipulation
+https://www.w3schools.com/cssref/css_selectors.asp
+
+REACT   
+    items inside return are rendered
+    document.title = "" changes the name on the browser tab
+user stories: things the user wants and why, written by the user 
+
+
+keep app class simple
+
+put everything else outside of it
+
+create a class for each section of the app
+
+    make a file for each of the classes
+    import these files into the app.js
+        import './GroceryList'
+        access with <GroceryList />
+
+
+                      <GroceryList list={this.state.list}/>
+                    can access with props.list inside grocerylist now
+            look at event.value in console...
+            capture inputfield React
+            events.preventdefauls
+https://forum.freecodecamp.org/t/getting-an-input-value-when-form-is-submitted-react/161870
+https://www.sitepoint.com/work-with-forms-in-react/
+
+.bind
+    method creates a new function that, when called, has its this keyword set to the provided value, with a given sequence of arguments preceding any provided when the new function is called.
+    in react, if passing a function around, need to bind it
+    makes sure function is scoped to location it is scoped to
+event.preventDefault()  --to prevent things from happening
+
+event handlers
+
+APP (component)
+    Grocery list    (component)
+        each individual grocery iten (maybe many components)
+
+for components, export default componentname
+import grocerylist from './grocerylist'
+
+return should go inside the render () {}
+
+if parent has state properties in the constructor, pass to child as props like
+constructor() {
+    this.state = {
+        groceryItems : ['apples', 'banannas']
+    }
+}
+    <GroceryList list={this.state.groceryItems}
+
+    you can access this in GroceryLists as props.list (if initializing as function GroceryList(props))
+
+good to map over props and convert each to a list item/button/something...
+    const items = props.list.map(item => <li>{item}</li>)
+    return (
+        <div>
+            {items}
+        </div>
+    )
+
+form used to collect data   
+    onSubmit={}. prevents default action, pass in a method to handle the action
+    handleSubmit = (event) +>...
+    use event.preventDefault()
+    set constructor, this.state = {}
+https://www.youtube.com/watch?v=fcMNZ7j4JSg&ab_channel=CodingEntrepreneurs
+
+
+use hooks or redux to pass data across multiple children
+
+app     
+    list
+        items
+
+        
+
