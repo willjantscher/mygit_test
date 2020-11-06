@@ -392,5 +392,22 @@ app
     list
         items
 
-        
+
+to learn hooks, go into react Context and useReducer
+
+
+11/6/20_______________________________________________________________________________________________________________________________________
+REACT app using pokemon API
+    Fetching data
+    
+
+
+
+
+
+
+
+
+
+
 
