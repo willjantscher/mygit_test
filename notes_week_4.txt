@@ -1,0 +1,68 @@
+11/9/20_______________________________________________________________________________________________________________________________________
+//project with react like checkpoint
+//install postman
+
+
+
+EXPRESS 
+CRUDL (Create/Read/Update/Delete/List)
+
+REST, or Representational State Transfer, is an architectural style for providing standards that makes it easier for computer systems to communicate.
+
+REST is a robust API architecture
+    CRUDL is for keeping records current and permanent
+
+HTTP request line:
+    method
+    path componenet of the url
+    an HTTP versio number
+status line:
+    http version number
+    status code
+    erason phrase 
+
+The endpoint (or route) is the url you request for.
+The path determines the resource you’re requesting for.
+
+REST
+    restful api uses HTTP requests to GET, PUT, POST, and DELETE data
+    PUT and PATCH, PUT - supplies modified data that replaces original resource
+        PATCH - updates an element of the original resource
+    POST - adds something new
+
+CRUD    -how you actually interact with your database
+    POST - Create
+    GET - Read
+    PUT - Update/replaces
+    PATCH - Update/Modify
+    DELETE - Delete
+CRUD operations act on a database (persist)
+
+Status codes 
+2xx success
+4xx client error
+...
+
+Express.js = back end web application framework for Node.js 
+    designed for buidlding web application...
+var express = require('express')
+Route definition takes the following structure: app.METHOD(PATH, HANDLER)
+
+Query parameters are a defined set of parameters attached to the end of a URL.
+They are extensions of the URI that are used to help define specific content or actions based on the data being passed.
+Query params start with the first ? and end with the first # 
+allowable characters:
+    a-z, A-Z
+    0-9
+    / ? : @ ! $ & ' ( ) * + , ; = - . _ ~
+To add multiple parameters, an ‘&’ is added in between each.
+
+Path parameters are part of the URL itself. To separate them from the verbs used in the URL, a colon should prefix any variable name. 
+req.params will retrieve all path parameters and return them in a JavaScript object.
+
+Headers are metadata about an HTTP request.
+
+
+
+
+
