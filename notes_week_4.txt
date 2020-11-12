@@ -1,6 +1,8 @@
 11/9/20_______________________________________________________________________________________________________________________________________
 //project with react like checkpoint
 //install postman
+https://docs.google.com/document/d/1aTn-1l2wJzkT6eB1NLVjEIV8ybHVUlJfHpkA8Ujl4u8/edit
+
 
 
 
@@ -132,8 +134,199 @@ cookie - piece of data a server sends to the user's web browser,
 
 
 
+11/12/20_______________________________________________________________________________________________________________________________________
+Schema and Query Design -can use PostgreSQL or mysql
+join tables join many-to-many relationships
+    want one-to-many or many-to-one relationships in databases
+    need one source of truth (ids)
 
-Schema and Query Design 
+walk through of solutions, express checkpoint.
+    databases
+
+install relational database system like PostgreSQL
+    https://github.com/gSchool/sql-curriculum/blob/master/Introduction.md
+    https://github.com/gSchool/sql-curriculum/blob/master/Install%20-%20Homebrew.md
+
+https://app.diagrams.net/#G13PYrofQOTuuaczCfguEVWs7j6ejFtzKK
+SQL - sequel
+
+Entity - distinct units of information. manifest as tables in a database
+    table - a collection of closely related columns. consists of rows each of which shares the same columns but may very in column vlues
+    field - each entity contains one or more fields that describe the properties of that entity
+    column - single unit of named data that has a particular data type. only exist in tables
+    row - one set of related values for all of the columns declared in a given table. entries stored in a table
+    record - entries stored in a table
+    primary key - a column or group of columns in a given table that uniquely identifies each row of the table  
+        used in conjunction with a foreign key in another (or event he same) table to relate the two tables togethre
+    foreign key - one or more columns in a table intended to contain only values thta match the related primary/unique key column(s) in the referenced table. 
+        foreign and primary keys explicitly define the direct relationships between tables
+column ~ field
+table ~ entity
+row ~ record
+    column becomes a field, once we use and it has data, same with table/row...
+    column, row and table are skeleton
+        field, entity, record when data is present
+
+Schema - how data is organized in a database and relationships among its different entities
+    -blueprint for your database
+    defines name of tables and details of what information is stored in each column
+Query - a way to request information from a database using statements
+    Request - retrieves infro from database
+    action - request that additional action be performed (updating, deleting, and inserting the database)
+Entity relationships 
+    one-to-one - each row in a table is connected top only one row in another table
+    one-to-many - each row in the related to table can be related to many rows in the relating table
+    many-to-many - one or more rosw in a table can be related to 0, 1, or many rows in another table
+        a join table is a table that is made entirely of foreign keys!!
+
+SQL statements
+    REQUEST Statements
+        SELECT * FROM ___
+            all caps are keywords
+            * means all 
+                ex: SELECT * FROM Students will return full table of Students
+        SELECT * FROM ___ WHERE __ = "__"
+            WHERE specifies a specific constratint
+                ex: SELECT * FROM Students WHERE Name = "Jim Mattis";
+    ACTION Statements:
+        DELETE FROM ___ WHERE __ IN ("")
+            ex: DELETE FROM Students WHERE Name IN ("Jim Mattis","Jane Dough"):
+        INSERT INTO ___ VALUES("")
+            ex: INSERT INTO Students (StudentID, Name) VALUES("291129","Tom Cruise");
+    examples
+        SELECT * FROM Classes;
+        SELECT StudentID FROM Students;
+        INSERT INTO Classes (ClassID,Name) VALUES ("010011","Computer Science 101");
+        INSERT INTO Students (StudentID,Name) VALUES("1001","Bob"),("1002","Bill"),("1003","Jane");
+
+Foreign and Primary Keys
+https://app.diagrams.net/#G1U3P5SIw7EgSNz60GLg-Rib0E0Dfkx69q
+    Draw.io 
+    use Entity Releationship Diagram (ERD)
+    lines indicate one to one or one to many etc...
+use diagram to show relationships
+    create join table
+    add fields and data
+Data types
+https://www.postgresql.org/docs/9.5/datatype.html
+
+SQL joins   https://blog.codinghorror.com/a-visual-explanation-of-sql-joins/
+5 types of joins
+    Inner join - only the set of records that match in both Table A and Table B 
+    Full outer join - produces the set of all records in Table A and Table B (with matchin records from both sides where available. if there is no match, the missing side will contain null)
+    Left/right outer join - 
+    Left/Right outer unique -
+    Full outer join unique - 
+https://www.db-fiddle.com/
+https://github.com/gSchool/sql-curriculum/blob/master/Entity%20Relationship%20Diagrams.md#why-is-an-entity-relationship-diagram-useful
+
+Constraints
+   A not-null constraint simply specifies that a column must not assume the null value.
+   A unique constraint ensures that the data contained in a column is unique among all the rows in the table. 
+   A primary key constraint indicates that a column can be used as a unique identifier for rows in the table.
+   A foreign key constraint specifies that the values in a column must match the values appearing in some row of another table. 
+
+
+----------------------------------------------------------------------------------------------------------------
+Schema SQL
+
+CREATE TABLE owners (
+  id serial PRIMARY KEY,
+  name text
+  );
+  
+  CREATE TABLE species (
+  id serial PRIMARY KEY,
+  species text
+  );
+  
+ CREATE TABLE pets (
+ id serial PRIMARY KEY,
+   name text,
+   species_id integer NOT NULL REFERENCES species ON DELETE CASCADE 
+   );
+   
+CREATE TABLE owners_pets (
+  id serial PRIMARY KEY,
+  owner_id integer NOT NULL REFERENCES owners ON DELETE CASCADE,
+  pet_id integer NOT NULL REFERENCES pets ON DELETE CASCADE
+  );
+     
+     
+  INSERT INTO owners (name) VALUES ('Bob'),('Bill');
+  INSERT INTO species (species) VALUES ('cat'),('dog'),('fish');
+  INSERT INTO pets (name, species_id) VALUES ('REX',1),('Star',2),('Ringo',3),('Bubbles',2);
+  INSERT INTO owners_pets (owner_id,pet_id) VALUES (1,1),(1,3),(1,4),(2,2);
+
+Query SQL
+
+SELECT * FROM owners;
+SELECT * FROM species;
+SELECT * FROM pets;
+SELECT * FROM owners_pets;
+
+
+
+SELECT * FROM pets INNER JOIN species ON pets.species_id = species.id;
+SELECT species.id, name, species FROM pets INNER JOIN species ON pets.species_id = species.id;
+
+----------------------------------------------------------------------------------------------------------------
+PostgreSQL
+
+REPL - Read-Eval-Print-Loop
+PostgreSQL REPL is a read-evaluate-print loop where you can play around and experiment with new database concepts.
+
+To start a PostgreSQL server as a service, run the following command.
+    brew services start postgresql
+to see if the server has started
+    brew services list
+to stop the service 
+    brew services stop postgresql
+brew services --help
+Once a server is running,...
+To list all the databases in the default cluster
+    psql -l
+to create a database
+    createdb movie_junkies_dev
+to drop (destroy) a db
+    dropdb movie_junkies_dev
+
+To install configuration for REPL
+    curl -fsSL https://git.io/v1Q1O | sh
+to connect a db to REPL,
+    psql movie_junkies_dev
+to get helop with commands
+    help
+to list all databases inside the default PostgreSQL cluster
+    \l 
+to create a database for the environment
+    CREATE DATABASE movie_junkies_test;
+to connect the REPL to the db just createdb
+    \c movie_junkies_test
+switch REPL back    
+    \c movie_junkies_dev
+to drop the database
+    DROP DATABASE movie_junkies_test;
+to quite the PostgreSQL
+    \q 
+
+
+
+END SQL commands with a semicolon!!!!!
+
+
+
+
+
+-----------------------------------
+mysql   
+    mysql.server start
+    mysql.server stop
+-----------------------------------
+
+https://github.com/gSchool/sql-curriculum/blob/master/PSQL.md
+
+
 
 
 
