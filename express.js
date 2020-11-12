@@ -10,9 +10,9 @@ const port = 3008
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 
-app.get('/', (req, res) => {
-    res.send("Hello World!")
-})
+// app.get('/', (req, res) => {
+//     res.send("Hello World!")
+// })
 
 app.post('/', (req, res) => {
     res.send("Got a POST request")
@@ -26,7 +26,12 @@ app.delete('/user', (req, res) => {
     res.send("Got a DELETE request at /user")
 })
 
+app.get('/student/:studentId',function(req,res){
+    console.log(req.params); 
+    console.log(req.params.studentId);
 
+    res.send("Path parameters have been printed to console");
+});
 
 
 

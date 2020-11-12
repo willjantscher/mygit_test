@@ -62,6 +62,80 @@ req.params will retrieve all path parameters and return them in a JavaScript obj
 
 Headers are metadata about an HTTP request.
 
+11/10/20_______________________________________________________________________________________________________________________________________
+EXPRESS
+
+req- request
+res- response
+
+must restart
+    npm install --save-dev nodemon      will auto restart server on save, will be added to json
+
+to initialize an express project
+    //create new repo
+    //npm init
+    //npm install express
+    //to run - node <app name.js>
+        //npm install -g nodemon
+        //nodemon app.js        will run the app with nodemon, will restart local host on save
+
+convention to call highest level program in a project app.js
+get doesn't need a body, posts involve a body (should be parsed)
+
+Everything coming from a json is parsed as a string since it is in qoutes, need to parseInt()
+.find() returns one thing that matches, not an array of results. .filter() and then [0] index will yield the same result
+
+headers application/json makes it expect json format
+
+postman is usefull when we don't have a front end - ie, a button/input would collect user data and send a get/post... request to the server
+
+
+github repos -
+    usaf-express-challenge
+    usaf-express-challenge-2
+
+Cookies
+Cookies are arbitrary pieces of data, usually chosen and first sent by the web server, and stored on the client computer by the web browser. 
+Cookies help answer the question: "how to remember information about the user?"
+Cookies are saved in name-value pairs like: > username = Suzy Galvanize
+
+3 main uses for cookies
+    Session management - keeps users logged in, shopping carts full, scores of sports games, etc.
+    Personalization - allows users to have personalized preferences, themes, settings, colors, sounds, etc.
+    Tracking - analyzing, recording, and motitoring user behavior
+
+cmd opt j to open chrome dev tools
+
+cookies max of 4kb for all cookies
+set by server in the Set-Cookie header
+sent back up to the server throught he Cookie header
+
+express has build in helpers for cookies
+    var cookieParser = require('cookie-parser')
+    app.use(cookieParser())
+        req.cookies //access cookies
+        res.cookie()    //write a cookie (with key and value)
+        res.clearCookie()   //clear the cookie("key")
+
+using HTTPS - encrypts http requests to/from the server, can set in res.cookie()
+can have persistant always
+
+cookie - piece of data a server sends to the user's web browser, 
+    browser may store it and send it back with the next request to the same server
+
+
+
+
+
+
+
+
+
+
+
+Schema and Query Design 
+
+
 
 
 
