@@ -140,6 +140,7 @@ join tables join many-to-many relationships
     want one-to-many or many-to-one relationships in databases
     need one source of truth (ids)
 
+ERD - Entity Relationship Diagrams
 walk through of solutions, express checkpoint.
     databases
 
@@ -325,6 +326,148 @@ mysql
 -----------------------------------
 
 https://github.com/gSchool/sql-curriculum/blob/master/PSQL.md
+
+select views the records, describe shows the table schema (data types and names of fields)
+
+10/13/20_______________________________________________________________________________________________________________________________________
+In console
+    brew services start postgresql      //start postgresql 
+        brew services list              //
+    psql postgres       //enter the replaces
+    \l      list all servers
+    CREATE DATABASE 
+    \d      //shows details
+    \d <table name>         //show details of that table
+    \h          //shows all commands
+    \?          //shows more commands
+    \c <database name>          //connect to that database
+
+JOINS 
+    Inner join - only what both tables shares
+    Full outer join - all records in both tables
+    Left/Right outer join - complete set of records for one table
+    Left/Right outer unique - unique records for one table
+    full outer unique - unique records for both tables
+
+//EXAMPLE DATABASE---------------------------------------------------------------------------------------------------------
+    //start psql in console
+         brew services start postgresql
+    //check servers
+        psql 
+    //go into REPL for psql
+        psql postgres
+    //create database
+        CREATE DATABASE test;
+    //connect to database
+        \c test;
+    //create 2 tables (once connected to daatabase)
+        CREATE TABLE A (id serial PRIMARY KEY, name text);
+        CREATE TABLE B (id serial PRIMARY KEY, name text);
+    //check table
+        \d A 
+        \d B 
+    //input data
+        INSERT INTO A (name) VALUES ('Pirate'),('Monkey'),('Ninja'),('Spaghetti');
+            //must use single quotes and don't have id input
+    //See entries in the table
+        SELECT * FROM A;
+    //input more data to table Bill
+        INSERT INTO B (name) VALUES ('Rutabaga'),('Pirate'),('Darth Vader'),('Ninja');
+    //See entries in the table
+        SELECT * FROM B;
+    //CHECK in PG ADMIN
+        under database, test, schemas, tables, (right click on table and view all rows)
+    //Inner join - select all items that have same name in A and B. Outputs 4 columns, with ids and manifest
+        SELECT * FROM A INNER JOIN B ON A.name = B.name;
+            SELECT A.name, B.name from A INNER JOIN B ON A.name = B.name;   //will only return names (2 column)
+    //Full outer join - pulls everything, if names not shared, will populate with null
+        SELECT * FROM A FULL OUTER JOIN B ON A.name = B.name;   
+    //Left outer join - all items in table A and matches to table B, not shared populate with null
+        SELECT * FROM A LEFT OUTER JOIN B ON A.name = B.name;
+    //Left outer join unique - only items that are in table A, i.e. unique to table A 
+        SELECT * FROM A LEFT OUTER JOIN B ON A.name = B.name WHERE B.id IS null;
+    //Full outer join uniqe - all items that are unique to each table (A and B)
+        SELECT * FROM A FULL OUTER JOIN B ON A.name = B.name WHERE A.id IS null OR B.id IS null;
+            //Cross join - all possible cominations in table
+                SELECT * FROM A CROSS JOIN B;
+    //in PG ADMIN
+        right click on table, scripts, SELECT, (or ckick database with arrows at top left to open new query editor)
+            can enter queries and get data output, (syntax gets highlighted)
+dump a database
+    -exports a database (-- is a comment in SQL)
+        pg_dump dbname > outfile
+                //dbname is name of database in psql, outfile is directory for output ~/Desktop/filename
+    pg_dump test > ~Desktop/test    (in console)
+    psql sci_fi_empty < infile
+    psql sci_fi < infile
+        1. put DB dump fiiles on Desktop
+        2. go into psql database
+            3. create database with name you want   --db names must match 
+            CREATE DATABASE sci_fi_empty;
+        3. in terminal, 
+            psql sci_fi_empty < ~/Desktop/sci_fi_empty    
+    \c sci_fi_data
+    \d  //return details
+    \dt actor       //details on actor table
+PRESS Q to exit from query result viewer in psql
+
+---------------------------------------------------------------------------------------------------------
+PG ADMIN
+    Add server
+    owner name (in psql list) set to username on pg admin
+        williamjantscher
+PSQL - PostgreSQL Command Line Tools
+    https://github.com/gSchool/sql-curriculum/blob/master/PSQL.md
+Entity Relationship Diagrams
+    https://github.com/gSchool/sql-curriculum/blob/master/Entity%20Relationship%20Diagrams.md#why-is-an-entity-relationship-diagram-useful
+INTRO to SQL
+    https://github.com/gSchool/sql-curriculum/blob/master/SQL%20Intro.md
+Dump or restore database
+    https://www.postgresql.org/docs/9.1/backup-dump.html
+
+
+---------------------------------------------------------------------------------------------------------
+SQL SYNTAX!!!!!!!
+    https://github.com/gSchool/sql-curriculum/blob/master/SQL%20Intro.md
+SQL restful API
+    https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
+---------------------------------------------------------------------------------------------------------
+Persistence
+
+connect EXPRESS application with Postgres database
+    var pgp = require('pg-promise')(/* options */)
+    var db = pgp('postgres://username:password@host:port/database')
+
+    db.one('SELECT $1 AS value', 123)
+    .then(function (data) {
+        console.log('DATA:', data.value)
+    })
+    .catch(function (error) {
+        console.log('ERROR:', error)
+    })
+want your connection and configuration details in a seperate permission restricted file that is not accessible to version control
+    const Pool = require('pg').Pool
+    const pool = new Pool({
+    user: 'me',    
+    host: 'localhost',
+    database: 'api',
+    password: 'password',
+    port: 5432,
+    })
+passing a query to the database
+    const getUsers = (request, response) => {
+        pool.query('SELECT * FROM users ORDER BY id ASC', (error, results) => {
+            if (error) {
+                throw error
+        }
+        response.status(200).json(results.rows)
+    })
+    }
+
+in postgres
+    \conninfo       gives user information
+
+
 
 
 
