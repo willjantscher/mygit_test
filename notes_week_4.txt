@@ -466,6 +466,9 @@ passing a query to the database
 
 in postgres
     \conninfo       gives user information
+https://node-postgres.com/api/result
+https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
+
 
 
 

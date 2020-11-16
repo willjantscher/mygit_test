@@ -1,0 +1,28 @@
+11/16/20_______________________________________________________________________________________________________________________________________
+Docker  - deploy applications
+
+containerization - when sending something across a network, when it arrives, it is usable by whoever isn onw using it (straight out of the box)
+    containers are:
+        standard, lightweight, secure
+        (ideally) portable everywhere
+        Containers share the machine's OS system kernel and therefore do not require an OS per application, driving higher server efficiencies and reducing server and licensing costs
+        Applications are safer in containers
+        https://www.youtube.com/watch?v=0qotVMX-J5s&feature=emb_title
+
+DOCKER 
+    # check docker version
+    docker --version
+
+    # view info about your installation
+    docker info
+
+    # run the test image and view a list of currently installed images
+    docker run hello-world
+    docker image ls
+    docker container ls --all
+
+
+
+
+
+
