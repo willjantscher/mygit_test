@@ -329,7 +329,7 @@ https://github.com/gSchool/sql-curriculum/blob/master/PSQL.md
 
 select views the records, describe shows the table schema (data types and names of fields)
 
-10/13/20_______________________________________________________________________________________________________________________________________
+11/13/20_______________________________________________________________________________________________________________________________________
 In console
     brew services start postgresql      //start postgresql 
         brew services list              //
@@ -468,6 +468,12 @@ in postgres
     \conninfo       gives user information
 https://node-postgres.com/api/result
 https://blog.logrocket.com/setting-up-a-restful-api-with-node-js-and-postgresql-d96d6fc892d8/
+
+INSTALL DOCKER
+
+Databases checkpoint
+
+
 
 
 

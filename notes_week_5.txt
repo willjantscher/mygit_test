@@ -20,9 +20,251 @@ DOCKER
     docker run hello-world
     docker image ls
     docker container ls --all
+Please-Contain-Yourself repo on github has Docker tutorial
+
+    Images represent your application package and it's setup and configuration are defined within the Dockerfile.
+    Containers are running instances of your application image.
+    What makes containers so consistent for you and your team is that Docker handles the environment setup so that all anyone has to do to run the app is run a Docker container.
+
+Images are created with the `build` command, and they'll produce a container when started with `run`. Images are stored in a Docker registry such as Dockerhub" -- Docker Docs
+   run command - 
+    1. downloads application to computer
+    2. runs application
+
+docker container ls --all       gives more details on all containers
+docker info
+docker images 
+docker run hello-world      -spin up new container of name "hello-world'
+docker images   -view images on your computer
+docker ps -a       = view all the containers on your computer
+    The ` -a` flag shows all the containers on your machine, both running and stopped.
+docker run --name punk_rock_unicorns hello-world`   --run hellow worls with name "punk_rock_unicorns"
+
+-----------------------------------
+containerization    (virtual box?)
+    - don't need to spin up OS to run something in a container
+
+
+`docker run` : You've used this one before, it creates a new container from an image
+`nginx` : The name of the image to spin into a container
+` --name webserver` : Gives the container a unique name to identify it
+`-p 80:80` : This command basically says ‘connect port 80 on the host to port 80 on the container’. We will get deeper into this later, but if you want a container to contact the outside world (as you would need a webserver to do) you have to set up your image with an exposed port ready to broadcast and receive data.
+    Then, when you want to make a container out of it, you simply map the container's port to a port on the host so the host can talk to the outside world on the container's behalf (since the container is still 'virtual', after all). This command pretty much lets your container plug and play.
+`-d` : This command indicates that you want to run your container in a detached state; which means it just runs in the background. Keep reading for more information on this ->
+
+docker stop webserver       //stop the webserver that is running
+
+docker rm webserver     //remove the webserver container
+    -f` will 'force'    docker rm -f webserver2
+
+--rm` flag to the `docker run` command      will remove container once done
+    docker run -d -p 80:80 --rm --name goodbye nginx
+
+docker rmi <image-name>     will remove the image
+
+Containers are created from images. A Docker Container is the instantiation of Docker Image.
+    a Docker Container is the run time instance of an image.
+In every Dockerized repository, there is a file called Dockerfile. This file holds code that dictates what Docker will do with your application.
+
+Bundle Your App into an Image
+    docker pull node:latest
+    docker history node:latest
+
+A Registry is a server where the team stores a collection repositories, and each repository can contain any number of docker images.
+    docker build -t your_repo_name/apidemo:latest .
+    # Step 2: Verify. Look for your_repo_name/apidemo Docker Repository with tag 'latest' in the Image List
+        docker image ls
+    docker push your_repo_name/apidemo:latest
+From now on, you (and anyone else) can pull and run images from this repository through Docker:
+docker run -p 4000:80 your_repo_name/apidemo:latest
+
+
+image - 
+container - 
+
+/pwd        - prints local directory
+    $(pwd)
+
+docker images   
+    docker rmi <image name> -f
+docker ps -a        //show all containers
+    docker rm <container name>
+
+Docker compose  
+    can initialize and run multiple seperate containers
+    docker-compose up
+    docker-compose down 
+- `docker pull    <image-name> : <version>`
+- `docker history <image-name>`
+- `docker build   <image-name>`
+- ` -t` option
+- `docker restart <container-name>`
+docker volume ls
+docker volume prune
+
+
+Service configuration reference for Docker Compose
+https://docs.docker.com/compose/compose-file/#service-configuration-reference
+
+ideally one person would be creating images/containers specifically (most developers wouldn't be doing this)
+docker hub - facilitate collaboration between pieces of the application 
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Agile Scrum
+    When working as a team
+        Have a standup in the morning (track these somehow)
+        Everyone works of user stories
+            implement test driven development
+                write tests first, then write the applicaiton
+        Have someone that works as a scrum master - run the rituals, check on everyone, make sure no blockers
+        Have a stand down/retrospective 
+            what went well, what didn't go well, what can we do better
+         
+
+
+11/17/20_______________________________________________________________________________________________________________________________________
+more Docker, through module 6, learn lessons, then docker checkpoint
+
+Service: A configuration of one or more containers of the same image, deployed in a swarm.
+Configuration: A yaml file containing the details of how the service(s) should build and behave.
+Task: Scheduled operations created by a service.
+
+docker stack - app having multiple services
+    A stack is defined in a yaml file. 
+        It contains the configuration for the stack and each service. Let's compose a stack.
+registry - server that holds many repositories
+    each repositry is a project on its own
+
+https://www.virtualbox.org/wiki/Downloads
+
+images created with build command
+images produce a container with the run command
+-------------------------------------------------------------------------------------
+DOCKER COMMANDS
+
+docker --version            //show version of docker
+docker info                 //information about docker
+docker run <container name>     //run a container, if not local, it will pull from Dockerhub
+docker images               //show the images that are cached on local machine
+docker ps -a                //show all containers on local machine
+docker ps                   //show running containers on local machine
+docker run --name <name of the container> <name of the image>       //run an image and give the container a name
+-f                          //will force a command
+docker rm <container-name>      //remove containers
+docker rm <container-name> <container-name> <container-name> <container-name>    //can put multiple container names in the same command
+docker rmi <image-name>     //remove local image
+docker stop <container-name>    //stop running container
+docker start <container-name>   //start a container
+docker build -t nodeserver .               //relative filepath by ' . ' so cd into directory with the dockerfile, -t is tag, gives the image the name 'nodeserver'
+docker pull node:latest         //pull the "node" image of latest version down from Dockerhub
+docker run -d -p 1000:3000 --name slytherin_rulez --rm nodeserver       //-d runs as detatched, -p make all necessary parent folcers automatically
+docker history node:latest      //show build history of an image
+docker run -d -p 2000:8080 -v $(pwd):/src/app --name psychic_container2 colorserver     //$(pwd) will evaluate to the current working directory
+                //-v take already-build image and mount a volume, where the spun up container should reference: directory inside the container you want those file changes to be reflected
+docker logs <container-name>    //show logs of container operations (if run as -d)
+docker network ls           //show docker installed networks
+docker network inspect bridge       //inspect the 'bridge' network
+docker-compose up               //runs the docker-compose file
+    ctrl + c        //stop running containers
+docker-compose up -d            //runs the docker-compose file in detatched state
+    --build     will force rebuild of images
+docker-compose down             // stops all app's containers, removes app's containers, removes network that containers wer attached to
+    -v option will delete any volumes associated with containers you are deleting
+    `--build` option with the `docker-compose up`       //force a rebuild of images in app
+docker-compose down --rmi all       //will remove images created for app 
+docker volume prune             //will remove all dangling volumes on local machine
+    y to confirm
+docker-compose stop             //stop services running in detached mode
+docker-compose run api env          //view environment variables for 'api'service 
 
 
 
+docker build -t your_repo_name/apidemo:latest .     //create a new build 
+docker push your_repo_name/apidemo:latest           //push image to your repo
+docker pull your_repo_name/image_name:version_tag       //pull from a repo
+
+EXAMPLE Dockerfile
+
+# What image do you want to start building on?
+FROM node:latest
+
+# Make a folder in your image where your app's source code can live
+RUN mkdir -p /src/app
+
+# Tell your container where your app's source code will live
+WORKDIR /src/app
+
+# What source code do you what to copy, and where to put it?
+COPY . /src/app
+
+# Does your app have any dependencies that should be installed?
+RUN yarn install
+
+# What port will the container talk to the outside world with once created?
+EXPOSE 3000
+
+# How do you start your app?
+CMD [ "npm", "start" ]
 
 
+EXAMPLE yaml/yml file
+version: '3'
+
+services:
+  survey:
+    build: survey_server/
+    depends_on:
+      - 'database'
+    ports: 
+      - '8080:8080'
+
+  results:
+    build: results_server/
+    depends_on:
+      - 'database'
+    ports:
+      - '3000:3000'
+
+  database:
+    image: mongo:latest
+
+
+Dockerfile
+
+- [ ] Open up the Dockerfile in Module 3's directory and under the comment '# What image do you want to start building on?' type `FROM node:latest`
+- [ ] Under the comment '# Make a folder in your image where your app's source code can live'  type `RUN mkdir -p /src/app`
+>`mkdir` : Creates a directory
+>` -p` : make all the necessary parent folders automatically
+>`/src/app` : The path of the directory you are creating
+- [ ] Under the comment '# Tell your container where your app's source code will live' type `WORKDIR /src/app`
+>As the comment implies, this command tells your container which directory is the working directory
+- [ ] Under the comment '# What source code do you what to copy, and where to put it?' type `COPY . /src/app`
+>`COPY` takes two arguments (It's a little hard to tell, but ` . ` and `/src/app` are separated by a space)
+>The first argument (the ` . `) says where to copy the app's source code from. In this case ` . ` is a relative path that points to the directory the Dockerfile is currently in.
+>`/src/app` is the second argument and in this case refers to the directory inside of the image that we just made a few commands ago - the working directory where we want the app's source code to live and where the source code is going to be copied to.
+- [ ] Under the comment '# Does your app have any dependencies that should be installed?' type `RUN yarn install`.
+>This installs all the dependencies necessary to run our node application using the yarn package manager (which was included as part of the base image, conveniently enough). You might have noticed the .dockerignore file in this repo; I won't get in depth into what it does in this guide - you can research it if you're curious. But a quick explanation of it's purpose is that it prevents any previously installed node modules in the directory from being copied into the image. This guarantees all dependencies come from the `RUN yarn install` command rather than inadvertently copied from elsewhere. 
+- [ ] Under the comment '# What port will the container talk to the outside world with once created?' type `EXPOSE 3000`
+>This command will expose the container's port 3000 which will need to be mapped to a port on the host when spun into a container by using the ` -p` option with the `docker run` command
+- [ ] Under the comment '# How do you start your app?' type `CMD [ "npm", "start" ]`
+> This command tells the image to run the command `npm start` from inside the container once it is created, which will start our application inside the newly spun-up container
+
+
+YAML/yml
+
+- `version: 3` - This tells Docker Compose what version to run. At the time of this writing there are 3 versions available, so version 3 is the latest one. All the versions are slightly different and you can read more about the differences [here](https://docs.docker.com/compose/compose-file/compose-versioning/).
+- `services:` - This tells docker that all the directly subordinate lines are going to be separate containers in our app (or 'services' if we're thinking in terms of microservice architecture). 
+        So looking at the '.yml' file, 'survey', 'results', and 'database' are all services and Compose will spin up a separate container for each. This happens to be exactly what we did manually in the last Module!
+- `survey:` - This defines the first service in our app that will be spun up into a container. The subordinate lines define how Compose will do this. Let's keep going ->
+- `build: survey_server/` - Subordinate to the survey service, this line tells Compose where to find the Dockerfile that it can use to build the survey container. It is a relative file path starting from the directory containing the '.yml' file, so it is saying 'within this directory, look inside the survey_server/ directory and you will find the Dockerfile you need.'
+- `depends_on: - 'database'` - I know this is actually two lines but I'm treating it as one since they go together. `depends_on` controls the startup order of the containers once Compose builds them. It's basically telling Compose, 'Don't start this container until my "database" container has been spun up'. 
+- `ports: - '8080:8080'` - This one is pretty self-explanatory. It maps port 8080 on the host to the exposed 8080 port on the container. Compose runs the `docker run` command for us and this is like telling it to use the `-p` option with these specific arguments.
+- `results:` - Moving on to the next service, the subordinate lines will define how to go about making a results container
+- `build: results/` - You get it, pretty much the same as when we defined where to find the survey_server Dockerfile. Again, Compose uses this information to do the `docker build` step for us. Pretty neat!
+- `depends_on: - 'database'` - Same as with the survey service, the results service also connects to the database so this line makes sure the database service is spun up before spinning up the results container.
+- `ports: - '3000:3000'` - Here we go with the port mapping again.
+- `database:` - Let's define the database service.
+- `image: mongo:latest` - We want to create a MongoDB container and use it as our database service. So rather than tell Compose to build it from a Dockerfile like before, we tell it to spin up the container from the 'mongo:latest' image cached on our machine. And if there is no 'mongo:latest' image it will pull it from Dockerhub before running.
+-------------------------------------------------------------------------------------
 
