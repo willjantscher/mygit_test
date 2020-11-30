@@ -1,0 +1,136 @@
+11/30/20______________________________________________________________________________________________________________________________________
+Java
+
+Java is a statically typed, compiled, object-oriented language; becoming proficient in Java sets you up for success in a wide variety of other languages, such as C#.
+java and spring 
+using java version "11.0.9" 2020-10-20 LTS
+
+IntelliJ is an IDE for java
+
+
+
+open project in IntelliJ,
+    in terminal
+    cd to project folder
+    which idea
+    idea .
+        opens project in IntelliJ
+
+---------------------------------------------------------------------------
+make sure to Cd into the right parent directory before opening (idea .)
+need to add project structure
+    file, project structure, 
+        set sdk: new - jdk..., contents, home
+---------------------------------------------------------------------------
+
+create new project, Gradle, with Java
+to add a new folder, right click = new= package
+to add application.java as a file, new, Java Class
+
+
+psvm    - public static void main
+sout    -print out
+
+git init  
+git status
+touch .gitignore
+    open and add 
+        .gradle
+        build
+        out
+        .idea
+git add -a
+git commit -m'initial commit'
+    Go to github.com now
+create new repository
+    copy commands to push an existing repository and run in terminal
+
+Java compilation
+    Java is a compile language  
+        1. write code (C family)
+        2. compile coce (checks for vailidity and turns into java bit code)
+        3. run on JVM (Java vitual machine)
+        run 3 ways
+            1. command line
+            2. build tool (Gradle or maven)
+            3. IDE like intellij
+
+javac Progam.java   (will compile code)
+Java Program        will run
+
+need public static void main to run
+system.out.println to see things in termina
+args are passed into program
+
+compile all files, run with classpath 
+    or create a .jar file
+        includes classes, other jar files, manifest file
+Build tool - finds files, compiles, generates jar file
+    Gradle, maven
+    build file
+    command-line tool
+
+add plugins
+
+    docker
+    indent rainbow
+    nyan progress bar
+    sonarlint
+    string manipulation
+
+brew install gradle
+gradle version
+6.7.1
+
+
+
+NEED to setup build.gradle file properly, example:
+https://docs.gradle.org/current/userguide/building_java_projects.html
+-----------------------------------------------------------------------------------------------------------------------------
+plugins {
+    id 'java-library'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+version = 'version'
+group 'com.galvanize'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.galvanize.Application'
+        )
+    }
+}
+
+to run: 
+gradle build
+java -jar build/libs/java-playground-version.jar 
+
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+

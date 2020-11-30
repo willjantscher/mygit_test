@@ -178,11 +178,11 @@ docker volume prune             //will remove all dangling volumes on local mach
 docker-compose stop             //stop services running in detached mode
 docker-compose run api env          //view environment variables for 'api'service 
 
-
-
 docker build -t your_repo_name/apidemo:latest .     //create a new build 
 docker push your_repo_name/apidemo:latest           //push image to your repo
 docker pull your_repo_name/image_name:version_tag       //pull from a repo
+docker system prune         // clean up unused of a lot of stuff
+
 
 EXAMPLE Dockerfile
 
@@ -267,4 +267,77 @@ YAML/yml
 - `database:` - Let's define the database service.
 - `image: mongo:latest` - We want to create a MongoDB container and use it as our database service. So rather than tell Compose to build it from a Dockerfile like before, we tell it to spin up the container from the 'mongo:latest' image cached on our machine. And if there is no 'mongo:latest' image it will pull it from Dockerhub before running.
 -------------------------------------------------------------------------------------
+microservices: 
+docker pairs project 
+
+DOCKER in REACT
+https://mherman.org/blog/dockerizing-a-react-app/
+
+DOCKER checkpoint
+pull from github: https://github.com/shortf15e/USAF-sdi-databases-checkpoint
+
+
+11/18/20_______________________________________________________________________________________________________________________________________
+DOCKER with POSTGRES
+--------------------------------------------------------------------------------------------------------------
+more on docker compose files
+https://www.youtube.com/watch?v=A9bA5HpOk30&ab_channel=BenAwad
+https://www.youtube.com/watch?v=o3N5bzD6Qb8 
+https://www.youtube.com/watch?v=A9bA5HpOk30&ab_channel=BenAwad
+------------------------------------------------------------------------------------------
+Mattias from galvanize
+    Bloom's taxomony   -pyramid of cognitive domain
+        get working code - then change it to build on understanding
+    class is about giving a foundation for a career where you continue to grow your understanding
+    How to learn effectively
+        post it - what do I think will happens
+        run it - what happens
+        build a mental map
+    learn how to google better
+        'zone of possible development'
+            can accomplish some/most of a task but need some help
+            don't be stuck more than 10-15 minutes, but 10 ish minutes is A9bA5HpOk30
+                if getting help, here is what we have tried: 
+    modern software development: working with teams, talk about code, what is happening, what is expected ...
+    mattias.ljung@galvanize.com       for questions
+    applications like dash - download all documentation for tools (can work offline)
+https://kapeli.com/dash
+
+------------------------------------------------------------------------------------------
+PROJECT 1
+    Requirements for each person,
+Each student must build a part of the project that is full stack (database, server, UI, front end including CSS/design)
+
+Front end is not the microservice itself. 
+    schema for databases
+    user stories    (for UI and for microservices)  write good ones 
+Will Jantscher, Sean Martin, Antonio Daehler, Juan Silva, J. Russ
+https://app.diagrams.net/#G1Lv49geXhtRD7t88zu8SpjHmqQDpfSxgc
+
+react routes to conditionallyr render
+library: react router dom 
+
+once we make student db, send out to people
+Gant CHARTS   
+
+
+Define ports
+passing sign in through cookies?
+    format
+
+Index with links
+Database format?
+
+
+Seperate services, each one has a unique ip address? 
+
+
+
+    
+
+
+
+
+
+
 

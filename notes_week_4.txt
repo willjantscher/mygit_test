@@ -476,6 +476,11 @@ Databases checkpoint
 
 
 
+Do microservices, not different pages (blog functionality)
+    each service should do its own thing....
+microservices must interact with eachother 
+    ex. facebook: messenger, main page, etc...
+    
 
 
 
