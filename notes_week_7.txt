@@ -30,7 +30,7 @@ to add application.java as a file, new, Java Class
 
 psvm    - public static void main
 sout    -print out
-
+------------------------------------------------------------------------------------------------------------------------------------------------------
 git init  
 git status
 touch .gitignore
@@ -44,7 +44,7 @@ git commit -m'initial commit'
     Go to github.com now
 create new repository
     copy commands to push an existing repository and run in terminal
-
+------------------------------------------------------------------------------------------------------------------------------------------------------
 Java compilation
     Java is a compile language  
         1. write code (C family)
@@ -122,6 +122,743 @@ gradle build
 java -jar build/libs/java-playground-version.jar 
 
 ----------------------------------------------------------------------------------------------------
+Java
+Primitive types, which always start with a lowercase letter: 
+    byte, short, int, long, float, double, char, and boolean.
+Object types, always start with an uppercase letter
+    String, ArrayList, Object
+
+can type java in terminal with:
+    jshell
+
+
+sout is shortcut for system out ...
+
+wakatime
+
+
+use == for if statmenets with primatives
+use .equals for objects
+
+while loops and for loops for java
+java data types (primitives, objects)
+
+primitives hold bits 
+object reference the data
+strings behave like primatives
+
+Primitives
+Variables of the primitive type represent a series of bits. The local variable stores the entire value in memory. 
+Objects
+A variable can also be an Object. Unlike with primitive types, variables that are assigned objects store only a reference to the object's location elsewhere in memory.
+
+can pass in arguments in intellij
+
+---------------------------------------------------------------------------
+this is the group for java portion -
+    Tom Thorpe, Peter Vayda, Brianna Tanusi, Caden Reynolds, Aria LaFord
+    will work on user stories together
+    pull request, feature branch, etc...
+    Operation Pheonix, github
+        https://github.com/gSchool/operation-phoenix
+entire class is a team
+---------------------------------------------------------------------------
+need this in the build.gradle in order to run from command line
+./gradlew build
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.galvanize.Application'
+        )
+    }
+}
+
+12/01/20______________________________________________________________________________________________________________________________________
+Java Classes
+
+Class - The blueprint for how instance objects are created; starts with an uppercase letter
+Instantiation - The creation of an object from a class
+Instance - An object that has been created from a class
+
+State and Behavior
+state= snapshot of current characteristics
+behavior= descibes what the object can docker
+
+SHORTCUT to GENERATE 
+cmnd N
+    will allow you to generate things like getter and setter quickly
+    toString will output states/properties
+
+each instance has its own state 
+    need behaviors in classes to change state'
+
+void - a method that does not return anything
+when making input fields for void, need to specify the type (ex: String, bool, etc)
+
+objects are instances of classes
+
+for methods that are returning something (with return or sout) delare with the type of the output:
+    ex: public int () {privat int this = 1; return this;}
+
+Constructors - special type of class method
+construct is a method that is only called once, when object is created, and can never be called again
+    used to create initial conditions
+    can generate with cmnd N shortcut
+constructor name has the same name as the class
+
+Instance methods
+    can return from void method if you do not return a value
+    instance methods - need to be run on an instance of a class
+to reference internal state use this.(statename)
+states are declared like: private int = 0;
+
+In Java, it's common for most fields to be private in order to ensure that they cannot be accessed from outside the class. 
+If you wish to be able to retrieve or modify those fields, you will create getters and setters. 
+    Getters and setters are just normal instance methods that allow you to expose internal state.
+
+Java object model
+primitive types - series of bits
+object types - graphs of objects (string and array)
+    every top level class has object as its super class ( has built in methods )
+    (something) instanceof (something)
+classes have 1 direct super class, but can implement many 
+
+Overloading Constructors
+object has a default constructor ()
+every class inherits the default, no-args constructor from Object
+you can override that constructor with your own no-args constructor
+constructor signature
+    determined by number of parameters and the types of those parameters
+        can have multiple constructors (with arguments and without arguments)
+can overide constructor by having no-args constructor pass initial states to the args constructor like: this(false, 0.0f)
+    primary constructors (desgin pattern)
+        have 1 primary constructor!
+    0 args -> 1 args -> 2 args (last one is the primary)
+     the constructor that takes the most arguments usually becomes the primary. 
+
+Testing: intro to junit (testing framework in java)
+    each test method is a public void method annotated with at test
+    3 parts 
+        1. setup
+        2. execution
+        3. assertions
+    to run all tests, right click on java in test directory and click run 'All Tests;
+    can click on tests to see details
+
+    in cmd line
+        ./gradlew test
+
+How to setup jUnit and run tests
+    in build.gradle
+        ensure buildscript that has dependencies with classpath org.junit.platform:...
+        apply plugin ...
+        add testCompile in dependencies
+
+        dependecies, apply plugin, testCompile
+    create test directory   
+        right click src, new, directory (test)
+            add directory (java)
+                mirror package structure of src application
+                    create the test class (new java class)name applicationTest
+    @test
+    public void testShoutReturnsUpperCase() {
+        //setup
+        Echo echo - new Echo();
+        //execution
+        String result = echo.shout("hello");
+        //assertions
+        asserEquals("HELLO!", result);
+    }
+
+    need to create the echo class (shortcut to create new class in src filepath)
+
+Writing tests
+Things to remember when writing tests:
+
+The structure of src/test should mirror the structure of src/main.
+For every main class you want to test, you should have a corresponding test class in your test directory.
+As a general rule, you should have one test for every public method in your class.
+Each test method is a public void method that has an @Test annotation on it.
+Individual test methods have the following basic parts:
+Setup — for instantiating classes
+Execution — for running your code to test
+Assertion — for verifying that your code has the expected behavior
+
+REd-Green-Refactor -TDD, 
+    write automated tests before writing the code
+        Red - write failing test
+        Green - make it pass
+        Refactor - improve the code
+    Rules:
+        only write codee in responese to a fialing test
+        make the tests pass with the simplest code possible
+    something = !something (sets it as opposite value (boolean))
+Make sure your tests are high quality
+
+--------------------------------------------------------------------------------------------------------------
+Blue J is program for visualizing coding in Java
+StarUML is better version of this
+--------------------------------------------------------------------------------------------------------------
+Code coverage
+    see if the tests cover all of the code
+    right click on the test code, run with coverage
+        gives percentages of methods  covered with tests
+            gives color in sidebar showing which lines have test coverage
+    can right click on a single test and run with coverage
+    ADD code coverage in gradle
+        add jecoco plugin
+        add 3 configurations
+        will add 2 tasks to gradle tab on right
+        ./gradlew build
+        ./gradlew jacocoTestReport
+            will create repors file and generate a coverage report
+    can add section to build.gradle to make test fail if coverage is below a threshold
+
+--------------------------------------------------------------------------------------------------------------
+option enter to auto import assertEquals into intellij test (imports the static method)
+Flexbox and grid properties of CSS 
+option enter on a class that does not yet exist (ex in testing class) will create that class
+    works with methods as well
+--------------------------------------------------------------------------------------------------------------
+Casting
+    tell the compiler you know the data type you want to work with 
+    (type) something
+    effectively bypassing the compiler
+    indicate to the compiler how to treat something (what type)
+    casting rarely needed now
+
+2:269:4
+
+to get coverage
+click run, show code coverage data, and then select under build/jacoco/junitPlatformTest.exec
+
+12/01/20______________________________________________________________________________________________________________________________________
+in Java - package specifies the filepath where it can see all the classes etc saved under that folder
+    scope - public can be access ANYWHERE (if filepath/package is setup correctly)
+Building Apps from stories
+    breakdown the problem (series of chained inputs/outputs)
+    Solve subproblems
+
+Testing
+@BeforeEach
+public void....
+    this will run before every test!!!
+use try and catch, but remove when refactoring
+
+
+GITTTTT
+    git checkout -b file-read       //
+
+--------------------------------------------------------------------------------------------------------------
+PROJECT!
+https://miro.com/app/board/o9J_ldA_RWM=/
+repurpose the shuttle program (weaponized ...)
+    Activity (like recruitment) - put activities in order
+        Tasks (like get pool of applicants, filter applicants etc.)
+            user stories (apply, special recommenation, etc)
+use fibanachi for labeling user stories, identify difficulty
+    1, 2, 3, 8, ...
+
+
+--------------------------------------------------------------------------------------------------------------
+User story
+    As a ....(persona type)
+    I want ...(action)
+    So that...(benefit)
+--------------------------------------------------------------------------------------------------------------
+-small unit that fits into the applicatoin
+Features = activities
+Epics = tasks
+user story maps
+    Kanban and kaizen
+    MIRO!!!
+as a weopons officer, I want to be able to fire lasers, so that I can get the baddies
+
+
+git checkout 
+git branch
+git checkout 2-new-feature      will 
+git checout -b 2-new-feature    //is local to machine
+
+--------------------------------------------------------------------------------------------------------------
+Git Commands
+https://confluence.atlassian.com/bitbucketserver/basic-git-commands-776639767.html
+--------------------------------------------------------------------------------------------------------------
+
+
+create new feature
+git checkout -b documentation-Scorpion      //create new branch and switch to
+//manipulate readmefile
+//push branch up to repo
+
+create pull request,
+Review changes
+resolve conflicts
+    local stuff different from remote
+use gui on github to do requests and resolve and merge etc.
+
+git status
+git checkout 
+
+git branch
+git checout documentation-crane
+
+--------------------------------------------------------------------------------------------------------------
+Proper git flow 
+    branch off of master
+    work on problem
+    pull request
+    merge to master
+    Admin will accept or reject the request
+git pull origin master
+    or
+    git pull origin my_default_branch_name
+git push origin documentation-Scorpion
+
+to merge to master
+    git checkout master
+    git merge my_default_branch_name
+
+git fetch --all
+git reset --hard origin/master
+    this will overide local repo with what is remote
+
+run tests using (build execution,...build tools...)
+
+
+.gitignore  
+    .gradle
+    .idea
+    build/  (build folder)
+    out
+
+./gradlew build
+
+right click, add package
+    on gradlebuild file??
+
+//TODO - stuf inside of application.java will add that to todo list in intellij
+//FIXME
+// - will be reflected in the todo tab in intellij
+
+Java
+    ArrayList   private ArrayList<String> something = new ArrayList();
+    setter and getter
+        encapsulation = allows user to get or set private variables in a class
+    Arrays are immutable (can't change size of array)
+    ArrayList inherits from list
+    ArrayList - you can change the size of this
+        use .add on this
+        alist.add("Steve"); //This will add "Steve" at the end of List
+        alist.add(3, "Steve"); //This will add "Steve" at the fourth position
+         names.set(0, "Lucy");  //replace an item in the arraylist
+         //Removing 3rd element
+        alist.remove(2);
+        //Removing "Steve" and "Angela"
+        alist.remove("Steve");
+        alist.remove("Angela");   
+
+
+use @Before(Each) in applicationTest (need Application application; above the @Before)
+    initialize
+    execute
+    assess
+        Application application;
+        @Before void init() { application = new Application(); }
+
+
+In practice, you should always use the Gradle Wrapper in your projects for two reasons:
+
+It lets you have different versions of Gradle for different projects.
+Users who need to build your project do not need Gradle installed.
+To add the Gradle Wrapper to a project, go to the project directory and type the following:
+
+gradle wrapper
+    global gradle (system wide), or gradle wrapper commands
+    ./gradelw build     --build a project
+    ./gradlew           
+    gradlew file in projcet
+    gradle directory
+    ALWAYS use gradle wrapper
+        run different gradle versions on different Apps
+        no need to install gradle globally
+    GENERATE a gradlewrapper
+        gradle -v       ensure you have a system install
+        gradle wrapper      -generates the gradle wrapper (with directory, etc...)
+        ./gradlew build     builds the project
+    want to modify the .gitignore
+        exclude
+            .gradle/ 
+            build/
+    
+Data Structures and Algorithms
+    String[] names = new String[4]  -creates array of string type with capacity 4
+    names[0] = 'something'
+    can iterate over Arrays
+        for(String name : names) {}
+    Arrays are fixed size 
+    Arrays do not print nicely
+    can't call methods on Arrays
+
+    ArrayList<String> namelIst = new ArrayList<>();
+    nameList.add("someone")
+    nameList.get(1) will return that item
+    can itterate
+        for(String name : nameList){}
+            will only print populated arraylist elements
+        nameList.forEach(System.out::println)   -do a function for each
+        nameList.indexOf("someone")
+        nameList.sort, nameList.remove
+    print out nicely
+    An ArrayList can also be instantiated from an existing Array.
+    The sort method takes a Comparator argument that specifies how to compare the elements in the list while sorting them
+
+    String names[] = {"someone", "someone"}
+    ArrayList<String> nameList = new ArrayList<>(Arrays.asList("someone", "someone"))   need to import arraylist package
+
+
+intellij
+    ctrl enter over class (auto generate things like getter and setter)
+
+HashMaps
+    map objects to keys
+    specify type of key and type of value
+    specify the key and the object
+    constant time lookup (fast)
+    can have any object type for HashMaps
+        Arraylists have a single type, get by indexOf
+        o(n) to find specific item
+        hashmaps find item by key rather than indexOf
+    HashMap<String, Integer> birthYears = new HasMap<>();
+    birthYears.put("someone", 1889); ...
+    birthYears.get("someone));
+    birthYears.containsKey("someone")
+    birthYears.forEach((key, value) -> {
+        some code
+    })
+
+    One important difference between ArrayList and HashMap is the ordering of the items. An ArrayList has a defined order (the first item is index 0, the second is index 1, etc.). A HashMap does not have a defined order, so you should not write code that assumes any particular order.
+    https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html
+    more hashmap types ^
+
+ One of the main concepts you'll learn in this unit is which parts of your code should print and which parts should return. You'll also learn ways that you can separate your code into different packages, how to define API contracts with interfaces, and how to use static methods for stateless operations.   
+
+packages are like folders (they can contain other packages, fiels, etc.)
+    allow you to keep your classnames simple
+3 ways to reference them in other classes   
+    (can be multiple classes with the same name)
+    1. import class directly (auto import - option enter)   adds import statement
+    2. import entire packages (change import statement to .* ex: import java.util.*;)
+    3. Fully qualified class names - (use full name inline) 
+IDE can take care of messy imports, grey are unused, hover, option enter (optimize imports)
+right click on application(new, package)
+    can put packages in packages (like your folder path)
+    .* does not include things in nested packages
+    don't need to import classes that are in the same package you are referencing them from
+
+Visibility
+Top Level Classes
+    public - can be accessed by everything else
+    no modifier - package private (things in same package can see it, others cannot)
+Class member cohoices
+    public
+    protected   - visible in the same package, also visible in subclasses in any other package (like extends)
+                -like private, but things in the same package can still manipulate those
+    package-private - package-private method can be seen within its package. It is not visible to subclasses or sub-packages.
+    private - only can be seen in their own class
+expose the minimum amount necessary
+    use package-private by default
+
+Exceptions
+Try/Catch/Finally
+
+
+Lists, Maps, sets
+lists - store items in order
+    ArrayList
+    LinkedList
+Maps - store key/value pairs
+Sets - store unique ...
+
+List is an interface, not a class
+
+
+
+GIT STUFF ---------------------------------------------------------------------------------------------------------
+git fetch --all
+git reset --hard origin/master
+------------------------------------------------------------------------------------
+
+
+Team Scorpion🦂
+Work on which problem - 
+remove applicant
+get starUML
+
+
+12/03/20______________________________________________________________________________________________________________________________________
+
+Add a team member
+remove a team member
+assign crew position
+------------------------------------------------------------------------------------
+git in terminal
+git branch      -list  branches
+git branch -r      -will show remote branches
+git branch -a     -will show all branches
+git remote show origin  -will show remote information (more verbose)
+    Look at sourcetree
+git stash - 
+git checkout assignteam1
+git branch -D branchName        -will delete local branch
+
+
+
+------------------------------------------------------------------------------------
+attach branch to the issue'
+    go into pull requests,
+    create new request,
+    once created, on the right, click on linked issues, and select the issue you are working on
+        this will show 1 linked pull request in the project
+can attach issues to project
+    in issues,
+    right side, click on project and select
+
+use .join on an arraylist to join items with specific stuff between them
+
+can add ,"stuff" after Assert test statements to return that if tedst fails
+
+//TODO in codde 
+//TODO - stuf inside of application.java will add that to todo list in intellij
+//FIXME
+------------------------------------------------------------------------------------
+How to allow classes to take inputs
+public classname(input type, input value) {this.value = input value;}
+------------------------------------------------------------------------------------
+
+The Accumulator pattern 
+    Determine the inputs / output for the normal case:    
+    Determine the inputs / output for the empty case:
+    Define the method:
+    Define and initialize the accumulator:
+    Return the accumulator:
+    Iterate and alter the accumulator:
+Whenever you are faced with a problem that involves iterating over arrays and lists while storing a value that is altered during this iteration, it's likely an accumulator problem.
+Note: When using a string as an accumulator, remember that concatenating strings with += syntax in a loop will cause it to construct a new copy of the string with every iteration — using up more memory. It is instead recommended to use the StringBuilder class  , as it provides a buffer and only creates a new String when its .toString() method is called.
+
+dont use += for strings in accumulators
+https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html
+------------------------------------------------------------------------------------
+   StringBuilder str 
+        str = new StringBuilder(); 
+        str.append("GFG"); 
+        str.toString();
+------------------------------------------------------------------------------------
+
+Boxing/Unboxing
+primitive data types have wrapper classes
+    int is primitive
+    Integer is a reference type
+        primitive types assign specific memory 
+        objects are allocated object in memory of any size, 
+            ArrayLists - array of objects
+    turn primitives into objecst (wrapper classes)
+
+each primitive has an equivalent wrapper class (has methods)
+Boxing - going from primitive to wrapper object
+unboxing - getting the primitive'
+    java does this automatically
+    int = Integer.valueof()
+
+primitives- lightweight and fast
+wrapper objects - have some convenience methods
+if storing or converting - use wrapper, if math, use primitives
+
+Choosing the Right Data Structures
+Data types  
+    Lists - store items in order 
+        ArrayList - good for adding/removing at end of list
+        LinkedList  - good for adding/removing anywhere
+    Maps - store key/value pairs
+        HashMap- keys unordered
+        LinkedHashMap - keys in natural order
+    Sets - store unique elements
+        HashSet - items unordered
+        LinkedHashSet - iterate items using their natural order via comparable
+
+name, attributes, children
+
+interfaces
+    contract that class must adhere to
+
+    ex: public class Buyer implements User {}
+        will need new get address method with @overide
+    most interfaces are collections of method signatures, and these define the common behavior that classes can share.    
+An interface can be used as a type, which then refers to an object of any class that implements that interface.
+    only methods defined in an interface can be called if the interface is used as the type.
+
+Exceptions
+    Try/Catch/Finally
+        handle errors with catch
+    exceptions are thrown if code can't do something (bad)
+    try{} catch (Exception e ){} finally {}         adding finally allows conitnuation even if your catch has mistakes. Also, it is run no matter what
+    allows code to continue running
+can catch for specific errors (give exception name instead of Exception)
+for multiple catches, go from more specific to more generic
+
+Throwing Exceptions
+    throw new Exception("some message here")    need to add throws Exception to the method
+    anything that calls that method needs to be wrapped in try/catch
+
+    create your own exception classes
+        create new class, extends Exception, use super...
+
+Debugging
+    every method creates a stack frame (mini environment)
+    heap - area of memory that last while program runs
+    stack frames are added and removed as the program runs
+
+click bug next to the run dropdown
+    add breakpoints by clicking by the line number (will add red dot)
+        this will stop execution at this position
+            will show stack fram and variables at that position
+        click play to continue
+step over   - will execute statment on that line and move to the next statement
+step into - 
+
+12/04/20______________________________________________________________________________________________________________________________________
+StarUML     (or BlueJ)  -app or website
+        go to extensions - get java extension       will allow you to generate code
+    add classes
+    add superclasses
+    add attributes
+    add operations/methods
+    + or - indicate putlic or private
+        aggregate - collection of another classs
+    enumeration
+    Interfaces - methods that all that implement it must have
+        default to public
+tools, java, generate code
+
+
+
+Overloading!!!! (can take different inputs)
+    https://learn-2.galvanize.com/cohorts/2242/blocks/3/content_files/units/classes/overloading-constructors.md
+
+------------------------------------------------------------------------------------
+Pomadora technique
+    work 20 min, take 5 min breakdown
+------------------------------------------------------------------------------------
+Learn - in groups, 
+
+Enumeration
+
+Referencing Classes vs Interfaces
+    1. prefer interfaces for parameters or fields
+    2. prefer concrete types as return values from methods
+    3. prefer interfaces to concrete classes when declaring variables
+
+    Interface types
+        parameters
+        fields
+        variables
+    class types
+        return values
+        when class-specific methods are needed
+When generating or returning an object, it's better to use a concrete class. However, when receiving an object, e.g. when declaring variables, fields, and parameters, it's desirable to use interfaces. 
+To sum up, the general rule is to be liberal (general) with your inputs but specific with your outputs.
+
+Enums
+    public enum Something {
+        VALUE, VALUE2, VALUE3
+    }
+    used as a type (private Something...)
+    reference with Something.VALUE
+    use enum when you have a switch statement on the values
+        switch ()...
+    You should use an enum when you have a hard coded list of values that will remain consistent. 
+Enums that are nested within a class are static by default.
+
+Static Methods and fields
+Static methods
+When you use a static method, you call the method on the class itself and not the instance.
+    instance or static
+    static 
+        instances can directly access the static fields of their class
+    static - 
+        call method directly on class, not instance of class
+        memory
+            has classes, and objects (instances of classes)
+Methods and fields should be static when they are the responsibility of the class and not the responsibility of an instance of the class.
+For example, length() is an instance method from the String class because it acts upon a String object. The valueOf method for the String class (String.valueOf(int)) is a static method because it is a String concept but does not act upon a specific instance of String.
+
+Exceptions
+    dependencies under build.gradle - will show wich junit version you are using
+    terminal ./gradlew dependencies | grep junit
+    gradle panel at right of screen
+
+    Junit 5
+        ex:
+        @Test
+        public void itThrowsWhenPassedAnEmptyMethod() {
+            Exception exception = assertThrows(Exception.class, () -> {
+                code that throws the exception;
+            })
+        }
+        assertEquals("", exception);
+        throw new Exception("something")
+
+    Junit 4
+        write regular try catch in a @Test
+
+
+------------------------------------------------------------------------------------
+Learn TDD
+Test-Driven Development is about writing the test first before adding new functionality to the system. 
+    Defines success up front
+    Helps break our design down into incremental units
+    Provides working documentation for the codebase
+1. ensure correctness
+2. catch regressions (don't break other parts of the application with changes)
+3. inform design
+Types of tests  
+    unit tests (small, test isolated part of code)
+    integration tests (test more than one part of the application)
+        1. cover 1/2 layers or classes in the same layer - integration tests
+        2. cover all layers - end to end test, acceptance tests...
+Testing pyramid
+    unit tests (lots)
+        integration tests (test some layers)
+            integration tests (test all layers)
+
+Testing in jUnit
+https://learn-2.galvanize.com/cohorts/2242/blocks/851/content_files/units/junit.md
+        dependencies {
+            //testCompile group: 'junit', name: 'junit', version: '4.12'
+            testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+        }
+
+        test {
+            useJUnitPlatform()
+        }
+
+setup
+execution
+assertions
+
+switch statements - can call different code depending on a status 
+
+code coverage
+    intellij or gradle
+    jacocoTests     --make changes to the build.gradle file to incorperate
+    can cause build to fail if code coverage below a threshold
+
+
+
+
+
+
 
 
 
