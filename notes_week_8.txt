@@ -1,0 +1,823 @@
+12/07/20______________________________________________________________________________________________________________________________________
+3661
+git fetch --all
+git reset --hard origin/master
+    this will overide local repo with what is remote
+
+Java language checkpoint
+
+Lambdas
+    methods that are not bound to any objects
+    .forEach() takes a function
+
+    ex: words.forEach(word -> sout word.toUpperCase())
+
+Lambdas 
+    1. parameters (word)
+    2. arrow token (->)
+    3. Body (sout word.toUppercase())
+
+Expanded Lambdas
+    (String word) -> { sout.word.toUpperCase}
+    don't need parentheses for single input
+    dont need {} for single output
+        do for more than one
+
+    method references
+        built in lambdas
+        can call public static like (Application::lambdaName)
+
+Checked and unchecked exceptions
+    ever exception inherits from throwable (error or exception) - each has subclasses
+    Exception has runtime exception
+    unchecked exceptions are not checked by the compiler
+    Checked exceptions are things the client can recover from
+    unchecked exceptions  
+        errors - unexpected conditions
+        runtime Exceptions - caused by bad code
+    client code can recover - checked exception
+    due to bad coe - runtime exception
+    condition you have no control over - error
+
+things that extend exception are checked exceptions?
+
+12/08/20______________________________________________________________________________________________________________________________________
+Spring
+    Spring is an open-source Application Framework for Java, and is well known for it's Inversion of Control (IoC) Container. 
+    You can build command-line applications, but Spring is probably most well-known for it the Spring MVC project, which is an implementation of the Model-View-Controller pattern that's popular among both client-side and server-side web frameworks.
+    @RestController
+    @RequestMapping
+    declarative style
+https://spring.io/
+https://en.wikipedia.org/wiki/Spring_Framework
+https://spring.io/projects
+http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/
+https://spring.io/guides
+    Spring makes it easy to develop web applications, and Spring Boot makes it easy to develop Spring.
+    starter build.gradle files
+https://github.com/spring-projects/spring-boot/tree/master/spring-boot-project/spring-boot-starters
+    https://github.com/spring-projects/spring-boot/blob/master/spring-boot-project/spring-boot-starters/spring-boot-starter-test/build.gradle
+https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#getting-started-installing-the-cli
+
+Once you download your Spring Boot application, you can run it with 
+    ./mvnw springBoot:run or 
+    ./mvnw spring-boot:run
+    ./gradlew bootRun, and that's it!
+
+---------------------------------------------------------------------------------------------------------------
+Build new Spring Boot application from start.spring.io    
+    Visit http://start.spring.io/
+    Type "Web" and then select the "Web" dependency
+    Click "Generate Project", which will download a .zip file
+    Unzip the project, name it "spring-playground" and cd into it
+    Build and run the project
+        for Maven project
+            ./mvnw spring-boot:run
+        for Gradle project
+            ./gradlew bootRun
+        to see it:
+            http://localhost:8080/
+        ensure you have a working curl installation
+            curl -i localhost:8080
+        ctrl c to stop
+        curl - https://curl.haxx.se/
+    add project to github
+        git init
+        git add . 
+        git commit -m "initial commit"
+        create new repository on github
+        follow instructions on github to connect project to repo
+            git remote add origin https://github.com/willjantscher/spring-playground.git
+            git branch -M main
+            git push -u origin main
+---------------------------------------------------------------------------------------------------------------
+Visit http://start.spring.io/
+Select the dependencies you need
+Click "Generate Project"
+Unzip the project and cd into it
+Build and run the project
+Maven: ./mvnw spring-boot:run
+Gradle: ./gradlew bootRun
+Check your app with curl
+curl -i localhost:8080
+
+Requests and Responses
+Spring Controllers
+    Data can come into your app in several ways from an HTTP request:
+        Query strings (/somepath?name=Will&role=Teacher)
+        Path variables (/presidents/Obama, /presidents/Nixon)
+        Form data in the body of a request (name=Will&title=Teacher)
+        JSON data in the body of a request ({"name": "Will", "role": "Teacher"}) (covered in the next Unit)
+    URLs and HTTP Requests  
+        URLs
+            protocol -  (could be http://, https://, ftp://, file:// etc...)
+            host/domain name - (which contains the top-level-domain, domain name and any subdomains)
+            port - The port (in most public-facing URLs this is omitted)
+            path - starts with /organization/repository/... each segmant is a path variable/segmant...
+            query/querystring   - seperated from path by ? - key value pairs seperated by &
+            hash/anchor - isn't generally used in server-side programming
+        Http Requests
+            request line - The request line includes the method (an HTTP verb such as GET, PUT, POST etc...) and also the path + querystring.
+                http verb
+                path +  query string
+            headers
+                key-value pairs (content-type, Accept, ...) cookies stored here ex. application/json
+            body
+                for POST, PUT, Patch (not get)
+                JSON formatted (REST API)
+                URL encoded form data - fomratted same as query string
+        Http Responses
+            server sends this
+            structure almost identical to request
+                response line
+                    successful? or what error (200, 404, etc)
+                headers
+                    format of body and how long
+                body
+                    html, json, binary, css, etc...
+When you type a URL into a browser, or click a link to a new page, it constructs and sends an HTTP request and sends it to the server.
+
+Spring parses the HTTP requests for you. To access HTTP request data you can use annotations and method signatures to get strongly-typed access to whatever you need, such as:
+
+    @PathVariable       https://learn-2.galvanize.com/cohorts/2242/blocks/11/content_files/standards/request-response/accessing-path-variables.md
+    @RequestParameter   https://learn-2.galvanize.com/cohorts/2242/blocks/11/content_files/standards/request-response/accessing-querystring-data.md
+    @RequestHeader      https://learn-2.galvanize.com/cohorts/2242/blocks/11/content_files/standards/request-response/accessing-headers-and-cookies.md
+    @CookieValue        https://learn-2.galvanize.com/cohorts/2242/blocks/11/content_files/standards/request-response/accessing-headers-and-cookies.md
+    @RequestBody        https://learn-2.galvanize.com/cohorts/2242/blocks/11/content_files/standards/request-response/accessing-form-data.md
+
+Testing Endpoints
+    1. indicate want to run tests with springrunner
+    2. webMvctest
+    3. autowired MockMvc MVC
+
+    Test
+        1. construct request
+        2. send request
+        3. Response expectations
+
+
+---------------------------------------------------------------------------------------------------------------
+Testing with Spring
+@SpringBootTest - boots entire app and exercises entire stack (slow)
+mock requests much better
+
+    1. Annotate your test class with @WebMvcTest(YourController.class)
+    2. Add an @Autowired MockMvc field, like so:
+        @Autowired
+        private MockMvc mvc;
+    3. Then for every test you write, you need to:
+        Write a method annotated with @Test
+        Setup a request and use this.mvc.perform to execute it
+        Make expectations on the response
+            expectations        http://docs.spring.io/spring/docs/current/javadoc-api/org/springframework/test/web/servlet/result/MockMvcResultMatchers.html
+                status
+                content
+                header
+                cookie
+                forwardedUrl
+                redirectedUrl
+                jsonPath
+                xpath
+                pathMatcher
+        - Run Tests from command line
+            ./mvnw clean test
+            ./gradlew clean test    
+            
+sending requests:
+    this.mvc.perform(get("/some-route"))
+
+
+
+ex: this.mvc.perform(get("/some-route").accept(MediaType.APPLICATION_JSON))
+---------------------------------------------------------------------------------------------------------------
+Here's an example of one of the simplest @WebMvcTests you could write looks like this:
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(EndpointsController.class)
+public class EndpointsControllerTest {
+
+    @Autowired
+    private MockMvc mvc;
+
+    @Test
+    public void testIndexEndpoint() throws Exception {
+        this.mvc.perform(get("/").accept(MediaType.TEXT_PLAIN))
+                .andExpect(status().isOk())
+                .andExpect(content().string("GET to index route"));
+    }
+
+}
+---------------------------------------------------------------------------------------------------------------
+may need to adjust the configuration and path to be able to run the test
+    click add new configuration
+    JUnit
+    Name it whatever you want
+    use classpath or module you are working on (demo)
+
+Creating Endpoints
+    In Spring the majority of the Controllers you create will be annotated with @RestController, like so:
+    Create an endpoint for a path/verb
+        Make sure you are in a class annotated with @RestController (or in some cases @Controller)
+        Create a method with any valid name (name it whatever you like)
+        Add the @*Mapping annotation, such as @GetMapping or @PostMapping
+        Specify the path that you wish to map
+    @RequestMapping("/app")     //adds a prefix of /app for all paths in a controller (put under RestController)
+         @*Mapping annotation, such as @GetMapping or @PostMapping
+
+Java vs javascript
+    Java can do multithreading, js is single thread
+    javascript good for handling async stuff
+    Java good for computationally heavy programs
+
+@GetMapping
+is the same as 
+@RequestMapping(method = RequestMethod.GET)
+
+12/09/20______________________________________________________________________________________________________________________________________
+JSON Endpoints
+
+To access jsonPath in a test you just need to static import jsonPath and hamcrest.Matchers.is.
+
+    @Test
+    public void testObject() throws Exception {
+        this.mvc.perform(
+                get("/json/simple-object")
+                        .accept(MediaType.APPLICATION_JSON_UTF8)
+                        .contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", is("Dwayne")))
+                .andExpect(jsonPath("$.lastName", is("Johnson")));
+Render JSOn
+
+@RestController
+@RequestMapping("/json")
+public class JSONController {
+
+    @GetMapping("/person")
+    public Person getPerson() {
+        Person person = new Person();
+        person.firstName = "Dwayne";
+        person.lastName = "Johnson";
+        return person;
+    }
+
+    public static class Person {
+        private String firstName;
+        private String lastName;
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+    }
+
+}
+
+JSON - javascript object notation (data as a string)
+    serialization (object graph to json String)
+    deserialization (json string to object graph)
+
+{} - represent objects
+    JsonInclude(specify what to include ex JsonInclude.Include.NON_NULL)
+    @JsonProperty("renamed property")
+    @JsonFormat(pattern = "yyy-MM-dd")
+    can add to field or getter/setter
+    @JsonIgnore
+    will ignore these things
+
+    nested objects
+        inner classes must be declared as static
+
+Jackson converts json to objects and vice versa
+
+Ignore field    @JsonIgnore
+Customize Names     @JsonProperty("desired name")
+    @JsonGetter     @JsonSetter     - use this when data doesn't exactly match 
+Alter format    @JsonFormat
+    spring.jackson.serialization.write-dates-as-timestamps=false
+ignore null values 
+@JsonInclude(JsonInclude.Include.NON_NULL)
+
+
+Handle Nested JSON
+
+By default, for every property in your JSON object, you need to have a public getter and a public setter.
+Also by default, the classes that participate in JSON serialization / deserialization must have a default constructor.
+
+Guidelines
+    In order for things to work:
+
+    All inner classes should be static
+    The name that appears in JSON will be the name of the getter/setter (passenger), not the type of the class ('Person')
+    Getters and setters should be public
+    If you want the JSON to start with a top-level Array, you need to have a Java List or Array
+
+@JsonCreator tells Jackson that this constructor can be used for deserialization
+Each constructor parameter needs to have a named @JsonProperty annotation
+
+
+If you add @JsonProperty to the field declaration, the getter or the setter, it will apply it to all of places. However, you can also define specific behavior for the getter vs the setter:
+
+format options here http://stackoverflow.com/questions/29956175/json-java-8-localdatetime-format-in-spring-boot
+
+
+Test JSON Requests
+
+immutable classes
+    mutable classes have setters (you can change properties after object is created)
+    immutable only assigned valued when instantiating
+        no setters in class
+        Jackson must annotate each parameter manually @JsonProperty
+
+
+
+
+
+
+//use getJSON()
+
+
+
+
+forgetJSON
+    url.getFile change to URI.getFile
+
+return new String(Files.readAllBytes(Paths.get(url.toURI())));
+
+
+
+
+
+
+
+12/10/20______________________________________________________________________________________________________________________________________
+Debugging JSON
+
+If you get a 415 error
+Make sure your test has the right Content-Type
+
+If you get a 400 error
+To get access to the raw JSON coming in you can use the debugger, or you can temporarily change your method signature to take a String, so you can inspect the String:
+
+http://stackoverflow.com/questions/28878488/dynamic-selection-of-jsonview-in-spring-mvc-controller
+http://stackoverflow.com/questions/23665107/select-jsonview-in-the-spring-mvc-controller
+http://www.baeldung.com/jackson-json-view-annotation
+http://www.baeldung.com/jackson-custom-serialization
+
+
+Building CRUD APIs
+    Get, Post, Delete, ...
+    using MySQL for this stuff
+
+Databases - PostgreSQL and MySQL
+
+This Unit uses MySQL mostly because Cloud Foundry has a supported MySQL Tile, but your team can choose whichever database is right for your application. Spring will work with all well-established databases.
+
+
+
+MySQL------------------------------------------------------------------------------------------------------------------------------
+
+
+MySQL commands https://dev.mysql.com/doc/refman/8.0/en/connecting.html
+installing MySQL
+    brew install mysql
+    brew services start mysql
+
+brew services start mysql       - start up mysql
+mysql -uroot                    - connect to MySQL
+\c          -clear current statment
+\h          -show help
+create database example_db;         //create database
+create database example_db_test;
+
+-e          //can issue commands without entering the SHELL
+mysql -uroot -e "create database if not exists example_db;"
+mysql -uroot -e "create database if not exists example_db_test;"
+
+connect to a database
+    reate database example_db;          from within the shell
+    mysql -uroot example_db             from the command line
+
+mysql -uroot example_db < myscript.sql          //run .sql files against your database
+show tables; : displays a list of all tables
+describe authors; : displays all of the columns of the authors table
+exit                will leave mysql shell
+mysql -uroot        will enter mysql shell
+\u  dbname        connect to existing database      or \use
+------------------------------------------------------------------------------------------------------------------------------
+MySQL Client or workbench for db access
+Mac: $ brew install mysql-client
+Docker installed and daemon Running
+Mac: $ brew install docker
+
+MySql docker image
+https://hub.docker.com/_/mysql
+
+pull docker image to local repo - docker pull mysql:8
+build and run container from the image 
+    docker run -d -e MYSQL_ROOT_PASSWORD=my-secret-pw mysql:8
+see the running contaainer
+    docker ps
+Connect directly to the container
+    docker exec -it <Container ID> /bin/sh
+        ex: docker exec -it 38c515d36a26 /bin/sh
+Connect to the mysql server from the container
+    mysql -uroot -p<password from your run>
+        ex: mysql -uroot - p my-secret-pw
+stop and remove container
+    $ docker stop <Container ID>
+    $ docker rm <Container ID>
+
+
+The following environment variables allow you to setup the server
+MYSQL_ROOT_PASSWORD - Required
+MYSQL_DATABASE - Creates a database with this name and grants all permissions to the root user, or the user specified in MYSQL_USER.
+MYSQL_USER, MYSQL_PASSWORD - Creates the user/pwd and grants super user permissions to the MYSQL_DATABASE.
+
+Expose or publish the container to the host machine with -p<host port>:<container port>. You can designate any unused local port.
+
+ex: 
+    docker run -d -p3306:3306 \
+        -e MYSQL_ROOT_PASSWORD=my-secret-pw \
+        -e MYSQL_DATABASE=mydb \
+        -e MYSQL_USER=user \
+        -e MYSQL_PASSWORD=password \
+        mysql:8
+Connect with your local mysql client
+    Mac or Unix $ mysql -h127.0.0.1 -P<external port> -uuser -ppassword
+
+More durable environment
+1. Add a file to create your schema and populate your database
+        # setup.sql
+
+        # create the table
+        CREATE TABLE `cars` (
+            `car_id` BIGINT NOT NULL AUTO_INCREMENT,
+            `year` INTEGER NULL,
+            `make` VARCHAR(50) NULL,
+            `model` VARCHAR(50) NULL,
+            `style` VARCHAR(50) NULL,
+            PRIMARY KEY (`car_id`)
+        );
+
+        # insert the data
+        INSERT INTO cars (year, make, model, style) VALUES (1962, 'Ford', 'Mustang', 'MUSCLE CAR');
+        INSERT INTO cars (year, make, model, style) VALUES (1966, 'Alfa Romeo', 'Spider', 'SPORTS CAR');
+        INSERT INTO cars (year, make, model, style) VALUES (1959, 'Cadillac', 'Eldorado', 'SEDAN');
+        INSERT INTO cars (year, make, model, style) VALUES (2012, 'Jeep', 'Wrangler', 'SUV');
+        INSERT INTO cars (year, make, model, style) VALUES (2020, 'Tesla', 'Model 3', 'ELECTRIC SEDAN');
+2. Add a file named Dockerfile
+        FROM mysql:8
+        ENV MYSQL_ROOT_PASSWORD 123
+        ENV MYSQL_DATABASE mydb
+        ENV MYSQL_USER user
+        ENV MYSQL_PASSWORD password
+        # File from the previous step
+        COPY setup.sql /docker-entrypoint-initdb.d
+        EXPOSE 3306
+3. Build the image $ docker build -t mydb .
+4. Deploy the container $ docker run -d -p 3306:3306 mydb
+5. Access as before, but now you have a populated database to use for testing.
+6. Mount a local directory to persist changes to the data --mount type=bind,source=/my/own/datadir,target=/var/lib/mysql
+        This persists the db data to a file in the host filesystem
+7. Connect to db running in the container ...
+        Mac: $ mysql -uuser -ppassword mydb
+
+Docker Compose
+
+1. Create a file named docker-compose.yaml in its own directory in your workspace.
+2. Add the following to that file..
+        ---
+        version: "3.2" # Version of docker-compose to use
+        services:
+        cars-db: # Name of the service
+            image: mysql:8 # Image (local or public) to create the container from
+            ports:
+            - "3309:3306" # Exposed host port : container port
+            volumes:
+            # Copy the setup file from your the local directory
+            # into the init db dir for initialization
+            - ./setup.sql:/docker-entrypoint-initdb.d
+            # Mount a local directory to persist the database after
+            # removal of the container.  Note, actual volume is
+            # defined below
+            - cars-data:/var/lib/mysql
+            environment: # Environment variables required by the image
+            MYSQL_ROOT_PASSWORD: my-secret-pw
+            MYSQL_DATABASE: mydb
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+
+        # Add more services here
+
+        volumes: # Volumes that can be shared by all services (must exist on the service declaration.)  You can include the path to your development source code as well.  Check the Docker docs for more info.
+        cars-data:
+            driver: local
+
+3. Start up the services $ docker-compose up -d
+4. Connect to the server as before...
+    Mac / Unix: $ mysql -h127.0.0.1 -P3309 -uuser -ppassword mydb
+5. Stop the services $ docker-compose stop
+6. Remove the services $ docker-compose down -v
+        NOTE: the -v will remove the saved volumes. Ignore this switch if you want to keep the data.
+
+
+----------------------------------------------------------------
+Add a database to Spring
+
+Connecting to a database involves several topics including:
+    Installing Dependencies
+    Spring JPA
+    Dependency Injection
+
+JPA - https://en.wikipedia.org/wiki/Java_Persistence_API
+    one of many ways you can connect you can work with a database from Spring.
+    PA is an ORM (Object Relation Mapper) that allows you to write Java code which generates SQL under the hood and converts SQL results into Java objects.
+
+http://projects.spring.io/spring-data-jpa/
+
+----------------------------------------------------------------
+1. Adding Dependencies
+In order to connect to MySQL you must add dependencies for both MySQL and spring-data-jpa.
+    Gradle  
+        in build.gradle under top-level dependencies
+            implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.3.1.RELEASE'
+            runtimeOnly 'mysql:mysql-connector-java:8.0.20'
+NOTE Newer versions of MySQL require a different connector.
+
+Maven
+
+    reload Maven project (right click on project, maven, reload)
+
+2. Create your databases
+You'll actually need two database, one for your development environment, and one for your test environment.
+
+    Create a database named spring_playground
+    Create a database named spring_playground_test
+
+-- show databases           -in mysql shell to see all database
+
+3. Setup the connection
+    One of the easiest ways to configure your development database in development is to use the application.properties files.
+https://github.com/hibernate/hibernate-orm/tree/master/hibernate-core/src/main/java/org/hibernate/dialect
+
+4. Test Database Connection
+You'll need an application.properties file in your test directory
+
+
+
+5. Create an Entity and Repository
+In JPA:
+    Create the Entity
+            To create the Lesson Entity class:
+
+            Create a POJO (plain old Java object)
+            Annotate the class with @Entity
+            Optionally annotate the primary key with @Id and @GeneratedValue
+            Add getters and setters for all of the fields
+Choose the imports from javax.persistence using your IDE's import feature.
+
+6. Create the Repository
+    Creating a repository is fairly straightforward as well. To create a Repository:
+
+    Create an interface that extends CrudRepository
+    There's no step two 🎉
+
+7. Use the Repository in a controller
+    In order for a controller to have access to the Repository you need to inject it. In this case you can inject it with constructor injection.
+            In this step you will create a controller that:
+
+                Has a private final field of type LessonRepository
+                Has a constructor that sets the LessonRepository
+                Has a @GetMapping that returns all Lessons
+                Has a @PostMapping that creates a Lesson
+
+
+8. run the application 
+    ./mvnw spring-boot:run
+
+
+
+=-------------------------------
+Finding the right dependencies using start.spring.io
+    view advanced options
+    start.spring.io/dependencies                will list all that are available
+        can specify the boot version
+        make sure you add bom to dependancyManagement if needed
+maven.org
+    lists more dependancies
+
+    groupId is the namespace for this package, often a company or organization name
+    artifactId is the name of the package
+    version is pretty self-explanatory
+    scope determines how this library is included when you build, run and test your application
+in gradle
+    <scope group> "<group id>:<artifact id>:<version>"
+        ex: runtime('com.google.code.gson:gson:2.8.0')
+
+The default scope is compile
+Sometimes, for example with databases, you need to specify that a dependency should only matter at runtime.
+runtime('com.h2database:h2')
+
+Test
+Sometimes you only need to add dependencies for tests.
+    testCompile('com.something:somepackage:1.0')
+
+http://start.spring.io/dependencies
+It also includes info on the bom and the repositories. To see how those get added to build.gradle or pom.xml you can investigate by:
+
+    Generating a demo app from https://start.spring.io  with the chosen dependencies
+    Opening the build file
+    Diffing the generated build file with your build file to see what's changed
+
+Maven repository
+    https://mvnrepository.com/
+
+need to refresh gradle project
+    open gradle tab, icon in lower left
+        hit refresh 
+    
+Spring Boot Config
+A main feature of Spring Boot is Externalized Configuration  . This is a key feature of 12 Factor Applications  which is important when deploying.
+"OS environment variables" comes before "Application properties packaged inside your jar"
+
+You can use YAML instead of .properties if you like.
+You can use either one - the choice is up to you and your team. Spring Boot reads both equally well.
+
+Ignoring the application.properties files
+Sometimes you'll want to keep things like shared API keys in your application.properties file, in which case you'll want to Git ignore it. To do so, follow these steps:
+
+
+JPA 
+    connecting to a database with JPA 
+    JPA components
+        1. entity class -like a plane old java package
+            @entity -indicates this class is backed by a db table
+            @id
+            @GeneratedValue -define primary key field of the table
+            for each field, add the @column annotation
+        2. reporitory interface '
+            interface that extends CrudRepository 
+            takes in two parameters
+                1 = name of entity class
+                2 type of entity's identifier
+        3. controller class (injects the repository)
+            use constructor injection
+                defin parameter and store in a field
+    On startup what happens?
+        1. spring data jpa finds all classes with @entity
+            tries to connect to the database, bring db schema up to date (if JPA autogenerate schema is on)- bad idea generally
+        2. spring data jpa scans for all interfaces that extend CrudRepository
+            creates class that implements interface
+            instantiates class
+            places it in spring application context
+        3. Spring scans classes with restcontroller or component annotations
+            looks for what to inject from repository instance
+    When a request comes in?
+        1. deserialize body of reques...
+        2. add row to db and returns id
+        repo sets the id
+        controller serializes person to json
+        spring generates response and sends back to the client
+
+When Spring/JPA loads
+When your application starts, it:
+
+    Scans all of the classes for @RestController
+    Finds UsersController, and through reflection sees that it injects a UserRepository
+    Finds UserRepository and sees that it's an interface that extends CrudRepository
+    Then it:
+    Creates a concrete class that implements CrudRepository
+    Instantiates that class and adds it to Spring's ApplicationContext
+    this is a part of Spring's _dependency injection mechanism, which you'll learn about more later_
+    Passes that instance to UsersController
+
+When you call .save on the repository, Spring/JPA:
+
+Persists the entity to the data store
+Calls setId(), which mutates the user instance
+
+
+ddl-auto 
+in application.properties
+spring.jpa.hibernate.ddl-auto=update
+    none: Does nothing, leaving you to do migrations etc.
+    create: Drops all tables, then recreates them when you startup
+    create-drop: Drops all tables, recreates them when you startup, then drops them on shutdown
+    update: Adds new tables / columns when they appear in the @Entity classes
+    validate: Doesn't make schema changes, but checks that the database is in sync
+
+Prefer none or validate in production
+    In real life you'll use a tool like Flyway to run migrations. You may want to enable validate, but you certainly don't want hibernate to run migrations for you in production. This is a development tool.
+Consider update in development
+    You'll see this in the logs when it updates:
+    HHH000228: Running hbm2ddl schema update
+Use create in tests
+
+Seeing SQL
+Add these settings to your test application.properties file, and you can see the actual SQL being generated by JPA:
+
+    spring.jpa.properties.hibernate.show_sql=true
+    spring.jpa.properties.hibernate.use_sql_comments=true
+    spring.jpa.properties.hibernate.format_sql=true
+
+That's OK since you are not connecting securely locally. If you see that in production, it's a problem ☠️
+
+It's common to have to mirror database CRUD (Create Read Update Delete) actions in an API. You'll sometimes hear this referred to as CRUD(L) where the "L" stands for "List" because typically you need to implement 5 endpoints.
+
+For example, here's what a resource named "Employee" might look like:
+CRUD(L)	Verb	Path	Name	Purpose
+Create	POST	/employees	"create" route	Creates an employee
+Read	GET	/employees/{id}	"show" route	Returns a single employee
+Update	PATCH	/employees/{id}	"update" route	Updates attributes of the employee
+Delete	DELETE	/employees/{id}	"delete" route	Deletes the employee
+List	GET	/employees	"index" or "list" route	Returns a list of employees
+
+A note on PUT vs PATCH
+Generally speaking, if you are replacing an entire resource, use PUT, but if you are only updating certain attributes of a resource, use PATCH. 
+------------------------------------------------------------------------------------------------------------------------------
+
+Mapping to JPA
+Each of these routes conveniently maps to a specific method on the JPA repository, like so:
+
+    CRUD(L)	Verb	Path	JPA
+    Create	POST	/employees	.save
+    Read	GET	/employees/{id}	.findById
+    Update	PATCH	/employees/{id}	.save
+    Delete	DELETE	/employees/{id}	.deleteById
+    List	GET	/employees	.findAll
+
+------------------------------------------------------------------------------------------------------------------------------
+
+Testing APIs with Transactions
+Step 1: When you create your class:
+    Add the @SpringBootTest annotation
+    Add the @AutoConfigureMockMvc annotation
+    @Autowire a MockMvc field
+    @Autowire the CrudRepository you need (if you are going to be manually inserting records)
+
+Step 2: For each test method, add the following annotations
+    @Transactional
+    @Rollback
+Adding these two annotations indicates that all of the database operations performed in the test should occur within a transaction, and at the end, the transaction should be rolled back.
+Note, however, that you still can't rely on exact ids. Even though the transaction has been rolled back, any auto-incrementing key will have already been incremented.
+
+You can consider these tests to be on the "very slow" side. It's probably not wise to have too many of these in an application's test suite.
+
+
+intelliJ file, invalidate caches/restart 
+
+
+Steps to update a record
+Generally speaking, if a request is meant to replace an entire resource, it will use PUT, but if it is meant to update certain attributes of a resource, it will use PATCH.
+
+A request that uses the PATCH method signals that an existing record should be updated. When a patch request comes in and signals to update a record, the steps are:
+
+Find the correct record from the database and store it locally
+Update the record
+Save the record back to the database and return it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+images with webpack?
+merge
+add scorp image
+
+1. readme 
+2. check Requirements
+3. docker compose everything
+4. mounting to horoku
+
+Material UI    for formatting and stuff
+
+Tuesday - React TDD
+Wednesday - Hooks
+    Capstone information after lunch
+Thurs Friday and all of next week 
+
+Jeff's presentation
+
+
+
+
+
+
+
+
+

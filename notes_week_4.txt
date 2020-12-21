@@ -481,6 +481,253 @@ Do microservices, not different pages (blog functionality)
 microservices must interact with eachother 
     ex. facebook: messenger, main page, etc...
     
+Spring Math: PI with GET
+    can use postman to interact with spring server when running
+
+---------------------------------------------------------------------------------------------------------
+
+git add -A stages all changes
+
+git add . stages new files and modifications, without deletions
+
+git add -u stages modifications and deletions, without new files
+---------------------------------------------------------------------------------------------------------
+to change spring port:
+    in resources/application.properties
+    add the line 
+    server.port=8081
+
+return String.format("%.15f", Math.PI);
+    15 precision
+
+Accessing Querystring Data
+        With @WebMvc tests you can simply append the querystring data to the path, like so:
+            @Test
+            public void testIndexEndpoint() throws Exception {
+                this.mvc.perform(get("/vehicles?year=1987&doors=2"))
+                        .andExpect(status().isOk());
+            }
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+For every parameter you want to access:
+    Define a parameter (named anything you like)
+    Annotate that parameter with @RequestParam
+    Name the method parameter the same as the querystring parameter
+ex: 
+    @RestController
+    public class QuerystringController {
+
+        @GetMapping("/individual-example")
+        public String getIndividualParams(@RequestParam String filter) {
+            return String.format("Filter is : %s", filter);
+        }
+
+    }
+    @GetMapping("/people")
+    public String getPeople(
+    @RequestParam("sort-by") String sortBy,
+    @RequestParam(value = "sort-dir") String sortDirection) {
+        return String.format("sortBy is %s and sortDirection is %s", sortBy, sortDirection);
+    }
+    @GetMapping("/vehicle")
+    public String myCoolMethod(@RequestParam(required = false) String type) {
+        return type;
+    }
+
+    @GetMapping("/other")
+    public String myCoolMethod(@RequestParam(value = "type", defaultValue = "car") String type) {
+        return type;
+    }
+
+
+Required
+
+When a request comes in, Spring parses the querystring from the URL
+Spring sees that your method declared that it wants a querystring value, and that it is required
+If Spring can't find the querystring value, it renders an error and doesn't call your method
+
+DefaultValue
+
+When a request comes in, Spring parses the querystring from the URL
+Spring sees that your method declared that it wants a querystring value, but can't find it
+Spring instead passes the value of defaultValue to your controller's method
+
+Access querystring data as a GetMapping
+    @GetMapping("/map-example")
+    public String getMapParams(@RequestParam Map querystring) {
+        return querystring.toString();
+    }
+
+#4 - Access querystring data from an object
+    Define a class that has getters/setters
+    Add a parameter to your method that matches the type you created above
+
+#5 - Access the WebRequest directly
+@RequestMapping(value = "/", method = GET)
+public List<T> getAll(WebRequest webRequest){
+    Map<String, String[]> params = webRequest.getParameterMap();
+    //...
+}
+
+Accessing Path Variables
+
+
+//breakoutroom 5
+
+#1. Write a test
+With @WebMvc tests you can use simple string concatenation / string formatting to insert the dynamic path segments like so:
+    @Test
+    public void testIndexEndpoint() throws Exception {
+        int driverId = 4; // in real life you might pull this from a database...
+
+        this.mvc.perform(get(String.format("/drivers/%d/trips", driverId)))
+                .andExpect(status().isOk());
+    }
+#2 - Access path variables as individual items
+    In order to access path variables, follow these steps:
+        Define an endpoint (as above)
+        Add placeholders to the route definitions such as /tasks/{taskId}/comments/{commentId}
+        Add 1 parameter per placeholder to your method
+        Annotate each parameter with @PathVariable
+
+
+
+GET http://localhost:3000/tasks/34/comments/65 HTTP/1.1
+Host: example.com
+
+@GetMapping("/tasks/{taskId}/comments/{commentId}")
+public String getCommentsForTask(@PathVariable int taskId, @PathVariable int commentId) {
+    return String.format("taskId is %d; commentId is %d", taskId, commentId);
+}
+
+#3 - Access path variables as a Map
+    @GetMapping("/test/tasks/{taskId}/comments/{commentId}")
+    public String getCommentsForTask(@PathVariable Map pathVariables) {
+        return pathVariables.toString(); // {taskId=46, commentId=35}
+    }
+
+#4 - Access path variables from an object
+    public class TaskIds {
+        private int taskId;
+        private int commentId;
+
+        public int getTaskId() { return taskId; }
+
+        public void setTaskId(int taskId) { this.taskId = taskId; }
+
+        public int getCommentId() { return commentId; }
+
+        public void setCommentId(int commentId) { this.commentId = commentId; }
+    }
+@GetMapping("/test/tasks/{taskId}/comments/{commentId}")
+public String getCommentsForTask(TaskIds ids) {
+    return String.format("taskId is %d; commentId is %s", ids.getTaskId(), ids.getCommentId());
+}
+
+#5 - Nest RequestMappings with Path Variables
+    import org.springframework.web.bind.annotation.GetMapping;
+    import org.springframework.web.bind.annotation.PathVariable;
+    import org.springframework.web.bind.annotation.RequestMapping;
+    import org.springframework.web.bind.annotation.RestController;
+
+    @RestController
+    @RequestMapping("/posts/{postId}/comments")
+    public class CommentsController {
+
+        @GetMapping("/") // <-- will match /posts/34/comments
+        public String[] getComments(@PathVariable int postId) {
+            // ...
+        }
+
+        @GetMapping("/{commentId}") // <-- will match /posts/34/comments
+        public String getComment(@PathVariable int postId, @PathVariable int commentId) {
+            // ...
+        }
+    }
+
+Testing Form Data
+
+POST /comments HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+
+content=Firsties!&author=Dwayne
+
+MockHttpServletRequestBuilder request = post("/comments")
+        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+        .param("content", "Firsties!")
+        .param("author", "Dwayne");
+
+        this.mvc.perform(request)
+        .andExpect(status().isOk())
+        .andExpect(content().string("Dwayne said Firsties!"));
+
+    @Test
+    public void testCreateComment() throws Exception {
+        String content = String.valueOf(new Random().nextInt());
+
+        MockHttpServletRequestBuilder request1 = post("/comments")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("content", content)
+                .param("author", "Dwayne");
+
+        this.mvc.perform(request1)
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.format("Dwayne said %s!", content)));
+    }
+Review
+When testing form data, make sure to:
+
+use post instead of get
+add the correct contentType
+add params
+
+
+Accessing Form data
+
+You can access the request body 3 ways:
+
+As a String
+As a HashMap of form params
+As a custom class (works for form params or JSON bodies)
+
+
+POST /people HTTP/1.1
+Host: example.com
+Content-Type: application/x-www-form-urlencoded
+
+first_name=Dwayne&last_name=Johnson
+ 
+ As a string
+ @PostMapping("/string-example")
+public String getRawString(@RequestBody String rawBody) {
+    return rawBody;
+}
+
+As a Map
+@PostMapping(path = "/people")
+public String showFormData(@RequestParams Map<String, String> body) {
+    return body.toString();  // {first_name=Dwayne, last_name=Johnson}
+}
+
+As an object
+@PostMapping(path = "/people")
+public String showFormDataObject(@RequestBody Person person) {
+    return person.toString();
+}
+
+Accessing Query and Form Data
+
+Accessing Headers and Cookies
+
+
+
+
+
+
+
 
 
 

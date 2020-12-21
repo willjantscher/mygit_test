@@ -1,0 +1,1910 @@
+12/14/20______________________________________________________________________________________________________________________________________
+For Spring with database
+    //create image in docker, docker file, docker compose file, docker compose up to start and docker compose down -v to bring down
+Spring IoC Config
+
+    dependency injection and configuration features
+        1. use spring dependency injeciton (2 ways to put things into IoC)
+        2. Configure spring-boot applications (strong config classes)
+    Beans in Spring
+
+IoC Overview
+    dependency injection container
+    DI - Dependency injection
+        MessagesController (creates Mailer class) depends on Mailer, or Mailer is a dependency of MessagesController
+            This is hardcoded dependency (bad if you need to chaing Mailer)
+        solution - inject dependency
+            instead of instantiating Mailer, expect something else to do into
+        constructor injection 
+            private final Mailer mailer 
+                no other classes effected.
+                But what will instantiate mailer?
+    Application Context - big bucket of objects
+        Spring create application context at start, determines what to bring in, looks at constructors to determine which classes to instantiate first
+            automatically references eachother
+
+        Add to application context
+            1. add @Componenet (like@RestController) @Service also works
+            2. annotate class as @Configuration or method @Bean - 
+                Bean methods execute once at start, have complete control over how object is setup
+        Inject to application context
+            1. Constructor injection - define constructor parameter that has same type as object you want to inject
+            2. @Autowired   - no getters or settters needed
+            3. @Bean method parameters  - spring looks up beans by type, not name
+            
+IoC - inversion of control
+
+    Spring IoC Container
+    Hard-coding dependencies can increase the cost of change for your code, and Spring has a sophisticated mechanism for using dependency injection to avoid tightly-coupled code. 
+    Spring uses Inversion of Control in all kinds of ways to make it easy to configure database adapters etc..., but this lesson will focus on how you can get these same benefits in your application code.
+
+    The objects in the ApplicationContext are called beans.
+
+    #1 - Add beans to the ApplicationContext w/ @Component
+        ex: 
+            import org.springframework.stereotype.Component;
+
+            @Component
+            public class Bar {
+            }
+
+            import org.springframework.stereotype.Service;
+
+            @Service
+            public class Foo {
+            }
+    Also include @ Component
+        @Service
+        @Controller
+        @RestController
+
+    #2 - Add beans to the ApplicationContext using @Configuration/@Bean
+    If you want to put something in the ApplicationContext but either can't annotate it (because it comes from some non-Spring-aware dependency), or because you need to perform specific initialization logic, then you can use the @Configuration annotation on a class, and a @Bean annotation on a method, like so:
+        ex:
+            import org.springframework.context.annotation.Bean;
+            import org.springframework.context.annotation.Configuration;
+
+            @Configuration
+            public class ConfigClass {
+
+                @Bean
+                public Baz getBaz() {
+                    return new Baz();
+                }
+            }
+        In the example above, the getBaz method name isn't really important. Spring will be able to pull this new instance out by type.
+        
+    #3 - Inject beans from the ApplicationContext using constructor injection
+    pull them out. Let's say PagesController depends on the Foo, Bar and Baz beans that we declared previously. Spring provides a few ways to access any beans available in the ApplicationContext.    
+        Constructor injection ex:
+            @RestController
+            public class PagesController {
+
+                private Foo foo;
+                private Bar bar;
+                private Baz baz;
+
+                public PagesController(Foo foo, Bar bar, Baz baz) {
+                    this.foo = foo;
+                    this.bar = bar;
+                    this.baz = baz;
+                }
+            }
+            Here you simply declare the types of things you want to be injected into your constructor, and Spring will find a bean of that type in the ApplicationContext and pass it in.
+
+    #4 - Inject beans from the ApplicationContext using @Autowired field injection
+    ex:
+    @RestController
+    public class PagesController {
+
+        @Autowired
+        private Foo foo;
+        @Autowired
+        private Bar bar;
+        @Autowired
+        private Baz baz;
+
+        // ...
+    }
+    When Spring loads the application, it will
+        Instantiate all the beans and add them to the ApplicationContext
+        Instantiate the PagesController
+        Set the foo, bar, and baz fields with beans that match the declared type
+
+    #5 - Inject beans with @Bean parameters
+    If a bean you are configuring requires a constructor argument to be instantiated, you can declare the dependency as a parameter of the @Bean method. 
+     For example, consider that our previously declared Baz bean needed to be passed an object of type Qux in its constructor. We can have spring provide the dependency as follows:
+    @Configuration
+    public class ConfigClass {
+        @Bean                 // <-- #1
+        public Qux getQux() {
+            return new Qux();
+        }
+
+        @Bean                 // <-- #2
+        public Baz getBaz(Qux qux) {
+            return new Baz(qux);
+        }
+    }
+    When Spring loads the application, it will
+        Call getQux and put an instance of type Qux in the ApplicationContext
+        Call getBaz method, and pass it the singleton of Qux from the ApplicationContext
+Setter injection
+If you need the flexiblity of potentially reconfiguring or reinjecting a dependency later, using setters to inject beans is another option. This is uncommon and we won't be using it in our lessons. You can read about setter injection at the Spring documentation  .
+https://learn-2.galvanize.com/cohorts/1709/blocks/452/content_files/standards/ioc-and-config/autowiring-beans.md
+
+Why Constructor Injection is the best 
+    Why constructor injection is preferred over @Autowired
+        You can't make your fields final
+        You don't have access to the @Autowired field in the constructor
+        It makes harder to unit-test your POJOs (because you need reflection)
+    Managing Circular Dependencies
+        Class A depends on B
+        Class B depends on C
+        Class C depends on A
+        There you've established circular dependencies. If you were to use @Autowired, Spring would make this work for you.
+
+IoC notes
+    By default every Bean in the ApplicationContext is a Singleton.
+        Spring instantiates each Bean once, and reuses that same instance everywhere it's injected. So be careful about modifying state in your Beans.
+    You can tell Spring to instantiate a new object every time it's injected by using @Scope:
+        @Scope("prototype")
+    If you need two Bean of the same type, you can use the @Primary  annotation, or the Qualifier annotation.
+
+Spring Word Count: Service Class
+
+final keyword - stops value from changing, prevents child from @Overiding parent, stops inheritance
+
+
+Injecting TEsts
+    When you have a Bean you've added to the ApplicationContext, you can @Autowire it in a test the same way you can in production code:
+    ex:
+    @SpringBootTest
+    public class ServiceTest {
+
+        @Autowired
+        MyConfig config;
+
+        @Test
+        public void testShouldWork() {
+            assertThat(config.getDelimiter(), equalTo("-"));
+        }
+    }
+    Mocking Beans in tests
+    Mocking is commonly used in combination with @WebMvcTest.
+        When you use @WebMvcTest, Spring only loads a portion of the ApplicationContext.
+        This means that beans that your controller depends on won't be available for injection. 
+        In order to isolate the test to just the controller, you can provide a mocked instance of the dependency using @MockBean:
+        ex:
+        @WebMvcTest(StringsController.class)
+        public class StringsControllerTest {
+            @MockBean
+            MyConfig config;
+
+            @BeforeEach
+            public void setup() {
+                when(config.getDelimiter()).thenReturn(":");
+            }
+
+            @Test
+            // etc...
+        }
+
+Spring Boot Config
+    The main idea behind configuration is that there should be one and only one place in your application that knows about the configured properties, and the rest of the application should interact with strongly-typed objects.
+    ex: 
+    @ConfigurationProperties("myService")
+    class MyConfig {
+        private String url;
+        private String username;
+        private String password;
+
+        public String getUrl() { return url; }
+
+        public void setUrl(String url) { this.url = url; }
+
+        public String getUsername() { return username; }
+
+        public void setUsername(String username) { this.username = username; }
+
+        public String getPassword() { return password; }
+
+        public void setPassword(String password) { this.password = password; }
+    }
+When Spring loads your application it:
+    Scans for all classes that have the @ConfigurationProperties annotation
+    Instantiates the class
+    Finds the relevant config value, matches them with the setters on the class and calls the setters
+    If you want to inject this config object into other classes, you'll also have to add it to the ApplicationContext. The easiest way to do that is just to add the @Component annotation:
+        @Component
+        @ConfigurationProperties("myService")
+        class MyConfig {
+        // etc...
+        }
+
+        Then you can inject it into other classes as you would normally:
+
+        @Service
+        class MyService {
+        private final MyConfig config;
+
+        public MyService(MyConfig config) {
+            this.config = config;
+        }
+
+        // etc...
+        }
+    to nest config values you need:
+        An inner public static class
+            It's important that it be public
+        Add a property / getter of that Type
+    The values can be referenced like this:
+        myConfig.getCredentials().getUserName();
+        myConfig.getUrl();
+
+Developer tools in Spring
+Developer tools is an extra set of tools that can make application development in Spring a bit more pleasant. It introduces tools that can automatically restart an application or refresh a browser when a resources is changed.
+    Maven
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+    Gradle
+    dependencies {
+        compile("org.springframework.boot:spring-boot-devtools")
+    }
+Once the Developer Tools are added to a Spring Project, the project will automatically restart whenever a file on the classpath changes.
+In IntelliJ IDEA, you can manually re-build the project by clicking "Rebuild Project", or by pressing ⌘F9 which will cause the project to recompile.
+
+Actuator
+Actuator another set of developer tools that offer more features to monitor your app.
+    Gradle
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+    Maven
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+        <version>1.4.2.RELEASE</version>
+    </dependency>
+We can specify where these features will run in application.properties:
+    management.port: 9001
+    management.address: 127.0.0.1
+    management.security.enabled=false
+        /metrics - shows information on memory, processors, uptime, and other metrics about your app and system
+        /health - shows information on disk-space and db status
+        /env - shows information on the environment variables used in the app
+        /beans - any time we use annotations, when Spring boots up it looks for them and creates beans in the ApplicationContext. This endpoint shows all the beans in the app. For example, studentService had @Service annotation so we can find it in /beans and it shows it's dependencies.
+        /mappings - shows a list of endpoints create in the app
+
+Configuration Lists
+    In order to represent a list of values, you would do this in your properties file:
+
+    bar.foo[0]=1
+    bar.foo[1]=2
+    bar.foo[2]=3
+
+    Then in code, you would reference it like so:
+
+    @ConfigurationProperties("bar")
+    class Bar {
+    private List<Integer> numbers;
+
+    public List<Integer> getFoo() {
+        return this.numbers;
+    }
+
+    public void setFoo(List<Integer> numbers) {
+        this.numbers = numbers;
+    }
+    }
+
+
+
+
+
+
+
+
+git stash pop       -
+git stash list          -accesss a stash
+
+
+
+
+
+////////////////////////////////////////////////////////////////////////
+Will pass data from react to spring as I would have passed to express
+
+
+
+
+
+12/15/20______________________________________________________________________________________________________________________________________
+Project 2 Requirements: React + Spring Fullstack App
+Projects presenting Next Monday after lunch
+
+
+Team 6B
+Caden 
+Aria 
+Emily 
+William 
+
+Instructor: Zach/Poli
+
+Create a full stack application using React, Spring and a database of your choosing (though we recommend MySQL or Postgres)
+Each student must build a full stack feature of the application (database, Spring Boot back end, React front end)
+
+Squadron personnel tracker
+    Database of personnel
+Miro link ff
+draw.io
+
+Trello
+https://trello.com/b/jq9sAJrF/kanban-template
+draw.io
+https://app.diagrams.net/#G1SoA0oDOcl7YvjJj9s4STxNKjDo51wB9l
+
+
+
+
+Minimum Viable Product (MVP)
+Still need division of labor etc.
+
+Database in MySQL
+
+
+
+Project Structure
+One combined React App
+    our own only for testing
+    4 html elements on one Pages
+    entire page is one app 
+ 
+Each React app is its own page
+    Setup Spring MySQL Service
+    setup environment/connections for the react applications
+
+
+
+Add PII footer for the pages
+Establishing branches (which ones are we going to work off of)
+Port numbers
+endpoints
+how to do pull requests etc.
+
+Deploy your app to Heroku
+
+
+
+
+----------------------------------------
+GIT STUFF   
+git pull    - Fetch and merge changes on the remote server to your working directory:
+git checkout -b branch_Name 
+git add .
+git commit -m'stuff'
+git push -u origin Main_Page  
+git checkout <existing_branch>   
+git commit --no-verify -m'added router stuff' 
+
+
+git pull origin master          while on branch, overwrites with what is on the main
+
+git reset --hard origin/main
+overwrite local master branch with repo master
+
+
+
+
+
+
+
+Run 'npm start -- --port 8500'
+2. Go to http://single-spa-playground.org/playground/instant-test?name=@scorp/main-page&url=8500 to see it working!
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Personnel_Tracker
+
+
+
+
+
+Github link
+https://github.com/willjantscher/Personnel_Tracker
+
+Draw.io of Project - Project overview, ERD, and Structure
+https://app.diagrams.net/#G1SoA0oDOcl7YvjJj9s4STxNKjDo51wB9l
+
+Trello - User stories and their current status.
+https://trello.com/b/jq9sAJrF/kanban-template
+
+
+Projcet 2 Schedule
+https://docs.google.com/spreadsheets/d/1kjatEi7_PU4e_tPREHIcNHC_EjJoZdk2y5DqUaTAft4/edit#gid=0
+Project 2 Requirements
+https://docs.google.com/document/d/14IxhGOW_coKxupkZpobb3MrdLyeHSTVQZ58ZoauzqwE/edit
+
+Tutorials
+https://www.freecodecamp.org/news/developing-and-deploying-micro-frontends-with-single-spa/
+https://blog.bitsrc.io/how-to-develop-microfrontends-using-react-step-by-step-guide-47ebb479cacd
+
+https://blog.bitsrc.io/implementing-micro-front-end-with-single-spa-and-react-eeb4364100f
+
+https://www.baeldung.com/spring-rest-with-zuul-proxy
+
+
+
+
+
+
+Add stuff to root files
+
+
+
+
+npm start in upper directory to start the rootcontroller
+
+
+1. Everyone get react app groundwork, basic links, Ports updated merged into github
+2. Create Mysql db and populate with fake data
+3. Setup docker files and docker compose for project
+
+
+
+react router gets us between different pages without reloading
+
+
+
+
+
+
+
+import React from "react";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+
+class Main_Page extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Router>
+        {/* create links that will go to a path that is caught by the route path */}
+        <Link to={"/main/test1"}>
+          <div>link to test1</div>
+        </Link>
+        <Link to={"/main/test2"}>
+          <div>link to test2</div>
+        </Link>
+        <h1>Welcome to the page</h1>
+        <Route path="/main/test1" component={Test1} />
+        <Route path="/main/test2" component={Test2} />
+        <Route
+          exact={true}
+          path="/"
+          render={() => <h1>Welcome to exact path</h1>}
+        />
+        {/* create routes for the different links */}
+      </Router>
+    );
+  }
+}
+
+const Test1 = () => {
+  return <div>something in test1</div>;
+};
+
+const Test2 = () => {
+  return <div>something in test 2 hello there</div>;
+};
+
+export default Main_Page;
+
+
+
+
+
+
+
+
+
+
+
+
+import React from "react";
+
+import Main_Page from "./Main_Page";
+
+//this essentially acts as the react app router, reference classes inside here
+
+export default function Root(props) {
+  return (
+    <Main_Page /> //this will be a main_page class that extends the react app
+  );
+}
+
+// class Main_Menu extends React.Component {
+
+//   render() {
+//     return (
+//       <div>this is a test of react class in the main page js file for single spa</div>
+//     )
+//   }
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1. Add member to database
+    Store info from form within react
+    Create fetch post request with member info in correct format json body
+    add path to the db controller
+    test and ensure it works
+2. Display an alpha roster 
+    create link and route to display a table
+    create fetch request to return all members (on component did mount?)
+    loop over the members to put data into the table
+3. Allow editing of data
+    add table column for edit button
+    link to new page like add member but with values set to the selected members info
+    capture changes
+    send path request to database
+    create path in db controller to handle request
+    return response updated user!
+
+work on beautification
+add nav bar
+add pii footer
+conditional renderif of arrival/departure date options
+
+
+
+
+
+
+import { response } from "express";
+import React, { Component } from "react";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
+import Add_Member from "./Add_Member";
+
+// const fs = require("fs")
+
+
+class Main_Page extends React.Component {
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   member: {
+    //     paygrade: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     birthday: "",
+    //     has_assignment: "",
+    //     arrival_date: "",
+    //     departure_date: "",
+    //     opr_epr_status: "due now"
+    //   },
+    // };
+  }
+
+  render() {
+    return (
+      <Router>
+
+        <h1>Welcome to the page</h1>
+
+        <Link to={"/main/Add_Member"}>
+          <div>Add a Member</div>
+        </Link>
+
+        <Route
+          path="/main/Add_Member"
+          component={AddMember}
+        />
+
+      </Router>
+    );
+  }
+}
+
+//this is the route/page that will handle adding a member
+class AddMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      member: {
+        paygrade: "E1",
+        first_name: "will",
+        last_name: "",
+        birthday: "",
+        has_assignment: "",
+        arrival_date: "",
+        departure_date: "",
+        opr_epr_status: "Not Due",
+      },
+    };
+  }
+
+  handleInputChange = (e) => {
+    e.preventDefault;
+    let tempMember = this.state.member;
+    tempMember[e.target.id] = e.target.value;
+    this.setState({member : tempMember})
+    console.log('input change called ' + this.state.member[e.target.id] )
+  }
+
+  handleAddMember = (e) => {
+    e.preventDefault();
+    // console.log(JSON.stringify(this.state.member))
+    // async function postMember () {
+    //   response = await fetch("http://localhost:8080/members/add-member", 
+    //     {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify(this.state.member)
+    //     })
+    //   console.log(response.json());
+  // }  
+
+    return "stuff"
+  };
+
+  render() {
+    // console.log(this.state);
+    return <Add_Member 
+    onAddMember={this.handleAddMember} 
+    onInputChange={this.handleInputChange}
+    />;
+  }
+
+}
+
+export default Main_Page;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React from "react";
+
+const Add_Member = (props) => {
+  return (
+    <div>
+      <h2>Add Member</h2>
+      <form onSubmit={props.onAddMember}>
+        <div>
+          <span>Paygrade: </span>
+          <select id="paygrade" defaultValue="" onChange={props.onInputChange}>
+            <option value=""></option>
+            <option value="E1">E1</option>
+            <option value="E2">E2</option>
+            <option value="E3">E3</option>
+            <option value="E4">E4</option>
+            <option value="E5">E5</option>
+            <option value="E6">E6</option>
+            <option value="E7">E7</option>
+            <option value="E9">E9</option>
+            <option value="E9">E9</option>
+            <option value="O1">O1</option>
+            <option value="O2">O2</option>
+            <option value="O3">O3</option>
+            <option value="O4">O4</option>
+            <option value="O5">O5</option>
+            <option value="O6">O6</option>
+            <option value="O7">O7</option>
+            <option value="O8">O8</option>
+            <option value="O9">O9</option>
+            <option value="O10">O10</option>
+          </select>
+        </div>
+
+        <div>
+          <span>First Name: </span>
+          <input
+            name="first name"
+            id="first_name"
+            placeholder="First Name"
+            onChange={props.onInputChange}
+          ></input>
+        </div>
+
+        <div>
+          <span>Last Name: </span>
+          <input
+            name="last name"
+            id="last_name"
+            placeholder="Last Name"
+            onChange={props.onInputChange}
+          ></input>
+        </div>
+
+        <div>
+          <span>Birthday: </span>
+          <input
+            id="birthday"
+            onChange={props.onInputChange}
+            type="date"
+          ></input>
+        </div>
+
+        <div>
+          <span>Opr/Epr Status</span>
+          <select
+            id="opr_epr_status"
+            onChange={props.onInputChange}
+            defaultValue="Not Due"
+          >
+            <option value="Not Due">Not Due</option>
+          </select>
+        </div>
+
+        <div>
+          <span>Has Assignment</span>
+          <input
+            id="has_assignment"
+            onChange={props.onInputChange}
+            type="radio"
+            name="hasAssignment"
+          ></input>
+          <span>Yes</span>
+          <input
+            id="no_assignment"
+            onChange={props.onInputChange}
+            type="radio"
+            name="hasAssignment"
+          ></input>
+          <span>No</span>
+        </div>
+
+        <div>
+          <span>Arrival Date: </span>
+          <input
+            id="arrival_date"
+            onChange={props.onInputChange}
+            type="date"
+          ></input>
+        </div>
+
+        <div>
+          <span>Departure Date: </span>
+          <input
+            id="departure_date"
+            onChange={props.onInputChange}
+            type="date"
+          ></input>
+        </div>
+        {/* <div>
+          <span>Rater First Name: </span>
+          <input
+            name="rater first name"
+            id="10"
+            placeholder="First Name"
+            onChange={props.onInputChange}
+          ></input>
+        </div>
+        <div>
+          <span>Rater Last Name: </span>
+          <input
+            name="rater last name"
+            id="11"
+            placeholder="Last Name"
+            onChange={props.onInputChange}
+          ></input>
+        </div> */}
+        <input type="submit" value="Add Member to Database" />
+      </form>
+    </div>
+  );
+};
+
+export default Add_Member;
+
+
+
+
+
+
+
+//    main page mapping
+    @PostMapping("/members/add-member")
+    public Member addMember (@RequestBody Member member) {
+        return member;
+    }
+
+
+
+
+    import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+} from "react-router-dom";
+import Add_Member from "./Add_Member";
+
+class Main_Page extends React.Component {
+  constructor(props) {
+    super(props);
+    // this.state = {
+    //   member: {
+    //     paygrade: "",
+    //     first_name: "",
+    //     last_name: "",
+    //     birthday: "",
+    //     has_assignment: "",
+    //     arrival_date: "",
+    //     departure_date: "",
+    //     opr_epr_status: "due now"
+    //   },
+    // };
+  }
+
+  render() {
+    return (
+      <Router>
+        <h1>Welcome to the page</h1>
+        <Link to={"/main"}>
+          <div>Home</div>
+        </Link>
+        <Link to={"/main/Add_Member"}>
+          <div>Add a Member</div>
+        </Link>
+        <Link to={"/main/Alpha_Roster"}>
+          <div>Generate Alpha Roster</div>
+        </Link>
+
+        <Route path="/main/Alpha_Roster" component={AlphaRoster} />
+        <Route path="/main/Add_Member" component={AddMember} />
+      </Router>
+    );
+  }
+}
+
+class AlphaRoster extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: [{}],
+    };
+  }
+  componentDidMount() {
+    fetch("http://localhost:8080/members", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ members: data });
+      });
+  }
+
+  generateTable() {
+    let table = this.state.members.map((member) => {
+      {
+        if (member.opr_epr_status === 0) {
+        }
+      }
+      return (
+        <tr>
+          <td>{member.paygrade}</td>
+          <td>{member.first_name}</td>
+          <td>{member.last_name}</td>
+          <td>{member.birthday}</td>
+          <td>{member.has_assignment}</td>
+          <td>{member.arrival_date}</td>
+          <td>{member.departure_date}</td>
+          <td>{member.opr_epr_status}</td>
+        </tr>
+      );
+    });
+    return (
+      <table>
+        <thead>
+          <h2>Alpha Roster</h2>
+          <tr>
+            <td>Rank</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Date of Birth</td>
+            <td>Assignment Status</td>
+            <td>Arrival Date</td>
+            <td>Departure Date</td>
+            <td>Opr/EPR Status</td>
+          </tr>
+        </thead>
+        <tbody>{table}</tbody>
+      </table>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        {this.generateTable()}
+        <div>You are now seeing the Alpha Roster ooooo</div>
+        {this.state.members[0].last_name}
+      </div>
+    );
+  }
+}
+
+//this is the route/page that will handle adding a member
+class AddMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      member: {
+        paygrade: null,
+        first_name: null,
+        last_name: null,
+        birthday: null,
+        has_assignment: null,
+        arrival_date: null,
+        departure_date: null,
+        opr_epr_status: "Not Due",
+      },
+      postedMember: {},
+      Request: "pending",
+    };
+  }
+
+  handleInputChange = (e) => {
+    e.preventDefault;
+    let tempMember = this.state.member;
+    tempMember[e.target.id] = e.target.value;
+    this.setState({ member: tempMember });
+    // console.log('input change called ' + this.state.member[e.target.id] )
+  };
+
+  async postUser() {
+    await fetch("http://localhost:8080/members/add-member", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state.member),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ postedMember: data }, () =>
+          console.log(
+            this.state.postedMember.first_name +
+              " has been added to the database"
+          )
+        );
+        // console.log(data.status)
+        if (data.status === 500) {
+          this.setState({ Request: "bad" });
+        } else {
+          this.setState({ Request: "good" });
+          this.setState({
+            member: {
+              paygrade: null,
+              first_name: null,
+              last_name: null,
+              birthday: null,
+              has_assignment: null,
+              arrival_date: null,
+              departure_date: null,
+              opr_epr_status: "Not Due",
+            },
+          });
+        }
+      });
+  }
+
+  handleAddMember = (e) => {
+    e.preventDefault();
+    this.postUser();
+    // this.setState({ member : {} });
+  };
+
+  render() {
+    // console.log(this.state);
+    return (
+      <Router>
+        <Add_Member
+          onAddMember={this.handleAddMember}
+          onInputChange={this.handleInputChange}
+        />
+        {(() => {
+          switch (this.state.Request) {
+            case "good":
+              return (
+                // <Redirect to="/main"/>
+                <div>
+                  {this.state.postedMember.first_name} has been added to the
+                  database
+                </div>
+              );
+            case "bad":
+              return (
+                <div>
+                  ERROR! You must specify a first and last name as well as an
+                  assignment status.
+                </div>
+              );
+            default:
+              return <div></div>;
+          }
+        })()}
+      </Router>
+    );
+  }
+}
+
+const MemberAdded = () => {
+  return <div>Member added Successfully!</div>;
+};
+
+export default Main_Page;
+
+
+
+import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+} from "react-router-dom";
+import Add_Member from "./Add_Member";
+import Search_Member from "./Search_Member";
+
+class Main_Page extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Router>
+        <h1>Welcome to the page</h1>
+        <Link to={"/main"}>
+          <div>Home</div>
+        </Link>
+        <Link to={"/main/Add_Member"}>
+          <div>Add a Member</div>
+        </Link>
+        <Link to={"/main/SearchMember"}>
+          <div>Search for a Member and edit their data</div>
+        </Link>
+        <Link to={"/main/Alpha_Roster"}>
+          <div>Generate Alpha Roster</div>
+        </Link>
+
+        <Route path="/main/SearchMember" component={SearchMember} />
+        <Route path="/main/Alpha_Roster" component={AlphaRoster} />
+        <Route path="/main/Add_Member" component={AddMember} />
+      </Router>
+    );
+  }
+}
+
+class SearchMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: [{}],
+    };
+  }
+  componentDidMount() {
+    fetch("http://localhost:8080/members", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ members: data });
+      });
+  }
+
+  render() {
+    return (
+      <div>
+        Select a member to see their data
+        <Search_Member members={this.state.members} />
+        <Link to={"/main/SearchMember/EditMember"}>
+          <div>Edit a member</div>
+        </Link>
+        <Route path="/main/SearchMember/EditMember" component={EditMember} />
+      </div>
+    );
+  }
+}
+
+class EditMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    return <div>Inside of the Edit Member component</div>;
+  }
+}
+
+class AlphaRoster extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: [{}],
+    };
+  }
+  componentDidMount() {
+    fetch("http://localhost:8080/members", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ members: data });
+      });
+  }
+
+  generateTable() {
+    let table = this.state.members.map((member) => {
+      {
+        var assignment = "";
+        if (member.has_assignment === 0) {
+          assignment = "----------";
+        } else {
+          assignment = "Assigned";
+        }
+        var birthday = "";
+        var arrival_date = "";
+        var departure_date = "";
+        if (member.birthday) {
+          birthday = member.birthday.substring(0, 10);
+        }
+        if (member.arrival_date) {
+          arrival_date = member.arrival_date.substring(0, 10);
+        }
+        if (member.departure_date) {
+          departure_date = member.departure_date.substring(0, 10);
+        }
+      }
+      return (
+        <tr>
+          <td>{member.paygrade}</td>
+          <td>{member.first_name}</td>
+          <td>{member.last_name}</td>
+          <td>{birthday}</td>
+          <td>{assignment}</td>
+          <td>{arrival_date}</td>
+          <td>{departure_date}</td>
+          <td>{member.opr_epr_status}</td>
+        </tr>
+      );
+    });
+
+    return (
+      <div>
+        <h1>Alpha Roster</h1>
+        <table>
+          <thead>
+            <tr>
+              <td>Rank</td>
+              <td>First Name</td>
+              <td>Last Name</td>
+              <td>Date of Birth</td>
+              <td>Assignment Status</td>
+              <td>Arrival Date</td>
+              <td>Departure Date</td>
+              <td>Opr/EPR Status</td>
+            </tr>
+          </thead>
+          <tbody>{table}</tbody>
+        </table>
+      </div>
+    );
+  }
+
+  render() {
+    return <div>{this.generateTable()}</div>;
+  }
+}
+
+//this is the route/page that will handle adding a member
+class AddMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      member: {
+        paygrade: null,
+        first_name: null,
+        last_name: null,
+        birthday: null,
+        has_assignment: null,
+        arrival_date: null,
+        departure_date: null,
+        opr_epr_status: "Not Due",
+      },
+      postedMember: {},
+      Request: "pending",
+    };
+  }
+
+  handleInputChange = (e) => {
+    e.preventDefault;
+    let tempMember = this.state.member;
+    tempMember[e.target.id] = e.target.value;
+    this.setState({ member: tempMember });
+    // console.log('input change called ' + this.state.member[e.target.id] )
+  };
+
+  async postUser() {
+    await fetch("http://localhost:8080/members/add-member", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state.member),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ postedMember: data }, () =>
+          console.log(
+            this.state.postedMember.first_name +
+              " has been added to the database"
+          )
+        );
+        // console.log(data.status)
+        if (data.status === 500) {
+          this.setState({ Request: "bad" });
+        } else {
+          this.setState({ Request: "good" });
+          this.setState({
+            member: {
+              paygrade: null,
+              first_name: null,
+              last_name: null,
+              birthday: null,
+              has_assignment: null,
+              arrival_date: null,
+              departure_date: null,
+              opr_epr_status: "Not Due",
+            },
+          });
+        }
+      });
+  }
+
+  handleAddMember = (e) => {
+    e.preventDefault();
+    this.postUser();
+    // this.setState({ member : {} });
+  };
+
+  render() {
+    // console.log(this.state);
+    return (
+      <Router>
+        <Add_Member
+          onAddMember={this.handleAddMember}
+          onInputChange={this.handleInputChange}
+        />
+        {(() => {
+          switch (this.state.Request) {
+            case "good":
+              return (
+                // <Redirect to="/main"/>
+                <div>
+                  {this.state.postedMember.first_name} has been added to the
+                  database
+                </div>
+              );
+            case "bad":
+              return (
+                <div>
+                  ERROR! You must specify a first and last name as well as an
+                  assignment status.
+                </div>
+              );
+            default:
+              return <div></div>;
+          }
+        })()}
+      </Router>
+    );
+  }
+}
+
+export default Main_Page;
+
+
+
+import React from "react";
+
+const Search_Member = (props) => {
+  let memberNames = props.members.map((member) => {
+    return member.first_name + " " + member.last_name;
+  });
+  return (
+    <div>
+      <select id="paygrade">
+        <option value=""></option>
+        {memberNames.map((member) => (
+          <option value={member} key={member}>
+            {member}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+export default Search_Member;
+
+
+
+
+
+PROJECT Requirements
+  improve the readme file
+//create a sidebar
+//create a header/footer with PII banner
+//beautify the buttons and content on my page
+//
+
+
+
+
+
+
+import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Link,
+  Redirect,
+  Route,
+} from "react-router-dom";
+import Add_Member from "./Add_Member";
+import Search_Member from "./Search_Member";
+import Edit_Member from "./Edit_member";
+import Display_Member from "./Display_Member";
+
+// import "./Main_Page.css";
+
+// import USSF_GIF from "./Photos/USSF_GIF.gif"
+// import USSF_LOGO from "./Photos/USSF_LOGO.png"
+
+class Main_Page extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Router>
+        <div className="alert-danger text-center">
+          THIS SITE CONTAINS PERSONALLY IDENTIFIABLE INFORMATION
+        </div>
+        <div className="wrapper">
+          <div className="row mt-4">
+            {/* <div className="col-md-4">
+            <h3>Welcome to the Main Page</h3>
+          </div> */}
+            <div className="col-md-1"></div>
+            <div className="col-md-8">
+              <h3>
+                <Link to={"/main"}>
+                  <button className="btn btn-lg btn-primary">
+                    ----Home----
+                  </button>
+                </Link>
+                &nbsp; &nbsp;
+                <Link to={"/main/Add_Member"}>
+                  <button className="btn btn-sm btn-info">Add a Member</button>
+                </Link>
+                &nbsp; &nbsp;
+                <Link to={"/main/SearchMember"}>
+                  <button className="btn btn-sm btn-info">
+                    Search for a Member
+                  </button>
+                </Link>
+                &nbsp; &nbsp;
+                <Link to={"/main/Alpha_Roster"}>
+                  <button className="btn btn-sm btn-info">
+                    Generate Alpha Roster
+                  </button>
+                </Link>
+              </h3>
+            </div>
+            <div className="col-md-3"></div>
+            
+          </div>
+
+          <div id="content" className="info">
+            <Route path="/main/SearchMember" component={SearchMember} />
+            <Route path="/main/Alpha_Roster" component={AlphaRoster} />
+            <Route path="/main/Add_Member" component={AddMember} />
+          </div>
+        </div>
+
+        <Route className="row justify-content-center" exact path="/main">
+          <p className="text-center mt-5">
+          <img
+            className="justify-content-center"
+            src={"https://media1.giphy.com/media/eIa61FAucY1sVbxsu5/giphy.gif"}
+            width="500"
+            alt="loading awesomeness"
+          />
+        </p>
+        </Route>
+      </Router>
+    );
+  }
+}
+
+class SearchMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: [{}],
+      selectedMemberId: null,
+      selectedMember: null,
+      memberSelected: false,
+      patchedMember: null,
+    };
+  }
+  componentDidMount() {
+    fetch("http://localhost:8080/members", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ members: data });
+      });
+  }
+
+  async updateMember() {
+    await fetch(
+      `http://localhost:8080/members/edit-member/${this.state.selectedMemberId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.state.selectedMember),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ patchedMember: data }, () =>
+          console.log(
+            this.state.patchedMember.first_name +
+              " has been updated in the database"
+          )
+        );
+        // console.log(data.status)
+        if (
+          data.status === 500 ||
+          this.state.selectedMember.first_name === "" ||
+          this.state.selectedMember.last_name === ""
+        ) {
+          this.setState({ Request: "bad" });
+        } else {
+          this.setState({ Request: "good" });
+          this.setState({ memberSelected: false });
+        }
+      });
+  }
+
+  handleSelectMember = (e) => {
+    // console.log(e.target.value)
+    this.setState({ Request: "pending" });
+    this.setState({ memberSelected: false });
+    this.setState({ selectedMemberId: e.target.value }, () => {
+      fetch(`http://localhost:8080/members/${this.state.selectedMemberId}`, {
+        method: "GET",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          // console.log(data)
+          this.setState({ selectedMember: data, memberSelected: true }, () =>
+            console.log(this.state.selectedMember)
+          );
+        });
+    });
+
+    // return(
+    //   <Redirect to="/main" />
+    // )
+  };
+
+  handleInputChange = (e) => {
+    e.preventDefault();
+    // console.log("some input has changed")
+    let tempMember = this.state.selectedMember;
+    tempMember[e.target.id] = e.target.value;
+    this.setState({ selectedMember: tempMember });
+    // console.log('input change called ' + this.state.member[e.target.id] )
+  };
+
+  handleEditMember = (e) => {
+    e.preventDefault();
+    this.updateMember();
+    console.log("member edited and updated in the database");
+    this.setState({ Request: "pending" });
+    // return(<Redirect to="/main" />)
+  };
+
+  render() {
+    return (
+      <div>
+        <div className="row">
+          <div className="col-md-1"></div>
+
+          <div className="col-lg-10">
+            <h3>Select a member to see their data</h3>
+            <Search_Member
+              members={this.state.members}
+              onSelectMember={this.handleSelectMember}
+            />
+            {(() => {
+              switch (this.state.memberSelected) {
+                case true:
+                  return (
+                    // <Redirect to="/main"/>
+                    <div>
+                      <div></div>
+                      <Display_Member member={this.state.selectedMember} />
+                      <Edit_Member
+                        member={this.state.selectedMember}
+                        onEditMember={this.handleEditMember}
+                        onInputChange={this.handleInputChange}
+                      />
+                    </div>
+                  );
+                default:
+                  return <div></div>;
+              }
+            })()}
+            {(() => {
+              switch (this.state.Request) {
+                case "good":
+                  return (
+                    // <Redirect to="/main"/>
+                    <div className="alert-success text-center">
+                      {this.state.patchedMember.first_name} has been updated in
+                      the database
+                    </div>
+                  );
+                case "bad":
+                  return (
+                    <div className="alert-danger text-center">
+                      ERROR! You must specify a first and last name as well as
+                      an assignment status.
+                    </div>
+                  );
+                default:
+                  return <div></div>;
+              }
+            })()}
+          </div>
+
+          <div className="col-md-1"></div>
+        </div>
+      </div>
+    );
+  }
+}
+
+class AlphaRoster extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      members: [{}],
+    };
+  }
+  componentDidMount() {
+    fetch("http://localhost:8080/members", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ members: data });
+      });
+  }
+
+  generateTable() {
+    let table = this.state.members.map((member) => {
+      {
+        var assignment = "";
+        if (member.has_assignment === 0) {
+          assignment = "----------";
+        } else {
+          assignment = "Assigned";
+        }
+        var birthday = "";
+        var arrival_date = "";
+        var departure_date = "";
+        if (member.birthday) {
+          birthday = member.birthday.substring(0, 10);
+        }
+        if (member.arrival_date) {
+          arrival_date = member.arrival_date.substring(0, 10);
+        }
+        if (member.departure_date) {
+          departure_date = member.departure_date.substring(0, 10);
+        }
+      }
+      return (
+        <tr className="">
+          <td>{member.paygrade}</td>
+          <td>{member.first_name}</td>
+          <td>{member.last_name}</td>
+          <td>{birthday}</td>
+          <td>{assignment}</td>
+          <td>{arrival_date}</td>
+          <td>{departure_date}</td>
+          <td>{member.opr_epr_status}</td>
+        </tr>
+      );
+    });
+
+    return (
+      <div className="row">
+        <div className="col-lg-1"></div>
+        <div className="col-lg-8">
+          <h3>Alpha Roster</h3>
+          <table className="table table-striped table-bordered table-hover table-light">
+            <thead className="thead-dark">
+              <tr>
+                <th scope="col">Rank</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Date of Birth</th>
+                <th scope="col">Assignment Status</th>
+                <th scope="col">Arrival Date</th>
+                <th scope="col">Departure Date</th>
+                <th scope="col">OPR/EPR Status</th>
+              </tr>
+            </thead>
+            <tbody className="table-info">{table}</tbody>
+          </table>
+        </div>
+        <div className="col-lg-1"></div>
+      </div>
+    );
+  }
+
+  render() {
+    return <div>{this.generateTable()}</div>;
+  }
+}
+
+class AddMember extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      member: {
+        paygrade: null,
+        first_name: null,
+        last_name: null,
+        birthday: null,
+        has_assignment: null,
+        arrival_date: null,
+        departure_date: null,
+        opr_epr_status: "Not Due",
+      },
+      postedMember: {},
+      Request: "pending",
+    };
+  }
+
+  handleInputChange = (e) => {
+    e.preventDefault();
+    let tempMember = this.state.member;
+    tempMember[e.target.id] = e.target.value;
+    this.setState({ member: tempMember });
+    // console.log('input change called ' + this.state.member[e.target.id] )
+  };
+
+  async postUser() {
+    console.log(this.state.member);
+    await fetch("http://localhost:8080/members/add-member", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.state.member),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data)
+        this.setState({ postedMember: data });
+        // console.log(data.status)
+        if (
+          data.status === 500 ||
+          this.state.member.first_name === "" ||
+          this.state.member.last_name === ""
+        ) {
+          this.setState({ Request: "bad" });
+        } else {
+          this.setState({ Request: "good" });
+          // this.setState({
+          //   member: {
+          //     paygrade: null,
+          //     first_name: null,
+          //     last_name: null,
+          //     birthday: null,
+          //     has_assignment: null,
+          //     arrival_date: null,
+          //     departure_date: null,
+          //     opr_epr_status: "Not Due",
+          //   },
+          // });
+        }
+      });
+  }
+
+  handleAddMember = (e) => {
+    e.preventDefault();
+    this.postUser();
+    this.setState({ Request: "pending" });
+    // this.setState({ member : {} });
+  };
+
+  render() {
+    // console.log(this.state);
+    return (
+      <Router>
+        <div className="row">
+          <div className="col-md-1"></div>
+          <div className="col-md-8">
+            <Display_Member member={this.state.member} />
+            <Add_Member
+              onAddMember={this.handleAddMember}
+              onInputChange={this.handleInputChange}
+            />
+            {(() => {
+              switch (this.state.Request) {
+                case "good":
+                  return (
+                    // <Redirect to="/main"/>
+                    <div className="alert-success text-center">
+                      {this.state.postedMember.first_name} has been added to the
+                      database
+                    </div>
+                  );
+                case "bad":
+                  return (
+                    <div className="alert-danger text-center">
+                      ERROR! You must specify a first and last name as well as
+                      an assignment status.
+                    </div>
+                  );
+                default:
+                  return <div></div>;
+              }
+            })()}
+          </div>
+          <div className="col-md-3"></div>
+        </div>
+      </Router>
+    );
+  }
+}
+
+export default Main_Page;
+
+//npm install bootstrap
+//
+//look at add duty, src, componennts, table for formatting
+
+
+
+
+
+
+CREATE TABLE Members (
+    `member_id` INTEGER NOT NULL AUTO_INCREMENT,
+    `paygrade` VARCHAR(255),
+    `first_name` VARCHAR(255) NOT NULL,
+    `last_name` VARCHAR(255) NOT NULL,
+    `birthday` DATE,
+    `arrival_date` DATE,
+    `departure_date` DATE,
+    `has_assignment` INTEGER NOT NULL,
+    `opr_epr_status` VARCHAR(255) NOT NULL,
+    PRIMARY KEY (`member_id`)
+);
+
+INSERT INTO Members (paygrade, first_name, last_name, birthday, arrival_date, has_assignment, opr_epr_status) VALUES ("E1", "Bobby", "Bobbyson", "2002-05-07", "2002-10-02", 1, "Complete");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("E5", "Jane", "Doe", "2002-02-07", 0, "Created");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("E9", "Judean", "Johnson", "1678-12-07", 0, "Routed");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("O1", "Jacob", "Smith", "2002-05-07", 0, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, departure_date, has_assignment, opr_epr_status) VALUES ("E5", "Emily", "Thomas", "2002-02-07", "2002-02-07", 1, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("O4", "Aria", "Pybus", "1998-02-07", 0, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("O1", "Caden", "Dominguez", "1984-02-07", 0, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("O3", "Rupert", "Robinson", "2002-08-12", 0, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, departure_date, has_assignment, opr_epr_status) VALUES ("E2", "Harry", "Houdini", "2002-02-07", "2002-02-17", 1, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("E2", "Steve", "Sanchez", "2002-02-07", 0, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("E4", "Amy", "Bobbyson", "2002-02-07", 0, "Created");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, arrival_date, has_assignment, opr_epr_status) VALUES ("E5", "Remus", "Wolf", "2002-02-07", "2002-02-07", 1, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, departure_date, has_assignment, opr_epr_status) VALUES ("E7", "Scrooge", "Man", "2002-02-07", "2020-12-24", 1, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, arrival_date, has_assignment, opr_epr_status) VALUES ("O5", "Santa", "Clause", "2002-02-07", "2020-12-25", 1, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("O2", "Karl", "Ruby", "2002-02-07", 0, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, has_assignment, opr_epr_status) VALUES ("O1", "Stephany", "Hammersmith", "2002-02-07", 0, "Routed");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, departure_date, has_assignment, opr_epr_status) VALUES ("E5", "Bill", "Halfson", "2002-02-07", "2021-01-31", 1, "Not Due");
+INSERT INTO Members (paygrade, first_name, last_name, birthday, arrival_date, has_assignment, opr_epr_status) VALUES ("E3", "Derp", "Derpson", "2002-02-07", "2021-02-14", 1, "Complete");
+
+
+CREATE TABLE Additional_Duties (
+    duty_id INTEGER NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255) NOT NULL,
+    member_id INTEGER,
+    FOREIGN KEY (member_id) REFERENCES Members(member_id),
+    workload INTEGER,
+    PRIMARY KEY (duty_id)
+);
+
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Secretary", 3, 9);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Voting Rep", 3, 2);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Security Manager", 1, 10);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("COR", 8, 4);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Booster President", 1, 18);
+INSERT INTO Additional_Duties (title, workload) VALUES ("Exec", 10);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("PT Guy", 7, 4);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Assistant Exec", 8, 7);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Force Protection Officer", 11, 3);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Armorer", 10, 7);
+INSERT INTO Additional_Duties (title,workload) VALUES ("Equal Opportunity Advisor", 10);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Safety NCO and Officer", 1, 13);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Claims Officer", 1, 4);
+INSERT INTO Additional_Duties (title, workload) VALUES ("Other Secretary", 7);
+INSERT INTO Additional_Duties (title, workload) VALUES ("Assistant to the Regional Manager", 1);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Information Assurance Manager", 12, 6);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Budget Officer", 5, 9);
+INSERT INTO Additional_Duties (title, member_id, workload) VALUES ("Snack-o", 1, 7);
+INSERT INTO Additional_Duties (title,workload) VALUES ("Secretary 4", 8);
+INSERT INTO Additional_Duties (title, workload) VALUES ("SARC", 10);
+
+
+
+

@@ -854,7 +854,31 @@ code coverage
     jacocoTests     --make changes to the build.gradle file to incorperate
     can cause build to fail if code coverage below a threshold
 
+https://docs.google.com/document/d/14IxhGOW_coKxupkZpobb3MrdLyeHSTVQZ58ZoauzqwE/edit
 
+
+----------------------------------------
+GIT STUFF   
+git pull    - Fetch and merge changes on the remote server to your working directory:
+git checkout -b branch_Name 
+git add .
+git commit -m'stuff'
+git push -u origin Main_Page  
+it checkout <existing_branch>   
+
+git pull origin master          while on branch, overwrites with what is on the main
+
+git reset --hard origin/master
+overwrite local master branch with repo master
+
+
+
+
+
+
+
+Run 'npm start -- --port 8500'
+2. Go to http://single-spa-playground.org/playground/instant-test?name=@scorp/main-page&url=8500 to see it working!
 
 
 
